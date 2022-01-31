@@ -8,7 +8,7 @@ import { createMaterial, loadTexture } from './modules/Material'
 import { createMesh } from './modules/Mesh'
 import { createParticles } from './modules/Particles';
 import { loadModel } from './modules/Model'
-import { animateParticles } from './modules/Animation';
+// import { animateParticles } from './modules/Animation';
 
 const main = () => {
     // scene
@@ -67,7 +67,7 @@ const main = () => {
 
 
     // animate
-    animateParticles(particles);
+    // animateParticles(particles);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
