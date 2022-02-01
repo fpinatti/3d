@@ -9,6 +9,7 @@ import { setRenderer } from './modules/Renderer'
 // import { createMesh } from './modules/Mesh'
 import { createParticles } from './modules/Particles';
 import { loadModel } from './modules/Model'
+import { createBillboard } from './modules/Billboard';
 // import { animateParticles } from './modules/Animation';
 
 const main = () => {
@@ -40,6 +41,13 @@ const main = () => {
     const directionalLight = createDirectionalLight();
     scene.add(directionalLight);
     
+    /**
+     * Fireplace
+     */
+    const fire = createBillboard();
+    scene.add(fire);
+    fire.position.set(-3, 1, 1);
+
     /**
      * leafs
      */

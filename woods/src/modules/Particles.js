@@ -10,6 +10,7 @@ const createParticles = (config) => {
     // geometry
     const geometry = new THREE.BufferGeometry();
     const particlesPosition = new Float32Array(config.count * 3);
+    const particlesSpeed = new Float32Array(config.count * 3);
     // const particlesGroupPosition = [];
 
     for (let i=0; i < config.count; i++) {
@@ -23,6 +24,7 @@ const createParticles = (config) => {
         //     y: posY,
         //     z: posZ,
         // };
+        particlesSpeed[idx + 1] = .01 + (Math.random() * .01);
         particlesPosition[idx] = posX; // x
         particlesPosition[idx + 1] = posY; // y
         particlesPosition[idx + 2] = posZ; // z
@@ -48,9 +50,9 @@ const createParticles = (config) => {
     const particles = new THREE.Points(geometry, material);
 
     // animate
-    const animateParticles = (particles, particlesPosition) => {
+    const animateParticles = (particles, particlesPosition, particlesSpeed) => {
         requestAnimationFrame(() => {
-            animateParticles(particles, particlesPosition);
+            animateParticles(particles, particlesPosition, particlesSpeed);
         });
         let counter = 0;
         particlesPosition = particlesPosition.map((point, index) => {
@@ -63,8 +65,7 @@ const createParticles = (config) => {
                 if (point < 0) {
                     point = startY;
                 }
-                const fallSpeed = (baseSpeed * (index * .01) * .5);
-                return point -= Math.min(.01, fallSpeed);
+                return point -= particlesSpeed[index];
             } else {
                 return point;
             }
@@ -72,7 +73,7 @@ const createParticles = (config) => {
         particles.geometry.attributes.position.array = particlesPosition;
         particles.geometry.attributes.position.needsUpdate = true;
     };
-    animateParticles(particles, particlesPosition);
+    animateParticles(particles, particlesPosition, particlesSpeed);
 
     return particles;
 }
