@@ -39,35 +39,20 @@ const main = () => {
     const directionalLight = createDirectionalLight();
     scene.add(directionalLight);
     
-    //texture
-    // const texture = loadTexture('./models/Material Base Color-test.png')
-    // .then((tex) => {
-    //     tex.flipY = false;
-    //     material.map = tex;
-    //     getModel();
-    // });
-    
-    // external models
-    loadModel('models/tree_bench.gltf').then((model) => {
-        // model.children.map((child) => {
-        //     child.material = material;
-        // });
-        scene.add(model);
-    });
-    
-
     /**
      * leafs
      */
     const particles = createParticles({
-        count: 30,
+        count: 80,
         size: .2,
     });
-    scene.add(particles);
 
+    // external models
+    loadModel('models/tree_bench.gltf').then((model) => {
+        scene.add(model);
+        scene.add(particles);
+    });
 
-    // animate
-    // animateParticles(particles);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
