@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import './styles.css';
+import { initLoader } from './modules/Loader';
 import { createScene } from './modules/Scene'
 import { createCamera, setCameraControls } from './modules/Camera'
 import { createAmbientLight, createDirectionalLight} from './modules/Light'
 import { setRenderer } from './modules/Renderer'
-import { createMaterial, loadTexture } from './modules/Material'
-import { createMesh } from './modules/Mesh'
+// import { createMaterial, loadTexture } from './modules/Material'
+// import { createMesh } from './modules/Mesh'
 import { createParticles } from './modules/Particles';
 import { loadModel } from './modules/Model'
 // import { animateParticles } from './modules/Animation';
@@ -56,5 +57,6 @@ const main = () => {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    initLoader();
     main();
 });
