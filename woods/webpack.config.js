@@ -3,12 +3,14 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
-  entry: './src/index.js',
-  mode: "development",
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+  entry: {
+    app: './src/index.js',
   },
+  mode: "development",
+  // output: {
+  //   path: path.resolve(__dirname, 'dist'),
+  //   filename: 'bundle.js'
+  // },
   module: {
     rules: [
       {
@@ -19,16 +21,13 @@ const config = {
         ]
       },
       {
-        test: /\.png$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              mimetype: 'image/png'
-            }
-          }
-        ]
-      }
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      },
     ]
   },
   plugins: [

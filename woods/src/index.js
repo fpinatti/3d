@@ -10,6 +10,7 @@ import { setRenderer } from './modules/Renderer'
 import { createParticles } from './modules/Particles';
 import { loadModel } from './modules/Model'
 import { createBillboard } from './modules/Billboard';
+import { loadTexture } from './modules/Material';
 // import { animateParticles } from './modules/Animation';
 
 const main = () => {
@@ -21,7 +22,6 @@ const main = () => {
     scene.add(camera);
     camera.position.z = 8;
     camera.position.y = 4;
-    camera.position.x = -12;
     
     // materials
     // const material = createMaterial('standard');
@@ -39,14 +39,20 @@ const main = () => {
     const ambientLight = createAmbientLight();
     scene.add(ambientLight);
     const directionalLight = createDirectionalLight();
+    directionalLight.position.set(3, 5, 3);
     scene.add(directionalLight);
+    const directionalLight2 = createDirectionalLight();
+    directionalLight2.position.set(0, -10, 0);
+    scene.add(directionalLight2);
+    // const directionalLight = createDirectionalLight();
+    // scene.add(directionalLight);
     
     /**
      * Fireplace
      */
-    const fire = createBillboard();
+    const fire = createBillboard(fireTexture);
     scene.add(fire);
-    fire.position.set(-3, 1, 1);
+    fire.position.set(.6, .5, 2.3);
 
     /**
      * leafs
@@ -54,17 +60,29 @@ const main = () => {
     const particles = createParticles({
         count: 80,
         size: .2,
+        texture: leafTexture,
     });
 
     // external models
     loadModel('models/tree_bench.gltf').then((model) => {
+        model.children.map((element) => {
+            if (element.name === 'floor') {
+                // element.material.displacementMap = grassTexture;
+                element.material.needsUpdate = true;
+            }
+        });
         scene.add(model);
         scene.add(particles);
     });
 
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    initLoader();
+let grassTexture;
+let fireTexture;
+let leafTexture;
+window.addEventListener('DOMContentLoaded', async () => {
+    await loadTexture('textures/grass.jpg').then(texture => grassTexture = texture);
+    await loadTexture('textures/fire_sheet.jpg').then(texture => fireTexture = texture);
+    await loadTexture('textures/leaf.png').then(texture => leafTexture = texture);
     main();
 });

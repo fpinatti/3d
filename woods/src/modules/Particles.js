@@ -32,18 +32,13 @@ const createParticles = (config) => {
 
     geometry.setAttribute('position', new THREE.BufferAttribute(particlesPosition, 3));
 
-    // texture
-    // loadTexture('./textures/leaf.png').then((texture) => {
-    //     material.map = texture;
-    //     material.needsUpdate = true;
-    // });
-
     // material
     const material = new THREE.PointsMaterial({
         size: config.size,
         sizeAttenuation: true,
         blending: THREE.AdditiveBlending,
         transparent: true,
+        map: config.texture,
     });
 
     // particles
