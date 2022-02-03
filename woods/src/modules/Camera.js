@@ -12,7 +12,9 @@ const createCamera = () => {
 }
 
 const setCameraControls = (camera, renderer) => {
-    new OrbitControls(camera, renderer.domElement);
+    const orbitControls = new OrbitControls(camera, renderer.domElement);
+    orbitControls.minDistance = 2;
+    orbitControls.maxDistance = 12;
 };
 
 export {

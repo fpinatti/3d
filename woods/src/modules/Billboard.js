@@ -7,34 +7,26 @@ const stepsAnimation = {x: 0};
 
 const createBillboard = (texture) => {
 
-    texture.offset.x = .7;
-    //     // texture.offset.set(1, 1);
-    texture.repeat.set(.25, 1);
-    //     // fireTexture.needsUpdate = true;
-    //     // fireTexture.offset.y = 0;
-    //     // fireTexture.wrapS = THREE.RepeatWrapping;   
-    //     // fireTexture.wrapT = THREE.RepeatWrapping;
-    //     // fireTexture.repeat.set(.2, .2);
-    //     // fireTexture.needsUpdate = true;
-    //     // console.log(fireTexture.matrixAutoUpdate);
-    //     material.map = texture;
-    //     // gsap.to(stepsAnimation, {
-    //     //     duration: 2,
-    //     //     x: 1,
-    //     //     repeat: -1,
-    //     //     ease: "steps(5)",
-    //     //     onUpdate: () => {
-    //     //         // fireTexture.repeat.x = stepsAnimation.x;
-    //     //         // fireTexture.updateMatrix();
-    //     //         // console.log('a', stepsAnimation);
-    //     //     },
-    //     // });
-    // });
-    const material = new THREE.SpriteMaterial({ map: texture });
-    material.needsUpdate = true;
+    texture.repeat.set(.15, 1);
+    texture.wrapS = THREE.RepeatWrapping;   
+    texture.wrapT = THREE.RepeatWrapping;
+    gsap.to(stepsAnimation, {
+        duration: 2,
+        x: 1,
+        repeat: -1,
+        ease: "steps(7)",
+        onUpdate: () => {
+            texture.offset.x = stepsAnimation.x;
+        },
+    });
+    const material = new THREE.SpriteMaterial({ 
+        map: texture,
+        blending: THREE.AdditiveBlending,
+    });
 
     const sprite = new THREE.Sprite(material);
-    sprite.scale.x = 1.1;
+    sprite.scale.x = 1.6;
+    sprite.scale.y = 3;
     return sprite;
 }
 

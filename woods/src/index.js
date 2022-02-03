@@ -39,27 +39,26 @@ const main = () => {
     const ambientLight = createAmbientLight();
     scene.add(ambientLight);
     const directionalLight = createDirectionalLight();
+    directionalLight.castShadow = true;
     directionalLight.position.set(3, 5, 3);
     scene.add(directionalLight);
     const directionalLight2 = createDirectionalLight();
-    directionalLight2.position.set(0, -10, 0);
+    directionalLight2.position.set(0, 0, 8);
     scene.add(directionalLight2);
-    // const directionalLight = createDirectionalLight();
-    // scene.add(directionalLight);
     
     /**
      * Fireplace
      */
     const fire = createBillboard(fireTexture);
     scene.add(fire);
-    fire.position.set(.6, .5, 2.3);
+    fire.position.set(.6, 1.5, 2.3);
 
     /**
      * leafs
      */
     const particles = createParticles({
-        count: 80,
-        size: .2,
+        count: 10,
+        size: .1,
         texture: leafTexture,
     });
 
@@ -67,8 +66,16 @@ const main = () => {
     loadModel('models/tree_bench.gltf').then((model) => {
         model.children.map((element) => {
             if (element.name === 'floor') {
-                // element.material.displacementMap = grassTexture;
-                element.material.needsUpdate = true;
+                element.receiveShadow = true;
+                grassTexture.flipY = false;
+                grassTexture.offset.set(-.15, -.15);
+                grassTexture.repeat.set(1.3, 1.3);
+                // grassTexture.center(.5, .5);
+                // element.material.map = grassTexture;
+                element.material.displacementMap = grassTexture;
+                // element.material.needsUpdate = true;
+            } else {
+                element.castShadow = true;
             }
         });
         scene.add(model);
@@ -82,7 +89,7 @@ let fireTexture;
 let leafTexture;
 window.addEventListener('DOMContentLoaded', async () => {
     await loadTexture('textures/grass.jpg').then(texture => grassTexture = texture);
-    await loadTexture('textures/fire_sheet.jpg').then(texture => fireTexture = texture);
+    await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture);
     await loadTexture('textures/leaf.png').then(texture => leafTexture = texture);
     main();
 });
