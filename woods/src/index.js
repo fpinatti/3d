@@ -3,7 +3,7 @@ import './styles.css';
 import { initLoader } from './modules/Loader';
 import { createScene } from './modules/Scene'
 import { createCamera, setCameraControls } from './modules/Camera'
-import { createAmbientLight, createDirectionalLight} from './modules/Light'
+import { createAmbientLight, createDirectionalLight, createSpotLight, shakeLight} from './modules/Light'
 import { setRenderer } from './modules/Renderer'
 // import { createMaterial, loadTexture } from './modules/Material'
 // import { createMesh } from './modules/Mesh'
@@ -11,6 +11,7 @@ import { createParticles } from './modules/Particles';
 import { loadModel } from './modules/Model'
 import { createBillboard } from './modules/Billboard';
 import { loadTexture } from './modules/Material';
+import { Vector3 } from 'three';
 // import { animateParticles } from './modules/Animation';
 
 const main = () => {
@@ -38,13 +39,24 @@ const main = () => {
     // lights
     const ambientLight = createAmbientLight();
     scene.add(ambientLight);
+    
     const directionalLight = createDirectionalLight();
     directionalLight.castShadow = true;
     directionalLight.position.set(3, 5, 3);
     scene.add(directionalLight);
+    
     const directionalLight2 = createDirectionalLight();
     directionalLight2.position.set(0, 0, 8);
     scene.add(directionalLight2);
+
+    const spotLight = createSpotLight();
+    const targetSpotlight = new THREE.Object3D();
+    scene.add(targetSpotlight);
+    spotLight.target = targetSpotlight;
+    scene.add(spotLight);
+    spotLight.position.set(.6, 4, 2.5);
+    targetSpotlight.position.set(.6, 0, 2.5);
+    shakeLight(spotLight);
     
     /**
      * Fireplace
@@ -57,10 +69,11 @@ const main = () => {
      * leafs
      */
     const particles = createParticles({
-        count: 10,
+        count: 20,
         size: .1,
         texture: leafTexture,
     });
+    particles.position.set(0, 0, -1);
 
     // external models
     loadModel('models/tree_bench.gltf').then((model) => {
