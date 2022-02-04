@@ -81,11 +81,12 @@ const main = () => {
             if (element.name === 'floor') {
                 element.receiveShadow = true;
                 grassTexture.flipY = false;
-                grassTexture.offset.set(-.15, -.15);
-                grassTexture.repeat.set(1.3, 1.3);
-                // grassTexture.center(.5, .5);
+                // grassTexture.offset.set(-.15, -.15);
+                // grassTexture.repeat.set(1.3, 1.3);
+                // // grassTexture.center(.5, .5);
                 // element.material.map = grassTexture;
-                element.material.displacementMap = grassTexture;
+                // element.material.displacementMap = grassTexture;
+                // element.material.displacementScale = .2;
                 // element.material.needsUpdate = true;
             } else {
                 element.castShadow = true;
@@ -101,7 +102,7 @@ let grassTexture;
 let fireTexture;
 let leafTexture;
 window.addEventListener('DOMContentLoaded', async () => {
-    await loadTexture('textures/grass.jpg').then(texture => grassTexture = texture);
+    await loadTexture('textures/grass Displacement.png').then(texture => grassTexture = texture);
     await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture);
     await loadTexture('textures/leaf.png').then(texture => leafTexture = texture);
     main();
