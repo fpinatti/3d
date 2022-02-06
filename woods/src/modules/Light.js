@@ -12,7 +12,7 @@ const createDirectionalLight = () => {
 }
 
 const createSpotLight = () => {
-    const light = new THREE.SpotLight( 0xffffff, 2, 0, .2, 0, 0 );
+    const light = new THREE.SpotLight( 0xffffff, 2, 10, .2, 1, 0 );
     return light;
 }
 
