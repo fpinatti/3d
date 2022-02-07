@@ -1,0 +1,25 @@
+{
+  "name": "3d-projects",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cd ./woods && npm run test && cd ../medieval && npm run test",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpinatti/3d.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fpinatti/3d/issues"
+  },
+  "homepage": "https://github.com/fpinatti/3d#readme",
+  "devDependencies": {
+    "eslint": "^8.8.0",
+    "husky": "^7.0.0"
+  }
+}

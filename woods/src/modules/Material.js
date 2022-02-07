@@ -1,36 +1,36 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 
-const loader = new THREE.TextureLoader();
+const loader = new THREE.TextureLoader()
 
 const createMaterial = (type) => {
-    let material;
-    switch (type) {
-        case 'standard':
-            material = new THREE.MeshStandardMaterial({
-                color: 0xffffff,
-            });
-            break;
-        default:
-            material = new THREE.MeshBasicMaterial({
-                color: 0xffffff,
-            });
-    }
+	let material
+	switch (type) {
+	case 'standard':
+		material = new THREE.MeshStandardMaterial({
+			color: 0xffffff,
+		})
+		break
+	default:
+		material = new THREE.MeshBasicMaterial({
+			color: 0xffffff,
+		})
+	}
     
-    return material;
+	return material
 }
 
 const loadTexture = (url) => {
-    return new Promise(function(resolve, reject) {
-        loader.load(
-            url,
-            (texture) => {
-                resolve(texture);
-            }
-        )
-    });
+	return new Promise(function(resolve) {
+		loader.load(
+			url,
+			(texture) => {
+				resolve(texture)
+			}
+		)
+	})
 }
 
 export {
-    createMaterial,
-    loadTexture,
+	createMaterial,
+	loadTexture,
 }
