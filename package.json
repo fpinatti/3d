@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cd ./woods && npm run test && cd ../medieval && npm run test",
+    "test": "cd ./woods && npm run test && cd ../medieval && npm run test && cd ../twins-room && npm run test",
     "prepare": "husky install"
   },
   "repository": {
