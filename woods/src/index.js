@@ -14,8 +14,8 @@ import { loadTexture } from './modules/Material';
 import { Vector3 } from 'three';
 // import { animateParticles } from './modules/Animation';
 
-const bakedVersion = false;
-
+const bakedVersion = true;
+let bakedMaterial;
 const main = () => {
     // scene
     const scene = createScene();
@@ -29,7 +29,7 @@ const main = () => {
     // materials
     if (bakedVersion) {
         bakedTexture.flipY = false;
-        const bakedMaterial = new THREE.MeshBasicMaterial({ 
+        bakedMaterial = new THREE.MeshBasicMaterial({ 
             color: 0xffffff,
             map: bakedTexture,
         })
