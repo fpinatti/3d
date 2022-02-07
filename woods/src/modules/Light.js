@@ -16,7 +16,6 @@ const createSpotLight = () => {
     return light;
 }
 
-// const lightRadius = {radius: .2};
 const shakeLight = (light) => {
     gsap.to({}, {
         duration: .3,

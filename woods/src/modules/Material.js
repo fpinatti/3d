@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-// import { loadTexture } from '../utils/utils';
 
 const loader = new THREE.TextureLoader();
 

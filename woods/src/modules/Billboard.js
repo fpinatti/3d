@@ -1,8 +1,6 @@
 import * as THREE from 'three';
-import { loadTexture } from './Material';
 import gsap from 'gsap';
 
-let fireTexture;
 const stepsAnimation = {x: 0};
 
 const createBillboard = (texture) => {

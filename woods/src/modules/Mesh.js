@@ -17,7 +17,6 @@ const createSphereGeometry = () => {
 }
 
 const createMesh = (material) => {
-    // const geometry = createBoxGeometry();
     const geometry = createSphereGeometry();
     const mesh = new THREE.Mesh( geometry, material );
     return mesh;
