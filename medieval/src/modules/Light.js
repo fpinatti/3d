@@ -7,7 +7,7 @@ const createAmbientLight = () => {
 }
 
 const createDirectionalLight = () => {
-	const light = new THREE.PointLight( 0xffffff, 2, 8 )
+	const light = new THREE.PointLight( 0xffffff, 2 )
 	return light
 }
 

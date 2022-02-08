@@ -3,7 +3,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 
 const config = {
 	entry: {
-		app: './src/app.js',
+		app: './src/index.js',
 	},
 	mode: 'development',
 	module: {
