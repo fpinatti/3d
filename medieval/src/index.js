@@ -12,27 +12,29 @@ import { loadTexture } from './modules/Material'
 import { modelsData } from './utils/utils'
 
 const main = () => {
-	// scene
+	/**
+	 * Scene
+	 */
 	const scene = createScene()
+	scene.background = sceneBackground
     
-	// camera
+	/**
+	 * Camera
+	 */
 	const camera = createCamera()
 	scene.add(camera)
 	camera.position.z = 8
 	camera.position.y = 4
     
-	// materials
-	// bakedTexture.flipY = false;
-	// bakedMaterial = new THREE.MeshBasicMaterial({ 
-	//     color: 0xffffff,
-	//     map: bakedTexture,
-	// })
-    
-	// renderer
+	/**
+	 * Renderer
+	 */
 	const renderer = setRenderer(camera, scene)
 	setCameraControls(camera, renderer)
     
-	// lights
+	/**
+	 * Lights
+	 */
 	const ambientLight = createAmbientLight()
 	scene.add(ambientLight)
     
@@ -40,56 +42,66 @@ const main = () => {
 	directionalLight.castShadow = true
 	directionalLight.position.set(0, 10, 0)
 	scene.add(directionalLight)
-    
-	// const directionalLight2 = createDirectionalLight()
-	// directionalLight2.position.set(0, 0, 8)
-	// scene.add(directionalLight2)
 
-	// /**
-	//  * leafs
-	//  */
-	// const particles = createParticles({
-	//     count: 20,
-	//     size: .1,
-	//     texture: leafTexture,
-	// });
-	// particles.position.set(0, 0, -1);
-
+	/**
+	 * World Map
+	 */
 	const mapContainer = new THREE.Group()
 	scene.add(mapContainer)
 
 	const unitsPerRow = 7
 	const map = [
-		'building_wall.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'unit_boat.glb', 'water.glb',
+		'', 'building_wall.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'unit_boat.glb', 'water.glb',
 		'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'building_dock.glb', 'water.glb',
 		'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'river_start.glb', 'water.glb',
 		'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'water_rocks.glb',
 		'grass.glb', 'dirt.glb', 'dirt.glb', 'building_cabin.glb', 'grass.glb', 'grass.glb', 'grass.glb',
 		'grass.glb', 'dirt.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb',
-		'grass.glb', 'grass_hill.glb', 'grass.glb', 'grass.glb', 'grass_forest.glb', 'grass.glb', 'grass.glb',
-		'sand_rocks.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass_forest.glb', 'grass_forest.glb', 'building_sheep.glb',
-		'sand.glb', 'sand_rocks.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb',
+		'grass.glb', 'sand_rocks.glb', 'grass.glb', 'grass.glb', 'grass_forest.glb', 'grass.glb', 'grass.glb',
+		'', 'grass.glb', 'grass.glb', 'grass_forest.glb', 'grass_forest.glb', 'building_sheep.glb', '',
+		'', 'sand.glb', 'sand_rocks.glb', 'grass.glb', 'grass.glb', '', '',
 	]
 
 	map.forEach((item, index) => {
-		let x = index % unitsPerRow
-		let z = Math.floor(index / unitsPerRow)
-		if (z % 2 !== 0) {
-			x += .5
+		if (models[item]) {
+			let x = index % unitsPerRow
+			let z = Math.floor(index / unitsPerRow)
+			if (z % 2 !== 0) {
+				x += .5
+			}
+			z -= .2 * z
+			// update x/z to make elements center on wrapper
+			x -= 3.5
+			z -= 3
+			const model = models[item].clone()
+			model.position.set(x, 0, z)
+			mapContainer.add(model)
 		}
-		z -= .2 * z
-		const model = models[item].clone()
-		model.position.set(x, 0, z)
-		mapContainer.add(model)
 	})
+
+	/**
+	 * Helpers
+	 */
+	const axesHelper = new THREE.AxesHelper(5)
+	scene.add(axesHelper)
 
 }
 
-// let grassTexture;
-// let fireTexture;
-// let leafTexture;
-// let bakedTexture;
+let sceneBackground
+const loadTextures = () => {
+	sceneBackground = new THREE.CubeTextureLoader()
+		.setPath( 'textures/' )
+		.load([
+			'px.png',
+			'nx.png',
+			'py.png',
+			'ny.png',
+			'pz.png',
+			'nz.png'
+		])
+}
 const models = {}
+
 window.addEventListener('DOMContentLoaded', async () => {
 	const promises = []
 	
@@ -99,14 +111,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 		})
 		promises.push(promise)
 	})
+	// wait textures
+	promises.push(loadTextures())
+
 	Promise.all(promises).then(() => {
 		main()
 	})
-	// if (bakedVersion) {
-	//     await loadTexture('textures/baked.jpg').then(texture => bakedTexture = texture);
-	// }
-	// await loadTexture('textures/grass Displacement.png').then(texture => grassTexture = texture);
-	// await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture);
-	// await loadTexture('textures/leaf.png').then(texture => leafTexture = texture);
-	// main()
+
 })

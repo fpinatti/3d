@@ -1,8 +1,11 @@
+import { setPostProcessing, addGlitch, addScene } from './PostProcessing'
 import * as THREE from 'three'
 
 let camera
 let scene
 let renderer
+// post processing
+let composer
 
 const setRenderer = (userCamera, userScene) => {
 	camera = userCamera
@@ -14,9 +17,19 @@ const setRenderer = (userCamera, userScene) => {
 	renderer.setClearColor(0x096a74),
 	renderer.shadowMap.enabled = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
-	renderer.setSize( window.innerWidth, window.innerHeight, false )
+	renderer.setSize( window.innerWidth, window.innerHeight, false)
+	composer = setPostProcessingComposer(renderer)
+	addScene(composer, scene, camera)
+	addGlitch(composer)
 	tick()
 	return renderer
+}
+
+/**
+ * Post Processing
+ */
+const setPostProcessingComposer = (renderer) => {
+	return setPostProcessing(renderer)
 }
 
 const onWindowResize = () => {
@@ -36,7 +49,7 @@ const tick = () => {
 	requestAnimationFrame(() => {
 		tick()
 	})
-	renderer.render(scene, camera)
+	composer.render()
 }
 
 window.addEventListener('resize', () => {
