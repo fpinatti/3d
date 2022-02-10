@@ -1,4 +1,10 @@
-import { setPostProcessing, addGlitch, addScene } from './PostProcessing'
+import { 
+	setPostProcessing,
+	// addGlitch,
+	addScene,
+	addBloom,
+	addHalftone
+} from './PostProcessing'
 import * as THREE from 'three'
 
 let camera
@@ -20,7 +26,9 @@ const setRenderer = (userCamera, userScene) => {
 	renderer.setSize( window.innerWidth, window.innerHeight, false)
 	composer = setPostProcessingComposer(renderer)
 	addScene(composer, scene, camera)
-	addGlitch(composer)
+	// addGlitch(composer)
+	addBloom(composer)
+	addHalftone(composer)
 	tick()
 	return renderer
 }
