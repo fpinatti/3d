@@ -1,10 +1,11 @@
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 
 const loadModel = (file) => {
-	const loader = new GLTFLoader()
+	const loader = new OBJLoader()
 	return new Promise(function(resolve) {
-		loader.load(file, function (gltf) {
-			resolve(gltf.scene)
+		loader.load(file, function (object) {
+			resolve(object)
 		})
 	})
 }

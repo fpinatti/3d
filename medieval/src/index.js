@@ -38,10 +38,10 @@ const main = () => {
 	const ambientLight = createAmbientLight()
 	scene.add(ambientLight)
     
-	const directionalLight = createDirectionalLight()
-	directionalLight.castShadow = true
-	directionalLight.position.set(0, 10, 0)
-	scene.add(directionalLight)
+	// const directionalLight = createDirectionalLight()
+	// directionalLight.castShadow = true
+	// directionalLight.position.set(0, 10, 0)
+	// scene.add(directionalLight)
 
 	/**
 	 * World Map
@@ -49,35 +49,39 @@ const main = () => {
 	const mapContainer = new THREE.Group()
 	scene.add(mapContainer)
 
-	const unitsPerRow = 7
-	const map = [
-		'', 'building_wall.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'unit_boat.glb', 'water.glb',
-		'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'building_dock.glb', 'water.glb',
-		'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'river_start.glb', 'water.glb',
-		'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'water_rocks.glb',
-		'grass.glb', 'dirt.glb', 'dirt.glb', 'building_cabin.glb', 'grass.glb', 'grass.glb', 'grass.glb',
-		'grass.glb', 'dirt.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb',
-		'grass.glb', 'sand_rocks.glb', 'grass.glb', 'grass.glb', 'grass_forest.glb', 'grass.glb', 'grass.glb',
-		'', 'grass.glb', 'grass.glb', 'grass_forest.glb', 'grass_forest.glb', 'building_sheep.glb', '',
-		'', 'sand.glb', 'sand_rocks.glb', 'grass.glb', 'grass.glb', '', '',
-	]
+	const model = models['castle01.obj'].clone()
+	model.children[0].material.map = tex1
+	scene.add(model)
 
-	map.forEach((item, index) => {
-		if (models[item]) {
-			let x = index % unitsPerRow
-			let z = Math.floor(index / unitsPerRow)
-			if (z % 2 !== 0) {
-				x += .5
-			}
-			z -= .2 * z
-			// update x/z to make elements center on wrapper
-			x -= 3.5
-			z -= 3
-			const model = models[item].clone()
-			model.position.set(x, 0, z)
-			mapContainer.add(model)
-		}
-	})
+	// const unitsPerRow = 7
+	// const map = [
+	// 	'', 'building_wall.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'unit_boat.glb', 'water.glb',
+	// 	'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'building_dock.glb', 'water.glb',
+	// 	'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'river_start.glb', 'water.glb',
+	// 	'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'water_rocks.glb',
+	// 	'grass.glb', 'dirt.glb', 'dirt.glb', 'building_cabin.glb', 'grass.glb', 'grass.glb', 'grass.glb',
+	// 	'grass.glb', 'dirt.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb', 'grass.glb',
+	// 	'grass.glb', 'sand_rocks.glb', 'grass.glb', 'grass.glb', 'grass_forest.glb', 'grass.glb', 'grass.glb',
+	// 	'', 'grass.glb', 'grass.glb', 'grass_forest.glb', 'grass_forest.glb', 'building_sheep.glb', '',
+	// 	'', 'sand.glb', 'sand_rocks.glb', 'grass.glb', 'grass.glb', '', '',
+	// ]
+
+	// map.forEach((item, index) => {
+	// 	if (models[item]) {
+	// 		let x = index % unitsPerRow
+	// 		let z = Math.floor(index / unitsPerRow)
+	// 		if (z % 2 !== 0) {
+	// 			x += .5
+	// 		}
+	// 		z -= .2 * z
+	// 		// update x/z to make elements center on wrapper
+	// 		x -= 3.5
+	// 		z -= 3
+	// 		const model = models[item].clone()
+	// 		model.position.set(x, 0, z)
+	// 		mapContainer.add(model)
+	// 	}
+	// })
 
 	/**
 	 * Helpers
@@ -101,6 +105,7 @@ const loadTextures = () => {
 		])
 }
 const models = {}
+let tex1
 
 window.addEventListener('DOMContentLoaded', async () => {
 	const promises = []
@@ -113,6 +118,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 	})
 	// wait textures
 	promises.push(loadTextures())
+
+	tex1 = await loadTexture('./models/f02_busi015.png');
 
 	Promise.all(promises).then(() => {
 		main()
