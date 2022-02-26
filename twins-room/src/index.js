@@ -107,7 +107,7 @@ const main = () => {
 			// element.receiveShadow = true;
 			// grassTexture.flipY = false;
 			if (bakedVersion) {
-				element.material = bakedMaterial
+				// element.material = bakedMaterial
 				element.map = bakedTexture
 			}
 		})
@@ -123,7 +123,7 @@ const main = () => {
 let bakedTexture
 window.addEventListener('DOMContentLoaded', async () => {
 	if (bakedVersion) {
-		await loadTexture('textures/cube_combined_render.png').then(texture => bakedTexture = texture)
+		await loadTexture('textures/cube_combined.jpg').then(texture => bakedTexture = texture)
 	}
 	// await loadTexture('textures/grass Displacement.png').then(texture => grassTexture = texture)
 	// await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture)
