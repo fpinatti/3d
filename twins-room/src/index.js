@@ -46,48 +46,48 @@ const main = () => {
 	setCameraControls(camera, renderer)
     
 	// lights
-	if (!bakedVersion) {
-		const ambientLight = createAmbientLight()
-		scene.add(ambientLight)
+	// if (!bakedVersion) {
+	// 	const ambientLight = createAmbientLight()
+	// 	scene.add(ambientLight)
         
-		const directionalLight = createDirectionalLight()
-		directionalLight.castShadow = true
-		directionalLight.position.set(3, 5, 3)
-		scene.add(directionalLight)
+	// 	const directionalLight = createDirectionalLight()
+	// 	directionalLight.castShadow = true
+	// 	directionalLight.position.set(3, 5, 3)
+	// 	scene.add(directionalLight)
         
-		const directionalLight2 = createDirectionalLight()
-		directionalLight2.position.set(0, 0, 8)
-		scene.add(directionalLight2)
-	}
+	// 	const directionalLight2 = createDirectionalLight()
+	// 	directionalLight2.position.set(0, 0, 8)
+	// 	scene.add(directionalLight2)
+	// }
 
-	const spotLight = createSpotLight()
-	const targetSpotlight = new THREE.Object3D()
-	scene.add(targetSpotlight)
-	spotLight.target = targetSpotlight
-	scene.add(spotLight)
-	spotLight.position.set(.6, 4, 2.5)
-	targetSpotlight.position.set(.6, 0, 2.5)
-	shakeLight(spotLight)
+	// const spotLight = createSpotLight()
+	// const targetSpotlight = new THREE.Object3D()
+	// scene.add(targetSpotlight)
+	// spotLight.target = targetSpotlight
+	// scene.add(spotLight)
+	// spotLight.position.set(.6, 4, 2.5)
+	// targetSpotlight.position.set(.6, 0, 2.5)
+	// shakeLight(spotLight)
     
 	/**
      * Fireplace
      */
-	const fire = createBillboard(fireTexture)
-	scene.add(fire)
-	fire.position.set(.6, 1.5, 2.3)
+	// const fire = createBillboard(fireTexture)
+	// scene.add(fire)
+	// fire.position.set(.6, 1.5, 2.3)
 
 	/**
      * leafs
      */
-	const particles = createParticles({
-		count: 20,
-		size: .1,
-		texture: leafTexture,
-	})
-	particles.position.set(0, 0, -1)
+	// const particles = createParticles({
+	// 	count: 20,
+	// 	size: .1,
+	// 	texture: leafTexture,
+	// })
+	// particles.position.set(0, 0, -1)
 
 	// external models
-	loadModel('models/tree_bench.gltf').then((model) => {
+	loadModel('models/twins-room.glb').then((model) => {
 		// model.children.map((element) => {
 		//     if (element.name === 'floor') {
 		//         element.receiveShadow = true;
@@ -112,21 +112,21 @@ const main = () => {
 			}
 		})
 		scene.add(model)
-		scene.add(particles)
+		// scene.add(particles)
 	})
 
 }
 
-let grassTexture
-let fireTexture
-let leafTexture
+// let grassTexture
+// let fireTexture
+// let leafTexture
 let bakedTexture
 window.addEventListener('DOMContentLoaded', async () => {
 	if (bakedVersion) {
-		await loadTexture('textures/baked.jpg').then(texture => bakedTexture = texture)
+		await loadTexture('textures/cube_combined_render.png').then(texture => bakedTexture = texture)
 	}
-	await loadTexture('textures/grass Displacement.png').then(texture => grassTexture = texture)
-	await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture)
-	await loadTexture('textures/leaf.png').then(texture => leafTexture = texture)
+	// await loadTexture('textures/grass Displacement.png').then(texture => grassTexture = texture)
+	// await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture)
+	// await loadTexture('textures/leaf.png').then(texture => leafTexture = texture)
 	main()
 })
