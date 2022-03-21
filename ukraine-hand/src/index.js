@@ -14,8 +14,8 @@ import { loadTexture } from './modules/Material'
 import { Vector3 } from 'three'
 // import { animateParticles } from './modules/Animation';
 
-const bakedVersion = true
-let bakedMaterial
+// const bakedVersion = true
+// let bakedMaterial
 const main = () => {
 	// scene
 	const scene = createScene()
@@ -66,13 +66,21 @@ const main = () => {
 	// spotLight.position.set(.6, 4, 2.5)
 	// targetSpotlight.position.set(.6, 0, 2.5)
 	// shakeLight(spotLight)
-    
+
 	/**
-     * Fireplace
-     */
-	// const fire = createBillboard(fireTexture)
-	// scene.add(fire)
-	// fire.position.set(.6, 1.5, 2.3)
+	 * Flags
+	 */
+	const flagGeometry = new THREE.PlaneBufferGeometry(1.3, 1)
+	const flagMaterial = new THREE.MeshBasicMaterial({
+		color: 0xFF00FF,
+		side: THREE.DoubleSide
+	})
+	const flagRadius = 7
+	for (let idx = 0; idx <= 10; idx++) {
+		const flagMesh = new THREE.Mesh(flagGeometry, flagMaterial)
+		flagMesh.position.set(Math.sin(idx) * flagRadius, 0, Math.sin(idx) * flagRadius)
+		scene.add(flagMesh)
+	}
 
 	/**
      * leafs
@@ -85,7 +93,7 @@ const main = () => {
 	// particles.position.set(0, 0, -1)
 
 	// external models
-	loadModel('models/resistance.glb').then((model) => {
+	loadModel('models/resistance.gltf').then((model) => {
 		// model.children.map((element) => {
 		//     if (element.name === 'floor') {
 		//         element.receiveShadow = true;
@@ -115,11 +123,11 @@ const main = () => {
 // let grassTexture
 // let fireTexture
 // let leafTexture
-let bakedTexture
+// let bakedTexture
 window.addEventListener('DOMContentLoaded', async () => {
-	if (bakedVersion) {
-		await loadTexture('models/uk_material Base Color.png').then(texture => bakedTexture = texture)
-	}
+	// if (bakedVersion) {
+	// 	await loadTexture('models/uk_material Base Color.png').then(texture => bakedTexture = texture)
+	// }
 	// await loadTexture('textures/grass Displacement.png').then(texture => grassTexture = texture)
 	// await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture)
 	// await loadTexture('textures/leaf.png').then(texture => leafTexture = texture)

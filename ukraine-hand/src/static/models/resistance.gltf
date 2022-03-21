@@ -1,6 +1,6 @@
 {
     "asset" : {
-        "generator" : "Khronos glTF Blender I/O v1.7.33",
+        "generator" : "Khronos glTF Blender I/O v1.6.16",
         "version" : "2.0"
     },
     "scene" : 0,
@@ -15,12 +15,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "Plane",
-            "translation" : [
-                2,
-                0,
-                0
-            ]
+            "name" : "Plane"
         }
     ],
     "materials" : [
@@ -60,9 +55,9 @@
     ],
     "images" : [
         {
-            "mimeType" : "image/jpeg",
+            "mimeType" : "image/png",
             "name" : "uk-new Base Color",
-            "uri" : "uk-new%20Base%20Color.jpg"
+            "uri" : "uk-new%20Base%20Color.png"
         }
     ],
     "accessors" : [

@@ -15,7 +15,6 @@ const setRenderer = (userCamera, userScene) => {
 	renderer.shadowMap.enabled = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	renderer.setSize( window.innerWidth, window.innerHeight, false )
-	tick()
 	return renderer
 }
 
@@ -33,9 +32,6 @@ const onWindowResize = () => {
 }
 
 const tick = () => {
-	requestAnimationFrame(() => {
-		tick()
-	})
 	renderer.render(scene, camera)
 }
 
@@ -45,4 +41,5 @@ window.addEventListener('resize', () => {
 
 export {
 	setRenderer,
+	tick,
 }
