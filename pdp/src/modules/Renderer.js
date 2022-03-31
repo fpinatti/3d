@@ -14,7 +14,7 @@ const setRenderer = (userCamera, userScene) => {
 	renderer.setClearColor(0xFFFFFF),
 	renderer.shadowMap.enabled = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
-	renderer.setSize( window.innerWidth, window.innerHeight, false )
+	renderer.setSize(window.innerWidth, window.innerHeight, false)
 	return renderer
 }
 

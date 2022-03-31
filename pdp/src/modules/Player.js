@@ -1,34 +1,33 @@
 import { loadModel } from './Model'
 import * as THREE from 'three'
+import * as Scene from './Scene'
 
 let mixer
 let idleAction, walkAction
 let engineClock
 let keyPressed = ''
+let model
 
-const init = (scene, clock) => {
-	engineClock = clock
-	loadModel('models/pinatti_walk_2.gltf').then((gltf) => {
-		const model = gltf.scene
-		/**
-		 * Skeleton
-		 */
-		const skeleton = new THREE.SkeletonHelper(model)
-		// skeleton.visible = false
-		scene.add(skeleton)
-		/**
-		 * Animations
-		 */
-		setupAnimations(gltf)
-		
-		scene.add(model)
+const init = (gltf) => {
+	
+	model = gltf.scene
+	/**
+	 * Skeleton
+	 */
+	const skeleton = new THREE.SkeletonHelper(model)
+	// skeleton.visible = false
+	Scene.scene.add(skeleton)
+	/**
+	 * Animations
+	 */
+	setupAnimations(gltf)
+	Scene.scene.add(model)
 
-		/**
-		 * Keyboard Events
-		 */
-		setupKeys()
+	/**
+	 * Keyboard Events
+	 */
+	setupKeys()
 
-	})
 }
 
 const setupKeys = () => {
@@ -64,4 +63,5 @@ const tick = () => {
 export {
 	init,
 	tick,
+	model,
 }
