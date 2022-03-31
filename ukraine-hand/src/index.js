@@ -1,21 +1,16 @@
 import * as THREE from 'three'
 import './styles.css'
-import { initLoader } from './modules/Loader'
+// import { initLoader } from './modules/Loader'
 import { createScene } from './modules/Scene'
 import { createCamera, setCameraControls } from './modules/Camera'
 import { createAmbientLight, createDirectionalLight, createSpotLight, shakeLight} from './modules/Light'
 import { setRenderer } from './modules/Renderer'
-// import { createMaterial, loadTexture } from './modules/Material'
-// import { createMesh } from './modules/Mesh'
-import { createParticles } from './modules/Particles'
+// import { createParticles } from './modules/Particles'
 import { loadModel } from './modules/Model'
-import { createBillboard } from './modules/Billboard'
-import { loadTexture } from './modules/Material'
-import { Vector3 } from 'three'
-// import { animateParticles } from './modules/Animation';
+// import { createBillboard } from './modules/Billboard'
+// import { loadTexture } from './modules/Material'
+// import { Vector3 } from 'three'
 
-// const bakedVersion = true
-// let bakedMaterial
 const main = () => {
 	// scene
 	const scene = createScene()
@@ -25,21 +20,6 @@ const main = () => {
 	scene.add(camera)
 	camera.position.z = 8
 	camera.position.y = 4
-    
-	// materials
-	// if (bakedVersion) {
-	// 	bakedTexture.flipY = false
-	// 	bakedMaterial = new THREE.MeshBasicMaterial({ 
-	// 		color: 0xffffff,
-	// 		map: bakedTexture,
-	// 	})
-	// }
-	// const material = createMaterial('standard');
-    
-	// basic geometry models
-	// const model = createMesh(material);
-	// model.map = material;
-	// scene.add(model);
     
 	// renderer
 	const renderer = setRenderer(camera, scene)
@@ -76,12 +56,16 @@ const main = () => {
 		side: THREE.DoubleSide
 	})
 	const flagRadius = 7
-	for (let idx = 0; idx <= 10; idx++) {
-		const flagMesh = new THREE.Mesh(flagGeometry, flagMaterial)
-		flagMesh.position.set(Math.sin(idx) * flagRadius, 0, Math.sin(idx) * flagRadius)
-		scene.add(flagMesh)
+	const flagRows = 3
+	const flagsPerRow = 10
+	const increment = (Math.PI * 4) / flagsPerRow
+	for (let row = 0; row <= flagRows; row++) {
+		for (let idx = 0; idx <= flagsPerRow; idx++) {
+			const flagMesh = new THREE.Mesh(flagGeometry, flagMaterial)
+			flagMesh.position.set(Math.cos(increment * idx) * flagRadius, 0, Math.sin(increment * idx) * flagRadius)
+			scene.add(flagMesh)
+		}
 	}
-
 	/**
      * leafs
      */
@@ -109,25 +93,18 @@ const main = () => {
 		//         element.castShadow = true;
 		//     }
 		// });
-		model.children.map((element) => {
-			// element.receiveShadow = true;
-			// grassTexture.flipY = false;
-			// element.map = bakedTexture
-		})
+		// model.children.map((element) => {
+		// 	// element.receiveShadow = true;
+		// 	// grassTexture.flipY = false;
+		// 	// element.map = bakedTexture
+		// })
 		scene.add(model)
 		// scene.add(particles)
 	})
 
 }
 
-// let grassTexture
-// let fireTexture
-// let leafTexture
-// let bakedTexture
 window.addEventListener('DOMContentLoaded', async () => {
-	// if (bakedVersion) {
-	// 	await loadTexture('models/uk_material Base Color.png').then(texture => bakedTexture = texture)
-	// }
 	// await loadTexture('textures/grass Displacement.png').then(texture => grassTexture = texture)
 	// await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture)
 	// await loadTexture('textures/leaf.png').then(texture => leafTexture = texture)

@@ -7,12 +7,12 @@ const createMaterial = (type) => {
 	switch (type) {
 	case 'standard':
 		material = new THREE.MeshStandardMaterial({
-			color: 0xffffff,
+			color: 0xff0000,
 		})
 		break
 	default:
 		material = new THREE.MeshBasicMaterial({
-			color: 0xffffff,
+			color: 0xff0000,
 		})
 	}
     

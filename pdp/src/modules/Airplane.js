@@ -1,5 +1,8 @@
 import { loadModel } from './Model'
-import * as THREE from 'three'
+import * as Scene from './Scene'
+import * as Camera from './Camera'
+// import * as THREE from 'three'
+import * as Utils from '../utils/utils'
 import gsap from 'gsap'
 
 // let mixer
@@ -8,12 +11,13 @@ import gsap from 'gsap'
 // let keyPressed = ''
 let model
 
-const init = (scene) => {
+const init = () => {
 	// engineClock = clock
 	loadModel('models/airplane.gltf').then((gltf) => {
 		model = gltf.scene
 		console.log(model)
-		scene.add(model)
+		animateHelix()
+		Scene.scene.add(model)
 
 		// const box = new THREE.BoxHelper(model, 0xffff00 );
 		// scene.add( box );
@@ -26,13 +30,29 @@ const init = (scene) => {
 	})
 }
 
+const animateHelix = () => {
+	const helix = Utils.getElementFromModel(model, 'helix')
+	gsap.to(helix.rotation, {
+		duration: .25,
+		z: Math.PI * 2,
+		repeat: -1,
+		ease: 'linear',
+	})
+}
+
 const setupKeys = () => {
 	document.addEventListener('keydown', (event) => {
 		const keyPressed = event.key
 		if (keyPressed === 'ArrowRight') {
-			move(5)
+			moveX(3)
 		} else if (keyPressed === 'ArrowLeft') {
-			move(-5)
+			moveX(-3)
+		}
+
+		if (keyPressed === 'ArrowUp') {
+			moveY(5)
+		} else if (keyPressed === 'ArrowDown') {
+			moveY(-5)
 		}
 	})
 
@@ -51,7 +71,7 @@ const setupKeys = () => {
 	})
 }
 
-const move = (pos) => {
+const moveX = (pos) => {
 	gsap.to(model.position, {
 		duration: 1,
 		x: pos,
@@ -59,13 +79,23 @@ const move = (pos) => {
 	})
 	gsap.to(model.rotation, {
 		duration: 1,
-		z: pos,
+		z: pos * .2,
+		ease: 'linear',
+	})
+}
+
+const moveY = (pos) => {
+	gsap.to(model.position, {
+		duration: 1,
+		y: pos,
 		ease: 'linear',
 	})
 }
 
 const tick = () => {
-
+	if (model?.position) {
+		Camera.camera.lookAt(model.position)
+	}
 }
 
 export {
