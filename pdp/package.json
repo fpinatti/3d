@@ -7,7 +7,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "lint": "../node_modules/.bin/eslint ./src/*/**.js",
+    "lint": "../node_modules/.bin/eslint ./src/*/**.js --fix",
     "clean": "rm dist/bundle.js",
     "serve": "npx webpack serve",
     "build-dev": "webpack --mode development",

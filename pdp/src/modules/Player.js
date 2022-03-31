@@ -19,6 +19,7 @@ const init = (scene, clock) => {
 		/**
 		 * Animations
 		 */
+		console.log('>>', gltf)
 		setupAnimations(gltf)
 		
 		scene.add(model)
@@ -32,26 +33,30 @@ const init = (scene, clock) => {
 }
 
 const setupKeys = () => {
-	document.addEventListener('keydown', (event) => {
-		keyPressed = event.key
-		if (keyPressed === 'ArrowRight') {
-			walkAction.play()
-		}
-	})
+	// document.addEventListener('keydown', (event) => {
+	// 	keyPressed = event.key
+	// 	if (keyPressed === 'ArrowRight') {
+	// 		walkAction.play()
+	// 	}
+	// })
 
-	document.addEventListener('keyup', () => {
-		keyPressed = ''
-		walkAction.stop()
-	})
+	// document.addEventListener('keyup', () => {
+	// 	keyPressed = ''
+	// 	walkAction.stop()
+	// })
 }
 
 const setupAnimations = (gltf) => {
 	const animations = gltf.animations
+	console.log(' ANIMATIONS', animations)
 	mixer = new THREE.AnimationMixer(gltf.scene)
 	idleAction = mixer.clipAction(animations[0])
 	walkAction = mixer.clipAction(animations[1])
-	idleAction.play()
-	walkAction.setEffectiveTimeScale(2)
+	idleAction.stop()
+	walkAction.play()
+	walkAction.enabled = true
+	idleAction.weight = 2
+	// walkAction.setEffectiveTimeScale(2)
 }
 
 const tick = () => {

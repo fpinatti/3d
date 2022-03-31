@@ -1,5 +1,5 @@
 import { Scene } from 'three'
-import * as THREE from 'three'
+// import * as THREE from 'three'
 
 const createScene = () => {
 	const scene = new Scene()

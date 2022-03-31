@@ -1,17 +1,17 @@
-import { 
-	setPostProcessing,
-	// addGlitch,
-	addScene,
-	addBloom,
-	addHalftone
-} from './PostProcessing'
+// import { 
+// 	setPostProcessing,
+// addGlitch,
+// addScene,
+// addBloom,
+// addHalftone
+// } from './PostProcessing'
 import * as THREE from 'three'
 
 let camera
 let scene
 let renderer
 // post processing
-let composer
+// let composer
 
 const setRenderer = (userCamera, userScene) => {
 	camera = userCamera
@@ -36,9 +36,9 @@ const setRenderer = (userCamera, userScene) => {
 /**
  * Post Processing
  */
-const setPostProcessingComposer = (renderer) => {
-	return setPostProcessing(renderer)
-}
+// const setPostProcessingComposer = (renderer) => {
+// 	return setPostProcessing(renderer)
+// }
 
 const onWindowResize = () => {
 	const canvas = renderer.domElement
