@@ -19,7 +19,7 @@ const createCamera = () => {
 
 const setCameraControls = (camera, renderer) => {
 	orbitControls = new OrbitControls(camera, renderer.domElement)
-	orbitControls.enabled = false
+	// orbitControls.enabled = false
 	orbitControls.minDistance = 2
 	orbitControls.maxDistance = 12
 }
