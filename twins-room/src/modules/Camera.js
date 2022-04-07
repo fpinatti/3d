@@ -1,8 +1,9 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+let camera
 
 const createCamera = () => {
-	const camera = new THREE.PerspectiveCamera( 
+	camera = new THREE.PerspectiveCamera( 
 		75,
 		window.innerWidth / window.innerHeight,
 		0.1,
@@ -11,7 +12,7 @@ const createCamera = () => {
 	return camera
 }
 
-const setCameraControls = (camera, renderer) => {
+const setCameraControls = (renderer) => {
 	const orbitControls = new OrbitControls(camera, renderer.domElement)
 	orbitControls.minDistance = 2
 	orbitControls.maxDistance = 12
@@ -20,4 +21,5 @@ const setCameraControls = (camera, renderer) => {
 export {
 	createCamera,
 	setCameraControls,
+	camera,
 }

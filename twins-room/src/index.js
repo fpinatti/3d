@@ -1,39 +1,34 @@
 import * as THREE from 'three'
 import './styles.css'
-import { initLoader } from './modules/Loader'
 import { createScene } from './modules/Scene'
 import { createCamera, setCameraControls } from './modules/Camera'
-import { createAmbientLight, createDirectionalLight, createSpotLight, shakeLight} from './modules/Light'
+import { createRectLight, createAmbientLight, createDirectionalLight } from './modules/Light'
 import { setRenderer } from './modules/Renderer'
-// import { createMaterial, loadTexture } from './modules/Material'
-// import { createMesh } from './modules/Mesh'
-import { createParticles } from './modules/Particles'
 import { loadModel } from './modules/Model'
-import { createBillboard } from './modules/Billboard'
 import { loadTexture } from './modules/Material'
-import { Vector3 } from 'three'
-// import { animateParticles } from './modules/Animation';
+import * as Scene from './modules/Scene'
+import * as Camera from './modules/Camera'
 
-const bakedVersion = true
-let bakedMaterial
+// const bakedVersion = true
+// let bakedMaterial
 const main = () => {
 	// scene
-	const scene = createScene()
+	createScene()
     
 	// camera
-	const camera = createCamera()
-	scene.add(camera)
-	camera.position.z = 8
-	camera.position.y = 4
+	createCamera()
+	Scene.scene.add(Camera.camera)
+	Camera.camera.position.z = 8
+	Camera.camera.position.y = 4
     
 	// materials
-	if (bakedVersion) {
-		bakedTexture.flipY = false
-		bakedMaterial = new THREE.MeshBasicMaterial({ 
-			color: 0xffffff,
-			map: bakedTexture,
-		})
-	}
+	// if (bakedVersion) {
+	// 	bakedTexture.flipY = false
+	// 	bakedMaterial = new THREE.MeshBasicMaterial({ 
+	// 		color: 0xffffff,
+	// 		map: bakedTexture,
+	// 	})
+	// }
 	// const material = createMaterial('standard');
     
 	// basic geometry models
@@ -42,18 +37,18 @@ const main = () => {
 	// scene.add(model);
     
 	// renderer
-	const renderer = setRenderer(camera, scene)
-	setCameraControls(camera, renderer)
+	const renderer = setRenderer()
+	setCameraControls(renderer)
     
 	// lights
 	// if (!bakedVersion) {
-	// 	const ambientLight = createAmbientLight()
-	// 	scene.add(ambientLight)
+	createAmbientLight()
         
-	// 	const directionalLight = createDirectionalLight()
-	// 	directionalLight.castShadow = true
-	// 	directionalLight.position.set(3, 5, 3)
-	// 	scene.add(directionalLight)
+	createRectLight()
+	createDirectionalLight()
+	// rectLight.castShadow = true
+	// rectLight.position.set(3, 5, 3)
+	// Scene.scene.add(rectLight)
         
 	// 	const directionalLight2 = createDirectionalLight()
 	// 	directionalLight2.position.set(0, 0, 8)
@@ -104,11 +99,13 @@ const main = () => {
 		//     }
 		// });
 		model.children.map((element) => {
-			// element.receiveShadow = true;
+			element.receiveShadow = true
+			element.castShadow = true
+			// console.log(model)
 			// grassTexture.flipY = false;
-			element.map = bakedTexture
+			// element.map = bakedTexture
 		})
-		scene.add(model)
+		Scene.scene.add(model)
 		// scene.add(particles)
 	})
 
@@ -117,11 +114,11 @@ const main = () => {
 // let grassTexture
 // let fireTexture
 // let leafTexture
-let bakedTexture
+// let bakedTexture
 window.addEventListener('DOMContentLoaded', async () => {
-	if (bakedVersion) {
-		await loadTexture('textures/cube_combined_render.jpg').then(texture => bakedTexture = texture)
-	}
+	// if (bakedVersion) {
+	// 	await loadTexture('textures/cube_combined_render.jpg').then(texture => bakedTexture = texture)
+	// }
 	// await loadTexture('textures/grass Displacement.png').then(texture => grassTexture = texture)
 	// await loadTexture('textures/fire_sheet.png').then(texture => fireTexture = texture)
 	// await loadTexture('textures/leaf.png').then(texture => leafTexture = texture)
