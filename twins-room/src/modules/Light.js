@@ -28,9 +28,9 @@ const createRectLight = (width, height) => {
 	const light = new THREE.RectAreaLight(0xffffff, .3, width, height)
 	light.position.set(2, 6, 2)
 	light.lookAt(0, 0, 0)
-	const helper = new RectAreaLightHelper(light)
 	Scene.scene.add(light)
-	light.add(helper)
+	// const helper = new RectAreaLightHelper(light)
+	// light.add(helper)
 	// return light
 }
 

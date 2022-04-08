@@ -10,7 +10,7 @@ const setRenderer = () => {
 		canvas,
 		antialias: true,
 	})
-	renderer.setClearColor(0x096a74),
+	renderer.setClearColor(0x65b8cf),
 	renderer.shadowMap.enabled = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	renderer.setSize( window.innerWidth, window.innerHeight, false )
@@ -31,11 +31,26 @@ const onWindowResize = () => {
 	renderer.setSize(width, height, false)
 }
 
+// https://r105.threejsfundamentals.org/threejs/lessons/threejs-webvr.html
+const renderVr = () => {
+	renderer.render(Scene.scene, Camera.camera)
+	if (Camera.orbitControls) {
+		Camera.orbitControls.update()
+	}
+}
+
 const tick = () => {
+	if (renderer.xr.isPresenting) {
+		renderer.setAnimationLoop(renderVr)
+		return
+	}
 	requestAnimationFrame(() => {
 		tick()
 	})
 	renderer.render(Scene.scene, Camera.camera)
+	if (Camera.orbitControls) {
+		Camera.orbitControls.update()
+	}
 }
 
 window.addEventListener('resize', () => {
