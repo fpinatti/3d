@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-	"build": "cd ./twins-room && npm run build",
+	"build": "cd twins-room && npm run build",
     "test": "cd ./woods && npm run lint && cd ../medieval && npm run lint && cd ../twins-room && npm run lint && cd ../building-vr && npm run lint",
     "prepare": "husky install"
   },
