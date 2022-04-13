@@ -16,7 +16,7 @@ const config = {
 				]
 			},
 			{
-				test: /\.(png|svg|jpg|jpeg|gif)$/i,
+				test: /\.(png|svg|jpg|jpeg|gif|hdr)$/i,
 				type: 'asset/resource',
 			},
 			{

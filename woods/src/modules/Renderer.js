@@ -11,7 +11,10 @@ const setRenderer = (userCamera, userScene) => {
 	renderer = new THREE.WebGLRenderer({
 		canvas,
 	})
-	renderer.setClearColor(0x096a74),
+	renderer.setClearColor(0x096a74)
+	renderer.toneMapping = THREE.ACESFilmicToneMapping
+	renderer.toneMappingExposure = .5
+	renderer.outputEncoding = THREE.sRGBEncoding
 	renderer.shadowMap.enabled = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	renderer.setSize( window.innerWidth, window.innerHeight, false )
