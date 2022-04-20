@@ -14,7 +14,10 @@ const setRenderer = () => {
 	})
 	renderer.setClearColor(0x65b8cf),
 	renderer.shadowMap.enabled = true
+	renderer.shadowMap.autoUpdate = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.toneMapping = THREE.ACESFilmicToneMapping
+	renderer.outputEncoding = THREE.sRGBEncoding
 	renderer.setSize( window.innerWidth, window.innerHeight, false )
 	
 	tick()
