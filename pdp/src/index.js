@@ -1,4 +1,4 @@
-// import * as THREE from 'three'
+import * as THREE from 'three'
 import './styles.css'
 import { createScene } from './modules/Scene'
 import * as Camera from './modules/Camera'
@@ -10,9 +10,11 @@ import * as Renderer from './modules/Renderer'
 // import * as Player from './modules/Player'
 import * as Airplane from './modules/Airplane'
 import * as World from './modules/World'
+import * as Clouds from './modules/Clouds'
+import * as Billboard from './modules/Billboard'
 let render
 // let camera
-// let clock
+let clock
 // const gui = new dat.GUI()
 
 const main = () => {
@@ -21,7 +23,7 @@ const main = () => {
     
 	// camera
 	Camera.createCamera()
-	Camera.camera.position.set(0, 4, -6)
+	Camera.camera.position.set(0, 1, -6)
 	// Camera.camera
 	// Camera.camera.position = new Vector3()
 	// Camera.camera.lookAt(7, 0, 0)
@@ -38,7 +40,6 @@ const main = () => {
 	// cameraFolder.add(camera.position, 'z', 0, 10)
 	// cameraFolder.open()
 
-    
 	// renderer
 	render = Renderer.setRenderer(Camera.camera, scene)
 	Camera.setCameraControls(Camera.camera, render)
@@ -63,12 +64,17 @@ const main = () => {
 	/**
 	 * Clock
 	 */
-	// clock = new THREE.Clock()
+	clock = new THREE.Clock()
 
 	// external models
 	// Player.init(scene, clock)
-	Airplane.init()
-	World.init()
+	Airplane.init(resources.assets['airplane'])
+	Clouds.init()
+	World.init({
+		sky: resources.assets['sky'],
+		world: resources.assets['world'],
+	})
+	Billboard.init(resources.frames)
 	tick()
 
 	// Step1.activate(resources)
@@ -81,13 +87,18 @@ const tick = () => {
 	})
 	Renderer.tick()
 	Airplane.tick()
+	Clouds.tick(clock.getDelta())
 }
 
 const resources = {
-	step1: {},
+	frames: {},
+	assets: {},
 }
 window.addEventListener('DOMContentLoaded', async () => {
-	await loadTexture('textures/step1-billboard.jpg').then(texture => resources.step1['billboard'] = texture)
-	await loadModel('models/pinatti_walk_2.gltf').then(gltf => resources.step1['player'] = gltf)
+	await loadTexture('textures/sign.jpg').then(texture => resources.frames['billboard'] = texture)
+	await loadTexture('textures/sky.jpg').then(texture => resources.assets['sky'] = texture)
+	await loadTexture('textures/airplane.jpg').then(texture => resources.assets['airplane'] = texture)
+	await loadTexture('textures/world.jpg').then(texture => resources.assets['world'] = texture)
+	await loadModel('models/pinatti_walk_2.gltf').then(gltf => resources.assets['player'] = gltf)
 	main()
 })

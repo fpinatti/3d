@@ -1,7 +1,7 @@
 import { loadModel } from './Model'
 import * as Scene from './Scene'
 import * as Camera from './Camera'
-// import * as THREE from 'three'
+import * as THREE from 'three'
 import * as Utils from '../utils/utils'
 import gsap from 'gsap'
 
@@ -10,12 +10,24 @@ import gsap from 'gsap'
 // let engineClock
 // let keyPressed = ''
 let model
+const airplanePosition = new THREE.Vector3(0, -2, 0)
 
-const init = () => {
+const init = (texture) => {
 	// engineClock = clock
-	loadModel('models/airplane.gltf').then((gltf) => {
+	loadModel('models/airplane.glb').then((gltf) => {
 		model = gltf.scene
-		console.log(model)
+		const material = new THREE.MeshBasicMaterial({
+			color: 0xffffff,
+			map: texture,
+		})
+		model.traverse((child) => {
+			texture.flipY = false
+			child.material = material
+			console.log('>', child)
+		})
+		model.position.y = airplanePosition.y
+		model.scale.set(.6, .6, .6)
+		// console.log(model)
 		animateHelix()
 		Scene.scene.add(model)
 
@@ -59,13 +71,14 @@ const setupKeys = () => {
 	document.addEventListener('keyup', () => {
 		gsap.to(model.position, {
 			duration: 1,
-			x: 0,
-			y: 0,
+			x: airplanePosition.x,
+			y: airplanePosition.y,
 			ease: 'linear',
 		})
 		gsap.to(model.rotation, {
 			duration: 1,
 			z: 0,
+			x: 0,
 			ease: 'linear',
 		})
 	})
@@ -74,12 +87,12 @@ const setupKeys = () => {
 const moveX = (pos) => {
 	gsap.to(model.position, {
 		duration: 1,
-		x: pos,
+		x: airplanePosition.x + pos,
 		ease: 'linear',
 	})
 	gsap.to(model.rotation, {
 		duration: 1,
-		z: pos * .2,
+		z: pos * .1,
 		ease: 'linear',
 	})
 }
@@ -87,14 +100,19 @@ const moveX = (pos) => {
 const moveY = (pos) => {
 	gsap.to(model.position, {
 		duration: 1,
-		y: pos,
+		y: airplanePosition.y + (pos * .2),
+		ease: 'linear',
+	})
+	gsap.to(model.rotation, {
+		duration: 1,
+		x: (pos * .05),
 		ease: 'linear',
 	})
 }
 
 const tick = () => {
 	if (model?.position) {
-		Camera.camera.lookAt(model.position)
+		Camera.camera.lookAt(0, 0, 0)
 	}
 }
 
