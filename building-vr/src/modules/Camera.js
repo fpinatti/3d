@@ -1,8 +1,10 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+let camera
+let orbitControls
 
 const createCamera = () => {
-	const camera = new THREE.PerspectiveCamera( 
+	camera = new THREE.PerspectiveCamera( 
 		75,
 		window.innerWidth / window.innerHeight,
 		0.1,
@@ -11,13 +13,21 @@ const createCamera = () => {
 	return camera
 }
 
-const setCameraControls = (camera, renderer) => {
-	const orbitControls = new OrbitControls(camera, renderer.domElement)
-	orbitControls.minDistance = 2
-	orbitControls.maxDistance = 12
+const setCameraControls = (renderer) => {
+	orbitControls = new OrbitControls(camera, renderer.domElement)
+	orbitControls.enableDamping = true
+	orbitControls.target = new THREE.Vector3(0, 1, 0)
+	// orbitControls.minDistance = 0
+	// orbitControls.maxDistance = 8
+	// orbitControls.minAzimuthAngle = -1
+	// orbitControls.maxAzimuthAngle = .3
+	// orbitControls.minPolarAngle = 0
+	// orbitControls.maxPolarAngle = 1.3
 }
 
 export {
 	createCamera,
 	setCameraControls,
+	orbitControls,
+	camera,
 }
