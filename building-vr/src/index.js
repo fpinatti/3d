@@ -2,14 +2,14 @@ import * as THREE from 'three'
 import './styles.css'
 import { createScene } from './modules/Scene'
 import { createCamera, setCameraControls } from './modules/Camera'
-import { createRectLight, createAmbientLight, createDirectionalLight } from './modules/Light'
+import { initLights } from './modules/Light'
 import { setRenderer } from './modules/Renderer'
 import { loadModel } from './modules/Model'
 import * as Building from './modules/Building'
 import { loadTexture } from './modules/Material'
 import * as Scene from './modules/Scene'
 import * as Camera from './modules/Camera'
-// import * as dat from 'dat.gui'
+import * as dat from 'dat.gui'
 // import { VRButton } from 'three/examples/jsm/webxr/VRButton.js'
 
 const bakedVersion = true
@@ -17,7 +17,8 @@ const textures = {}
 let bakedMaterial
 let pictureMaterial
 
-// const gui = new dat.GUI()
+const gui = new dat.GUI()
+const debugObject = {}
 
 const main = () => {
 
@@ -27,9 +28,7 @@ const main = () => {
 	// camera
 	createCamera()
 	Scene.scene.add(Camera.camera)
-	Camera.camera.position.z = 8
-	Camera.camera.position.y = 4
-    
+
 	// materials
 	// if (bakedVersion) {
 	// 	textures['sceneTexture'].flipY = false
@@ -44,6 +43,15 @@ const main = () => {
 	// renderer
 	const renderer = setRenderer()
 	setCameraControls(renderer)
+	
+	const cameraPosFolder = gui.addFolder('camera position')
+	cameraPosFolder.add(Camera.camera.position, 'x', -140, 140, 1).listen()
+	cameraPosFolder.add(Camera.camera.position, 'y', -140, 140, 1).listen()
+	cameraPosFolder.add(Camera.camera.position, 'z', -140, 140, 1).listen()
+	const cameraLookAtFolder = gui.addFolder('camera lookat')
+	cameraLookAtFolder.add(Camera.lookAtPos, 'x', -140, 140, 1).listen()
+	cameraLookAtFolder.add(Camera.lookAtPos, 'y', -140, 140, 1).listen()
+	cameraLookAtFolder.add(Camera.lookAtPos, 'z', -140, 140, 1).listen()
 	// gui.add(Camera.orbitControls, 'minDistance', 0, 100)
 	// gui.add(Camera.orbitControls, 'maxDistance', 0, 100)
 	// gui.add(controls, 'minAzimuthAngle', 0, 34)
@@ -55,10 +63,11 @@ const main = () => {
 	// console.log(renderer.xr.isPresenting)
     
 	// lights
-	createAmbientLight()
+	initLights(gui)
+	// createAmbientLight()
         
-	createRectLight()
-	createDirectionalLight()
+	// createRectLight()
+	// createDirectionalLight()
 
 	Building.init()
 

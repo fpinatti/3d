@@ -15,29 +15,17 @@ const init = () => {
 	// external models
 	// raycaster = new THREE.Raycaster()
 	// raycaster.params.Points.threshold = threshold
+	const material = new THREE.MeshNormalMaterial();
 
 	loadModel('models/projeto-lori.glb').then((gltf) => {
 		// gltf.children.map((element) => {
 		gltf.traverse((element) => {
-			console.log(element)
-			// if (element.name === 'head-group') {
-			// 	head = element
-			// 	animateEyes(element.children.find(element => element.name === 'eyes'))
-			// } else if (element.name === 'carrot') {
-			// 	carrot = element
-			// 	carrot.position.z = 3
-			// }
-			// console.log(element)
+			// element.material = material
+			if (element.geometry?.attributes?.uv) {
+				element.geometry.attributes.uv2 = element.geometry.attributes.uv
+			}
 			element.receiveShadow = true
 			element.castShadow = true
-			// if (bakedVersion) {
-			// 	if (element.name.indexOf('picture') >= 0) {
-			// 		console.log('picture')
-			// 		element.material = pictureMaterial
-			// 	} else {
-			// 		element.material = bakedMaterial
-			// 	}
-			// }
 		})
 		Scene.scene.add(gltf)
 		model = gltf
