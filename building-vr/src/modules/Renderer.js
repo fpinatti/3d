@@ -27,7 +27,7 @@ const setRenderer = () => {
 	renderer.toneMapping = THREE.ACESFilmicToneMapping
 	renderer.physicallyCorrectLights = true
 	renderer.outputEncoding = THREE.sRGBEncoding
-	renderer.setSize(sizes.width, sizes.height, false )
+	renderer.setSize(sizes.width, sizes.height, false)
 	setComposer()
 	tick()
 	return renderer
@@ -40,6 +40,11 @@ const setComposer = () => {
 	saoPass = new SAOPass(Scene.scene, Camera.camera, false, true )
 	saoPass.params.output = SAOPass.OUTPUT.Default
 	saoPass.params.saoIntensity = .001
+	saoPass.params.saoBlur = true
+	saoPass.params.saoBlurRadius = 1
+	saoPass.params.saoBlurDepthCutoff = 1
+	saoPass.params.saoKernelRadius = 2
+	saoPass.params.saoBias = 10
 	// gui.add( saoPass.params, 'saoBias', - 1, 1 );
 	// 			gui.add( saoPass.params, 'saoIntensity', 0, 1 );
 	// 			gui.add( saoPass.params, 'saoScale', 0, 10 );
@@ -61,7 +66,8 @@ const onWindowResize = () => {
 	Camera.camera.aspect = canvas.clientWidth / canvas.clientHeight
 	Camera.camera.updateProjectionMatrix()
 
-	const pixelRatio = window.devicePixelRatio
+	const pixelRatio = Math.min(window.devicePixelRatio, 2)
+	console.log(pixelRatio)
 	const width  = canvas.clientWidth  * pixelRatio | 0
 	const height = canvas.clientHeight * pixelRatio | 0
 	renderer.setSize(width, height, false)
@@ -70,9 +76,6 @@ const onWindowResize = () => {
 // https://r105.threejsfundamentals.org/threejs/lessons/threejs-webvr.html
 const renderVr = () => {
 	renderer.render(Scene.scene, Camera.camera)
-	if (Camera.orbitControls) {
-		Camera.orbitControls.update()
-	}
 }
 
 const tick = () => {

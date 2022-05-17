@@ -52,6 +52,7 @@ const main = () => {
 	cameraLookAtFolder.add(Camera.lookAtPos, 'x', -140, 140, 1).listen()
 	cameraLookAtFolder.add(Camera.lookAtPos, 'y', -140, 140, 1).listen()
 	cameraLookAtFolder.add(Camera.lookAtPos, 'z', -140, 140, 1).listen()
+	dat.GUI.toggleHide()
 	// gui.add(Camera.orbitControls, 'minDistance', 0, 100)
 	// gui.add(Camera.orbitControls, 'maxDistance', 0, 100)
 	// gui.add(controls, 'minAzimuthAngle', 0, 34)

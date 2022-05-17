@@ -24,6 +24,7 @@ const createCamera = () => {
 	getMarkers()
 	animateCamera(currentStep)
 	addKeyboardListeners()
+	addMouseListeners()
 	return camera
 }
 
@@ -37,6 +38,18 @@ const setCameraControls = (renderer) => {
 	// orbitControls.maxAzimuthAngle = .3
 	// orbitControls.minPolarAngle = 0
 	// orbitControls.maxPolarAngle = 1.3
+}
+
+const addMouseListeners = () => {
+	const nav = document.querySelectorAll('.btn-nav')
+	nav.forEach((button) => {
+		button.addEventListener('click', onNavButton)
+	})
+}
+
+const onNavButton = (event) => {
+	const step = event.target.getAttribute('data-idx')
+	animateCamera(step)
 }
 
 const onKeyPress = (event) => {
@@ -63,6 +76,7 @@ const animateCamera = (index) => {
 		x: targetLookAt.x,
 		y: targetLookAt.y,
 		z: targetLookAt.z,
+		onUpdate: updateCameraTarget,
 	})
 	
 
@@ -72,6 +86,7 @@ const animateCamera = (index) => {
 			path: curve,
 			ease: 'smooth.inOut',
 		},
+		onUpdate: updateCameraTarget,
 	})
 }
 
@@ -99,8 +114,13 @@ const setMarkersVisibility = () => {
 	})
 }
 
-const tick = () => {
+const updateCameraTarget = () => {
 	camera.lookAt(lookAtPos)
+}
+
+const tick = () => {
+	// camera.lookAt(lookAtPos)
+	// orbitControls?.update()
 	markers.forEach(point => {
 		const screenPosition = point.position.clone()
 		screenPosition.project(camera)

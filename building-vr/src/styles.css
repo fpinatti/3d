@@ -37,5 +37,5 @@ canvas {
     bottom: 0;
     right: 0;
     padding: 10px;
-    background-color: #fff;
+	background-color: rgb(255 255 255 / 50%);
 }
