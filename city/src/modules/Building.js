@@ -21,12 +21,12 @@ const init = (textures) => {
 		map: worldTexture
 	})
 
-	const grassTexture = textures['grass']
-	grassTexture.wrapS = THREE.RepeatWrapping
-	grassTexture.wrapT = THREE.RepeatWrapping
-	grassTexture.repeat.set(2, 2)
+	// const grassTexture = textures['grass']
+	// grassTexture.wrapS = THREE.RepeatWrapping
+	// grassTexture.wrapT = THREE.RepeatWrapping
+	// grassTexture.repeat.set(2, 2)
 	const grassMaterial = new THREE.MeshStandardMaterial({
-		map: grassTexture
+		color: 0x149f38
 	})
 
 	const roofTexture = textures['roof']

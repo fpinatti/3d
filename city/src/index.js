@@ -77,7 +77,7 @@ const main = () => {
 window.addEventListener('DOMContentLoaded', async () => {
 	// if (bakedVersion) {
 	await loadTexture('textures/baked.jpg').then(texture => textures['world'] = texture)
-	await loadTexture('textures/grass.jpg').then(texture => textures['grass'] = texture)
+	// await loadTexture('textures/grass.jpg').then(texture => textures['grass'] = texture)
 	await loadTexture('textures/roof.jpg').then(texture => textures['roof'] = texture)
 	// 	await loadTexture('textures/bear.jpg').then(texture => textures['framePicture'] = texture)
 	// }

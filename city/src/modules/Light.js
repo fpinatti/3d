@@ -6,7 +6,7 @@ import * as Scene from './Scene'
 let gui
 
 const createAmbientLight = () => {
-	const light = new THREE.AmbientLight(0xffffff, 1)
+	const light = new THREE.AmbientLight(0xffffff, .4)
 	Scene.scene.add(light)
 }
 
@@ -80,8 +80,8 @@ const shakeLight = (light) => {
 const initLights = (guiInstance) => {
 	gui = guiInstance
 	createAmbientLight()
-	// createSunLight()
-	// createDirectionalLight()
+	createSunLight()
+	createDirectionalLight()
 	// createRectLight()
 }
 
