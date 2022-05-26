@@ -10,6 +10,7 @@ const setRenderer = (userCamera, userScene) => {
 	const canvas = document.querySelector('.wrapper-3d')
 	renderer = new THREE.WebGLRenderer({
 		canvas,
+		antialias: true,
 	})
 	renderer.setClearColor(0x00FFFF),
 	renderer.shadowMap.enabled = true

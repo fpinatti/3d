@@ -44,13 +44,9 @@ const main = () => {
 	Camera.setCameraControls(Camera.camera, render)
     
 	// lights
-	const ambientLight = createAmbientLight()
-	scene.add(ambientLight)
+	createAmbientLight()	
+	createDirectionalLight()
 	
-	const directionalLight = createDirectionalLight()
-	directionalLight.castShadow = true
-	directionalLight.position.set(3, 10, 3)
-	scene.add(directionalLight)
 	
 	// const directionalLight2 = createDirectionalLight()
 	// directionalLight2.position.set(0, 0, 8)
@@ -73,6 +69,7 @@ const main = () => {
 		sky: resources.assets['sky'],
 		world: resources.assets['world'],
 		road: resources.assets['road'],
+		text: resources.assets['matcap1'],
 	})
 	Billboard.init(resources.frames)
 	tick()
@@ -109,6 +106,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await loadTexture('textures/airplane.jpg').then(texture => resources.assets['airplane'] = texture)
 	await loadTexture('textures/world.jpg').then(texture => resources.assets['world'] = texture)
 	await loadTexture('textures/airport-road.jpg').then(texture => resources.assets['road'] = texture)
+	await loadTexture('textures/thanks-matcap.png').then(texture => resources.assets['matcap1'] = texture)
 	// await loadModel('models/pinatti_walk_2.gltf').then(gltf => resources.assets['player'] = gltf)
 	main()
 })

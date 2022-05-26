@@ -29,10 +29,9 @@ const createBillboard = (texture, idx) => {
 	const spriteBoard = new THREE.Sprite(material)
 	spriteBoard.scale.x = 3
 	spriteBoard.scale.y = 3
-	spriteBoard.position.set(-10, 10, 0)
+	spriteBoard.position.set(-10, 0, 0)
 	step = idx
 	boards.push(spriteBoard)
-	transitionOut()
 	Scene.scene.add(spriteBoard)
 	
 }
@@ -40,7 +39,7 @@ const createBillboard = (texture, idx) => {
 const setupKeys = () => {
 	document.addEventListener('keydown', (event) => {
 		const keyPressed = parseInt(event.key)
-		console.log(keyPressed)
+		// console.log(keyPressed)
 		if (keyPressed >= 0 && keyPressed <= 9) {
 			transitionOut()
 			step = parseInt(keyPressed)
@@ -69,6 +68,7 @@ const transitionIn = () => {
 }
 
 const transitionOut = () => {
+	// console.log(step)
 	gsap.to(boards[step].position, {
 		y: 60,
 		duration: 2,
@@ -81,6 +81,7 @@ const init = (assets) => {
 	for (const key in assets) {
 		if (Object.hasOwnProperty.call(assets, key)) {
 			createBillboard(assets[key], idx)
+			transitionOut()
 			idx++
 			//const element = object[key];
 			

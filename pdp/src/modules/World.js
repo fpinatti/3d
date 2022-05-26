@@ -5,9 +5,6 @@ import gsap from 'gsap'
 import * as THREE from 'three'
 
 let model
-// let idleAction, walkAction
-// let engineClock
-// let keyPressed = ''
 
 const init = (assets) => {
 	loadModel('models/main_scenario.glb').then((gltf) => {
@@ -21,12 +18,19 @@ const init = (assets) => {
 			color: 0xffffff,
 			map: assets.road,
 		})
+		const materialText = new THREE.MeshMatcapMaterial({
+			matcap: assets.text,
+		})
 		assets.world.flipY = false
 		model.traverse((child) => {
 			if (child.name === 'landing-ground') {
 				child.material = materialRoad
 			} else if (child.parent?.name === 'ground') {
-				console.log('ground', child)
+				// console.log('ground', child)
+			} else if (child.name === 'tks') {
+				child.material = materialText
+			} else if (child.parent?.name.indexOf('tree') >=0) {
+				console.log('FOUND A TREE', child)
 			} else {
 				child.material = materialBaked
 			}

@@ -1,14 +1,24 @@
 import * as THREE from 'three'
 import gsap from 'gsap'
+import * as Scene from './Scene'
 
 const createAmbientLight = () => {
 	const light = new THREE.AmbientLight(0xffffff)
-	return light
+	Scene.scene.add(light)
 }
 
 const createDirectionalLight = () => {
-	const light = new THREE.PointLight( 0xffffff, 2, 8 )
-	return light
+	const light = new THREE.DirectionalLight( 0xffffff, .1 )
+	light.castShadow = true
+	// console.log('>>>>', light.shadow.camera)
+	light.shadow.camera.top = 50
+	light.shadow.camera.bottom = -50
+	light.shadow.camera.left = -50
+	light.shadow.camera.right = 50
+	light.position.set(15, 17, 14)
+	Scene.scene.add(light)
+	// const helper = new THREE.DirectionalLightHelper(light)
+	// Scene.scene.add(helper)
 }
 
 const createSpotLight = () => {

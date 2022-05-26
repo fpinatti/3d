@@ -102,6 +102,7 @@ const animateHelix = () => {
 
 const setupKeys = () => {
 	document.addEventListener('keydown', (event) => {
+		if (isLanding || isTakingoff) return
 		const keyPressed = event.key
 		if (keyPressed === 'ArrowRight') {
 			moveX(3)
@@ -183,12 +184,27 @@ const moveY = (pos) => {
 const doLanding = () => {
 	World.doLanding()
 	isLanding = true
-	gsap.to(model.position, {
-		duration: 3,
-		y: 0,
-		z: -10,
+
+	const helix = Utils.getElementFromModel(model, 'helix')
+	// gsap.killTweensOf(helix.rotation)
+
+	const tl = gsap.timeline({repeat: 0})
+	tl.to(model.position, {y: 0, z: -10, duration: 3, ease: 'Sin.easeInOut'})
+	tl.to(helix.rotation, {
+		z: helix.rotation.z + Math.PI * 30,
+		duration: 10,
 		ease: 'Sin.easeInOut',
+		onComplete: () => {
+			gsap.killTweensOf(helix.rotation)
+		},
 	})
+
+	// gsap.to(model.position, {
+	// 	duration: 3,
+	// 	y: 0,
+	// 	z: -10,
+	// 	ease: 'Sin.easeInOut',
+	// })
 
 	gsap.to(targetLookAt, {
 		duration: 3,
@@ -196,15 +212,14 @@ const doLanding = () => {
 		ease: 'Sin.easeInOut',
 	})
 
-	const helix = Utils.getElementFromModel(model, 'helix')
-	gsap.killTweensOf(helix.rotation)
 	
-	gsap.to(helix.rotation, {
-		duration: 12,
-		z: helix.rotation.z + Math.PI * 10,
-		repeat: 0,
-		ease: 'Power2.easeInOut',
-	})
+	
+	// gsap.to(helix.rotation, {
+	// 	duration: 12,
+	// 	z: helix.rotation.z + Math.PI * 10,
+	// 	repeat: 0,
+	// 	ease: 'Power2.easeInOut',
+	// })
 
 	gsap.to(Camera.camera.position, {
 		duration: 4,
