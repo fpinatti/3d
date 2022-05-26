@@ -23,7 +23,6 @@ const main = () => {
     
 	// camera
 	Camera.createCamera()
-	Camera.camera.position.set(0, 1, -6)
 	// Camera.camera
 	// Camera.camera.position = new Vector3()
 	// Camera.camera.lookAt(7, 0, 0)
@@ -50,7 +49,7 @@ const main = () => {
 	
 	const directionalLight = createDirectionalLight()
 	directionalLight.castShadow = true
-	directionalLight.position.set(3, 5, 3)
+	directionalLight.position.set(3, 10, 3)
 	scene.add(directionalLight)
 	
 	// const directionalLight2 = createDirectionalLight()
@@ -73,6 +72,7 @@ const main = () => {
 	World.init({
 		sky: resources.assets['sky'],
 		world: resources.assets['world'],
+		road: resources.assets['road'],
 	})
 	Billboard.init(resources.frames)
 	tick()
@@ -95,10 +95,20 @@ const resources = {
 	assets: {},
 }
 window.addEventListener('DOMContentLoaded', async () => {
-	await loadTexture('textures/sign.jpg').then(texture => resources.frames['billboard'] = texture)
+	await loadTexture('textures/step1.jpg').then(texture => resources.frames['step1'] = texture)
+	await loadTexture('textures/step2.jpg').then(texture => resources.frames['step2'] = texture)
+	await loadTexture('textures/step3.jpg').then(texture => resources.frames['step3'] = texture)
+	await loadTexture('textures/step4.jpg').then(texture => resources.frames['step4'] = texture)
+	await loadTexture('textures/step5.jpg').then(texture => resources.frames['step5'] = texture)
+	await loadTexture('textures/step6.jpg').then(texture => resources.frames['step6'] = texture)
+	await loadTexture('textures/step7.jpg').then(texture => resources.frames['step7'] = texture)
+	await loadTexture('textures/step8.jpg').then(texture => resources.frames['step8'] = texture)
+	await loadTexture('textures/step9.jpg').then(texture => resources.frames['step9'] = texture)
+	await loadTexture('textures/step10.jpg').then(texture => resources.frames['step10'] = texture)
 	await loadTexture('textures/sky.jpg').then(texture => resources.assets['sky'] = texture)
 	await loadTexture('textures/airplane.jpg').then(texture => resources.assets['airplane'] = texture)
 	await loadTexture('textures/world.jpg').then(texture => resources.assets['world'] = texture)
-	await loadModel('models/pinatti_walk_2.gltf').then(gltf => resources.assets['player'] = gltf)
+	await loadTexture('textures/airport-road.jpg').then(texture => resources.assets['road'] = texture)
+	// await loadModel('models/pinatti_walk_2.gltf').then(gltf => resources.assets['player'] = gltf)
 	main()
 })

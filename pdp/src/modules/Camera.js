@@ -13,7 +13,7 @@ const createCamera = () => {
 		2000
 	)
 	// const helper = new THREE.CameraHelper(camera)
-	Scene.scene.add(camera)
+	// Scene.scene.add(camera)
 	// scene.add(helper)
 }
 
@@ -21,7 +21,7 @@ const setCameraControls = (camera, renderer) => {
 	orbitControls = new OrbitControls(camera, renderer.domElement)
 	// orbitControls.enabled = false
 	orbitControls.minDistance = 2
-	orbitControls.maxDistance = 12
+	// orbitControls.maxDistance = 12
 }
 
 export {

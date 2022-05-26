@@ -21,11 +21,18 @@ const init = () => {
 	loadModel('models/clouds-smoke.glb').then((gltf) => {
 		// console.log(gltf)
 		model = gltf.scene
-		model.scale.set(.6, .6, .6)
-		model.position.y = 3
+		// model.scale.set(.6, .6, .6)
+		model.position.set(0, 30, -6)
 		// console.log(model)
+		model.traverse((child) => {
+			console.log(child)
+			if (child.name === 'cloud_anim') {
+				child.material.transparent = true
+				child.material.opacity = .5
+				child.material.needsUpdate = true
+			}
+		})
 		cloudWrapper.add(model)
-		
 		mixer = new THREE.AnimationMixer(model)
 		const clips = gltf.animations
 		mixer.timeScale = .1
@@ -36,8 +43,7 @@ const init = () => {
 		action.setLoop(THREE.LoopOnce)
 		action.play()
 
-		cloudWrapper.rotation.x = Math.PI
-		rotateClouds()
+		cloudWrapper.rotation.x = Math.PI / -2
 
 	})
 }
@@ -48,10 +54,37 @@ const rotateClouds = () => {
 		x: Math.PI * -2.5,
 		repeat: -1,
 		onRepeat: () => {
-			model.position.x = (Math.random() * 8) - 4
+			model.position.x = (Math.random() * 12) - 6
 			action.stop()
 			action.reset()
 			action.play()
+		},
+		ease: 'linear',
+	})
+}
+
+const startAnim = () => {
+	gsap.to(model.position, {
+		duration: 4,
+		y: 20,
+		repeat: 0,
+		delay: 10,
+		ease: 'Cubic.easeInOut',
+	})
+	rotateClouds()
+}
+
+const fadeOut = () => {
+
+	gsap.to(model.scale, {
+		duration: 3,
+		x: 0,
+		y: 0,
+		z: 0,
+		repeat: 0,
+		onComplete: () => {
+			action.stop()
+			gsap.killTweensOf(cloudWrapper.rotation)
 		},
 		ease: 'linear',
 	})
@@ -67,4 +100,6 @@ const tick = (delta) => {
 export {
 	init,
 	tick,
+	fadeOut,
+	startAnim,
 }
