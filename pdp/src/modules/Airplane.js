@@ -3,6 +3,7 @@ import * as Scene from './Scene'
 import * as Camera from './Camera'
 import * as World from './World'
 import * as Clouds from './Clouds'
+import * as Billboard from './Billboard'
 import * as THREE from 'three'
 import * as Utils from '../utils/utils'
 import gsap from 'gsap'
@@ -13,6 +14,7 @@ import gsap from 'gsap'
 // let keyPressed = ''
 const targetLookAt = new THREE.Vector3(0, 0, 0)
 let model
+let isLanded = false
 let isLanding = false
 let isTakingoff = false
 // const airplanePosition = new THREE.Vector3(0, -4, 0)
@@ -183,47 +185,34 @@ const moveY = (pos) => {
 
 const doLanding = () => {
 	World.doLanding()
+	Billboard.fadeOut()
 	isLanding = true
 
 	const helix = Utils.getElementFromModel(model, 'helix')
-	// gsap.killTweensOf(helix.rotation)
 
 	const tl = gsap.timeline({repeat: 0})
-	tl.to(model.position, {y: 0, z: -10, duration: 3, ease: 'Sin.easeInOut'})
+	tl.to(model.position, {y: 0, z: -20, duration: 3, ease: 'Sin.easeInOut'})
 	tl.to(helix.rotation, {
 		z: helix.rotation.z + Math.PI * 30,
 		duration: 10,
 		ease: 'Sin.easeInOut',
 		onComplete: () => {
 			gsap.killTweensOf(helix.rotation)
+			isLanded = true
 		},
 	})
-
-	// gsap.to(model.position, {
-	// 	duration: 3,
-	// 	y: 0,
-	// 	z: -10,
-	// 	ease: 'Sin.easeInOut',
-	// })
 
 	gsap.to(targetLookAt, {
 		duration: 3,
 		y: 0,
+		z: -8,
+		x: 6,
 		ease: 'Sin.easeInOut',
 	})
 
-	
-	
-	// gsap.to(helix.rotation, {
-	// 	duration: 12,
-	// 	z: helix.rotation.z + Math.PI * 10,
-	// 	repeat: 0,
-	// 	ease: 'Power2.easeInOut',
-	// })
-
 	gsap.to(Camera.camera.position, {
 		duration: 4,
-		z: 5,
+		z: 9,
 		x: -12,
 		y: 6,
 		repeat: 0,
@@ -248,7 +237,7 @@ const billboardIn = () => {
 }
 
 const tick = () => {
-	if (model?.position) {
+	if (model?.position && !isLanded) {
 		Camera.camera.lookAt(targetLookAt)
 	}
 }

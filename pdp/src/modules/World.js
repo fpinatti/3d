@@ -8,7 +8,7 @@ let model
 
 const init = (assets) => {
 	loadModel('models/main_scenario.glb').then((gltf) => {
-		createSky(assets.sky)
+		createSky(assets.skyMatcap)
 		model = gltf.scene
 		const materialBaked = new THREE.MeshBasicMaterial({
 			color: 0xffffff,
@@ -30,13 +30,13 @@ const init = (assets) => {
 			} else if (child.name === 'tks') {
 				child.material = materialText
 			} else if (child.parent?.name.indexOf('tree') >=0) {
-				console.log('FOUND A TREE', child)
+				// console.log('FOUND A TREE', child)
 			} else {
 				child.material = materialBaked
 			}
 			child.castShadow = true
 			child.receiveShadow = true
-			console.log(child.name)
+			// console.log(child.name)
 		})
 		Scene.scene.add(model)
 		
@@ -62,9 +62,9 @@ const init = (assets) => {
 
 const createSky = (sky) => {
 	const geometry = new THREE.SphereBufferGeometry(60, 10, 10)
-	const material = new THREE.MeshBasicMaterial({
+	const material = new THREE.MeshMatcapMaterial({
 		map: sky,
-		side: THREE.DoubleSide,
+		side: THREE.BackSide,
 	})
 	const mesh = new THREE.Mesh(geometry, material)
 	Scene.scene.add(mesh)
@@ -97,8 +97,8 @@ const doLanding = () => {
 
 	const thanks = Utils.getElementFromModel(model, 'tks')
 	gsap.to(thanks.position, {
-		duration: 10,
-		z: 10,
+		duration: 13,
+		z: -5,
 		ease: 'Cubic.easeInOut',
 	})
 

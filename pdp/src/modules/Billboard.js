@@ -21,6 +21,7 @@ const createBillboard = (texture, idx) => {
 	texture.wrapT = THREE.RepeatWrapping
 	const material = new THREE.SpriteMaterial({ 
 		map: texture,
+		transparent: true,
 		// blending: THREE.AdditiveBlending,
 	})
 	// console.log(material)
@@ -51,11 +52,17 @@ const setupKeys = () => {
 
 const transitionIn = () => {
 	Airplane.billboardIn()
+	const board = boards[step]
+	console.log(board.material.opacity)
 	// spriteBoard.position.y = 30
-	gsap.to(boards[step].position, {
+	gsap.to(board.position, {
 		x: -10,
 		y: 14,
 		duration: 2,
+	})
+	gsap.to(board.material, {
+		opacity: 1,
+		duration: .5,
 	})
 	// gsap.to(spriteBoard.position, {
 	// 	y: 0,
@@ -69,9 +76,14 @@ const transitionIn = () => {
 
 const transitionOut = () => {
 	// console.log(step)
-	gsap.to(boards[step].position, {
+	const board = boards[step]
+	gsap.to(board.position, {
 		y: 60,
 		duration: 2,
+	})
+	gsap.to(board.material, {
+		opacity: 0,
+		duration: .5,
 	})
 }
 
@@ -90,8 +102,13 @@ const init = (assets) => {
 	
 }
 
+const fadeOut = () => {
+	transitionOut()
+}
+
 
 export {
 	createBillboard,
+	fadeOut,
 	init,
 }

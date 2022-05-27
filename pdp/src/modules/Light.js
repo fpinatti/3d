@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import * as Scene from './Scene'
 
 const createAmbientLight = () => {
-	const light = new THREE.AmbientLight(0xffffff)
+	const light = new THREE.AmbientLight(0xffffff, 1)
 	Scene.scene.add(light)
 }
 

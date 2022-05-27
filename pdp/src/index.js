@@ -67,6 +67,7 @@ const main = () => {
 	Clouds.init()
 	World.init({
 		sky: resources.assets['sky'],
+		skyMatcap: resources.assets['skyMatcap'],
 		world: resources.assets['world'],
 		road: resources.assets['road'],
 		text: resources.assets['matcap1'],
@@ -103,6 +104,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await loadTexture('textures/step9.jpg').then(texture => resources.frames['step9'] = texture)
 	await loadTexture('textures/step10.jpg').then(texture => resources.frames['step10'] = texture)
 	await loadTexture('textures/sky.jpg').then(texture => resources.assets['sky'] = texture)
+	await loadTexture('textures/sky.png').then(texture => resources.assets['skyMatcap'] = texture)
 	await loadTexture('textures/airplane.jpg').then(texture => resources.assets['airplane'] = texture)
 	await loadTexture('textures/world.jpg').then(texture => resources.assets['world'] = texture)
 	await loadTexture('textures/airport-road.jpg').then(texture => resources.assets['road'] = texture)
