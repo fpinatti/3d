@@ -12,6 +12,9 @@ import gsap from 'gsap'
 // let idleAction, walkAction
 // let engineClock
 // let keyPressed = ''
+let clips
+let mixer
+let action
 const targetLookAt = new THREE.Vector3(0, 0, 0)
 let model
 let isLanded = false
@@ -33,7 +36,7 @@ const init = (texture) => {
 			child.material = material
 			child.castShadow = true
 			child.receiveShadow = true
-			// console.log('>', child)
+			console.log('>', child.name)
 		})
 		model.position.y = airplanePosition.y
 		Scene.scene.add(model)
@@ -41,9 +44,16 @@ const init = (texture) => {
 		// Camera.camera.position.set(0, 2, -10)
 		Camera.camera.position.set(-5, 3, 7)
 
-		// const box = new THREE.BoxHelper(model, 0xffff00 );
-		// scene.add( box );
+		mixer = new THREE.AnimationMixer(model)
+		console.log(gltf.animations)
+		clips = gltf.animations
+		// mixer.timeScale = .1
+		// // console.log(clips)
+		console.log(gltf.animations)
+		const clip = THREE.AnimationClip.findByName(clips, 'idle')
+		mixer.clipAction(clip).play()
 
+		animateBlink()
 		/**
 		 * Keyboard Events
 		 */
@@ -52,10 +62,42 @@ const init = (texture) => {
 	})
 }
 
+const animateBlink = () => {
+	const eyes = Utils.getElementFromModel(model, 'pinas_head').children[0]
+	gsap.to(eyes.scale, {
+		duration: .25,
+		y: .1,
+		repeat: -1,
+		ease: 'linear',
+		repeatDelay: 1,
+		yoyo: true,
+	})
+	gsap.to(eyes.position, {
+		duration: .25,
+		y: .5,
+		repeat: -1,
+		ease: 'linear',
+		repeatDelay: 1,
+		yoyo: true,
+	})
+	
+	// airplanePosition = new THREE.Vector3(0, -4, 0)
+}
+
+const stopMixer = () => {
+	clips.forEach((clip) => {
+		mixer.clipAction(clip).stop()
+	})
+}
+
 const doTakeOff = () => {
 	isTakingoff = true
 	World.doTakeOff()
 	animateHelix()
+	stopMixer()
+	const clip = THREE.AnimationClip.findByName(clips, 'flying')
+	mixer.clipAction(clip).play()
+
 	gsap.to(Camera.camera.position, {
 		duration: 4,
 		x: 0,
@@ -188,6 +230,10 @@ const doLanding = () => {
 	Billboard.fadeOut()
 	isLanding = true
 
+	stopMixer()
+	const clip = THREE.AnimationClip.findByName(clips, 'idle')
+	mixer.clipAction(clip).play()
+
 	const helix = Utils.getElementFromModel(model, 'helix')
 
 	const tl = gsap.timeline({repeat: 0})
@@ -236,10 +282,11 @@ const billboardIn = () => {
 	})
 }
 
-const tick = () => {
+const tick = (delta) => {
 	if (model?.position && !isLanded) {
 		Camera.camera.lookAt(targetLookAt)
 	}
+	mixer?.update(delta)
 }
 
 export {

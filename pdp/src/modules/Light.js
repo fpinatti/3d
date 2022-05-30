@@ -21,24 +21,24 @@ const createDirectionalLight = () => {
 	// Scene.scene.add(helper)
 }
 
-const createSpotLight = () => {
-	const light = new THREE.SpotLight( 0xffffff, 2, 10, .2, 1, 0 )
-	return light
+const createFillLight = () => {
+	const light = new THREE.DirectionalLight( 0xffffff, .4 )
+	light.shadow.camera.top = 50
+	light.shadow.camera.bottom = -50
+	light.shadow.camera.left = -50
+	light.shadow.camera.right = 50
+	light.position.set(0, 25, -20)
+	Scene.scene.add(light)
+	const helper = new THREE.DirectionalLightHelper(light)
+	Scene.scene.add(helper)
 }
 
-const shakeLight = (light) => {
-	gsap.to({}, {
-		duration: .3,
-		repeat: -1,
-		onRepeat: () => {
-			light.angle = .15 + (Math.random() * .15)
-		},
-	})
+const init = () => {
+	createAmbientLight()	
+	createDirectionalLight()
+	createFillLight()
 }
 
 export {
-	createAmbientLight,
-	createDirectionalLight,
-	createSpotLight,
-	shakeLight,
+	init,
 }

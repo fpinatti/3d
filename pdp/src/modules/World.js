@@ -76,7 +76,7 @@ const animateEarth = () => {
 		duration: 20,
 		z: - Math.PI * 2,
 		repeat: -1,
-		ease: 'Power3.easeInOut',
+		ease: 'linear',
 	})
 }
 

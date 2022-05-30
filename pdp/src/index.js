@@ -5,7 +5,7 @@ import * as Camera from './modules/Camera'
 // import { createBoxGeometry, createMesh } from './modules/Mesh'
 import { loadModel } from './modules/Model'
 import { loadTexture } from './modules/Material'
-import { createAmbientLight, createDirectionalLight} from './modules/Light'
+import* as Light from './modules/Light'
 import * as Renderer from './modules/Renderer'
 // import * as Player from './modules/Player'
 import * as Airplane from './modules/Airplane'
@@ -44,9 +44,7 @@ const main = () => {
 	Camera.setCameraControls(Camera.camera, render)
     
 	// lights
-	createAmbientLight()	
-	createDirectionalLight()
-	
+	Light.init()
 	
 	// const directionalLight2 = createDirectionalLight()
 	// directionalLight2.position.set(0, 0, 8)
@@ -83,9 +81,10 @@ const tick = () => {
 	requestAnimationFrame(() => {
 		tick()
 	})
+	const delta = clock.getDelta()
 	Renderer.tick()
-	Airplane.tick()
-	Clouds.tick(clock.getDelta())
+	Airplane.tick(delta)
+	Clouds.tick(delta)
 }
 
 const resources = {
