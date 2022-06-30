@@ -9,18 +9,20 @@ const createCamera = () => {
 	camera = new THREE.PerspectiveCamera( 
 		75,
 		window.innerWidth / window.innerHeight,
-		0.1,
+		0.01,
 		2000
 	)
-	// const helper = new THREE.CameraHelper(camera)
-	// Scene.scene.add(camera)
-	// scene.add(helper)
+	// camera.position.set(-.5, .5, .01)
+	camera.position.z = .2
+	// camera.position.x = -.1
+	const helper = new THREE.CameraHelper(camera)
+	Scene.scene.add(helper)
 }
 
 const setCameraControls = (camera, renderer) => {
 	orbitControls = new OrbitControls(camera, renderer.domElement)
 	// orbitControls.enabled = false
-	orbitControls.minDistance = 2
+	// orbitControls.minDistance = 2
 	// orbitControls.maxDistance = 12
 }
 
