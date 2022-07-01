@@ -15,7 +15,7 @@ const modelGroups = [
 ]
 const materials = []
 
-const init = (texture) => {
+const init = () => {
 	return new Promise((resolve, reject) => {
 		loadModel('models/shoes.glb').then((gltf) => {
 			model = gltf.scene
@@ -32,7 +32,7 @@ const init = (texture) => {
 				child.castShadow = true
 				child.receiveShadow = true
 				modelGroups.forEach((arr, paletteIndex) => {
-					console.log(child.name)
+					// console.log(child.name)
 					if (arr.includes(child.name.toLowerCase())) {
 						child.material = materials[paletteIndex]
 						// console.log('!!!!', child.name)
@@ -89,7 +89,7 @@ const sortNewPallete = () => {
 				scale: 0,
 				opacity: 1,
 			}, {
-				scale: 11,
+				scale: 20,
 				stagger: 1,
 			}, 0)
 		// const color = new THREE.Color(basePalette[index])
@@ -98,7 +98,7 @@ const sortNewPallete = () => {
 		// })
 		// materials.push(material)
 	})
-	console.log('update palette', basePalette)
+	// console.log('update palette', basePalette)
 }
 
 export {

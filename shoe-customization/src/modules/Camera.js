@@ -15,8 +15,8 @@ const createCamera = () => {
 	// camera.position.set(-.5, .5, .01)
 	camera.position.z = .2
 	// camera.position.x = -.1
-	const helper = new THREE.CameraHelper(camera)
-	Scene.scene.add(helper)
+	// const helper = new THREE.CameraHelper(camera)
+	// Scene.scene.add(helper)
 }
 
 const setCameraControls = (camera, renderer) => {

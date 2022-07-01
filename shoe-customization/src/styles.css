@@ -56,3 +56,16 @@ canvas {
 	left: 0;
 	opacity: 0;
 }
+
+@keyframes scroll {
+	0% {
+		transform: translateY(0);
+	}
+	30% {
+		transform: translateY(100px);
+	}
+}
+
+svg #wheel {
+	animation: scroll ease 1.5s infinite;
+}

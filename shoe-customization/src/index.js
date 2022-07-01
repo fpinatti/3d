@@ -5,6 +5,7 @@ import * as Camera from './modules/Camera'
 import* as Light from './modules/Light'
 import * as Renderer from './modules/Renderer'
 import * as Shoe from './modules/Shoe'
+import * as Pointer from './modules/Pointer'
 import { Scene } from 'three'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -40,6 +41,11 @@ const main = () => {
 	tick()
 
 	/**
+	 * Pointer
+	 */
+	Pointer.init()
+
+	/**
 	 * html interaction
 	 */
 	const btnColors = document.querySelector('.btn-change-colors')
@@ -54,12 +60,12 @@ const scrollAnim = () => {
 	gsap.registerPlugin(ScrollTrigger)
 
 	const model = Shoe.model
-	const gui = new GUI()
-	const modelFolder = gui.addFolder('Cube')
-	modelFolder.add(model.rotation, 'x', 0, Math.PI * 2)
-	modelFolder.add(model.rotation, 'y', 0, Math.PI * 2)
-	modelFolder.add(model.rotation, 'z', 0, Math.PI * 2)
-	modelFolder.open()
+	// const gui = new GUI()
+	// const modelFolder = gui.addFolder('Cube')
+	// modelFolder.add(model.rotation, 'x', 0, Math.PI * 2)
+	// modelFolder.add(model.rotation, 'y', 0, Math.PI * 2)
+	// modelFolder.add(model.rotation, 'z', 0, Math.PI * 2)
+	// modelFolder.open()
 	// const cameraFolder = gui.addFolder('Camera')
 	// cameraFolder.add(camera.position, 'z', 0, 10)
 	// cameraFolder.open()
@@ -76,7 +82,7 @@ const scrollAnim = () => {
 					// console.log('update', evt.progress)
 				},
 				scrub: 1,
-				markers: true
+				// markers: true
 			}
 		})
 		.fromTo(model.rotation, {
@@ -87,6 +93,9 @@ const scrollAnim = () => {
 			x: 0,
 			y: 0,
 			z: Math.PI * 2,
+		}, 0)
+		.to(model.position, {
+			y: -.1
 		}, 0)
 		.to(document.body, {
 			backgroundColor: '#c244bd'
