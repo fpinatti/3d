@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cd twins-room && npm install && npm run build",
-    "test": "cd ./woods && npm run lint && cd ../medieval && npm run lint && cd ../twins-room && npm run lint && cd ../building-vr && npm run lint",
-    "prepare": "husky install"
+    "test": "cd ./woods && npm run lint && cd ../medieval && npm run lint && cd ../twins-room && npm run lint && cd ../building-vr && npm run lint"
   },
   "repository": {
     "type": "git",
@@ -20,7 +19,6 @@
   },
   "homepage": "https://github.com/fpinatti/3d#readme",
   "devDependencies": {
-    "eslint": "^8.8.0",
-    "husky": "^7.0.0"
+    "eslint": "^8.8.0"
   }
 }
