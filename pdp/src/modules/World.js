@@ -27,7 +27,7 @@ const init = (assets) => {
 				child.material = materialRoad
 			} else if (child.parent?.name === 'ground') {
 				// console.log('ground', child)
-			} else if (child.name === 'tks') {
+			} else if (child.name.indexOf('tks') >= 0) {
 				child.material = materialText
 			} else if (child.parent?.name.indexOf('tree') >=0) {
 				// console.log('FOUND A TREE', child)
@@ -53,8 +53,8 @@ const init = (assets) => {
 		const thanks = Utils.getElementFromModel(model, 'tks')
 		thanks.position.z = 80
 
-		const helper = new THREE.AxesHelper()
-		model.add(helper)
+		// const helper = new THREE.AxesHelper()
+		// model.add(helper)
 		// model.rotation.y = Math.PI * .5
 
 	})
@@ -98,7 +98,7 @@ const doLanding = () => {
 	const thanks = Utils.getElementFromModel(model, 'tks')
 	gsap.to(thanks.position, {
 		duration: 13,
-		z: -5,
+		z: -14,
 		ease: 'Cubic.easeInOut',
 	})
 
@@ -146,6 +146,35 @@ const doTakeOff = () => {
 	tl.to(landingGround.position, {y: -50, duration: 6, ease: 'Cubic.easeInOut'}, '-=1')
 }
 
+const billboardIn = () => {
+	const sun = Utils.getElementFromModel(model, 'sun')
+	const cloud1 = Utils.getElementFromModel(model, 'cloud')
+	const cloud2 = Utils.getElementFromModel(model, 'cloud001')
+	const cloud3 = Utils.getElementFromModel(model, 'cloud002')
+	gsap
+		.timeline()
+		.to(sun.position, {
+			duration: 1.2,
+			x: 20,
+			ease: 'Power3.easeInOut',
+		})
+		.to(cloud1.position, {
+			duration: 1.3,
+			x: 18,
+			ease: 'Power3.easeInOut',
+		}, .4)
+		.to(cloud2.position, {
+			duration: 1.6,
+			x: 22,
+			ease: 'Power3.easeInOut',
+		}, .4)
+		.to(cloud3.position, {
+			duration: 1.3,
+			x: 18,
+			ease: 'Power3.easeInOut',
+		}, .4)
+}
+
 const tick = () => {
 
 }
@@ -154,5 +183,6 @@ export {
 	init,
 	doLanding,
 	tick,
+	billboardIn,
 	doTakeOff,
 }

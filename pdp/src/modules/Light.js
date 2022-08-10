@@ -29,8 +29,8 @@ const createFillLight = () => {
 	light.shadow.camera.right = 50
 	light.position.set(0, 25, -20)
 	Scene.scene.add(light)
-	const helper = new THREE.DirectionalLightHelper(light)
-	Scene.scene.add(helper)
+	// const helper = new THREE.DirectionalLightHelper(light)
+	// Scene.scene.add(helper)
 }
 
 const init = () => {

@@ -36,7 +36,7 @@ const init = (texture) => {
 			child.material = material
 			child.castShadow = true
 			child.receiveShadow = true
-			console.log('>', child.name)
+			// console.log('>', child.name)
 		})
 		model.position.y = airplanePosition.y
 		Scene.scene.add(model)
@@ -149,9 +149,9 @@ const setupKeys = () => {
 		if (isLanding || isTakingoff) return
 		const keyPressed = event.key
 		if (keyPressed === 'ArrowRight') {
-			moveX(3)
+			moveX(1.5)
 		} else if (keyPressed === 'ArrowLeft') {
-			moveX(-3)
+			moveX(-1.5)
 		}
 
 		if (keyPressed === 'ArrowUp') {
