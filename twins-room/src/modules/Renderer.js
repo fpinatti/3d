@@ -34,9 +34,9 @@ const onWindowResize = () => {
 // https://r105.threejsfundamentals.org/threejs/lessons/threejs-webvr.html
 const renderVr = () => {
 	renderer.render(Scene.scene, Camera.camera)
-	if (Camera.orbitControls) {
-		Camera.orbitControls.update()
-	}
+	// if (Camera.orbitControls) {
+	//	Camera.orbitControls.update()
+	//}
 }
 
 const tick = () => {
