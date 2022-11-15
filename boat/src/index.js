@@ -11,6 +11,7 @@ import * as Pointer from './modules/Pointer'
 import * as THREE from 'three'
 import * as Scene from './modules/Scene'
 import * as CANNON from 'cannon-es'
+import * as Joystick from './modules/Joystick'
 import CannonDebugger from 'cannon-es-debugger'
 // import { loadTexture, addTextureToCollection } from './modules/Material'
 let groundMesh
@@ -32,7 +33,7 @@ const main = () => {
 
 	// renderer
 	const render = Renderer.setRenderer(Camera.camera, scene)
-	Camera.setCameraControls(Camera.camera, render)
+	// Camera.setCameraControls(Camera.camera, render)
     
 	// lights
 	Light.init()
@@ -66,6 +67,8 @@ const main = () => {
 	Ocean.init(world)
 	// car
 	Boat.init(world)
+
+	Joystick.init()
 	// Car.dummy.add(Camera.camera)
 	tick()
 
@@ -94,7 +97,7 @@ const tick = () => {
 
 	// physicsDebugger.update()
 	Renderer.tick()
-	Camera.orbitControls.update()
+	// Camera.orbitControls.update()
 
 }
 

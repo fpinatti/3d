@@ -4,13 +4,10 @@ import * as Camera from './Camera'
 import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
 import { loadModel } from './Model'
+import * as Joystick from './Joystick'
 // import { GUI } from 'dat.gui'
 import { gsap } from 'gsap'
-// import { getTexture } from './Material'
-// import * as Camera from './Camera'
 
-// const raycaster = new THREE.Raycaster()
-// const mouse = new THREE.Vector2()
 const model = new THREE.Group()
 const wheelBodies = []
 let physics
@@ -94,6 +91,8 @@ const loadBoatModel = () => {
 			} else if (element.name === 'wheel2') {
 				wheel2 = element
 			}
+			element.receiveShadow = true
+			element.castShadow = true
 		// 	// if (element.name === 'head-group') {
 		// 	// 	head = element
 		// 	// 	animateEyes(element.children.find(element => element.name === 'eyes'))
@@ -102,8 +101,6 @@ const loadBoatModel = () => {
 		// 	// 	carrot.position.z = 3
 		// 	// }
 		// 	// console.log(element)
-		// 	element.receiveShadow = true
-		// 	element.castShadow = true
 		// 	// if (bakedVersion) {
 		// 	// 	if (element.name.indexOf('picture') >= 0) {
 		// 	// 		console.log('picture')
@@ -278,6 +275,23 @@ const onKeyUp = (evt) => {
 const addListeners = () => {
 	document.addEventListener('keydown', onKeyDown)
 	document.addEventListener('keyup', onKeyUp)
+	addEventListener(Joystick.MOVE_JOYSTICK_EVENT, (evt) => {
+		// thrust
+		currentForce = engineForce * -evt.detail.y
+		updateWheelAnimation()
+		// leme
+		gsap.to(currentSteering, {
+			duration: 1,
+			value: evt.detail.x * -1
+		})
+	})
+	addEventListener(Joystick.RELEASE_JOYSTICK_EVENT, () => {
+		currentForce = 0
+		gsap.to(currentSteering, {
+			duration: 1,
+			value: 0
+		})
+	})
 }
 
 const initPhysics = (world) => {
@@ -361,19 +375,20 @@ const tick = (delta) => {
 	// console.log((Math.sin(delta)) * 300)
 	// vehicle.position.y = 0
 	
-	// if (isFollowCamEnabled) {
-	// 	Camera.camera.position.lerp(followCam.getWorldPosition(new THREE.Vector3()),  1)
-	// 	const lookOffset = model.position.add(camCenterPivot.position)
-	// 	// camCenterPivot.position.y -= .001
-	// 	// lookOffset.x += 3
-	// 	Camera.camera.lookAt(lookOffset)
-	// }
+	if (isFollowCamEnabled) {
+		Camera.camera.position.lerp(followCam.getWorldPosition(new THREE.Vector3()),  1)
+		const lookOffset = model.position.add(camCenterPivot.position)
+		// camCenterPivot.position.y -= .001
+		// lookOffset.x += 3
+		Camera.camera.lookAt(lookOffset)
+	}
 
 	Camera.camera.lookAt(new THREE.Vector3(
 		vehicle.position.x,
 		0,
 		0,
 	))
+	// console.log(Camera.camera)
 
 	// console.log(vehicle)
 
