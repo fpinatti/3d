@@ -11,7 +11,7 @@ import * as Pointer from './modules/Pointer'
 import * as THREE from 'three'
 import * as Scene from './modules/Scene'
 import * as Joystick from './modules/Joystick'
-import { loadTexture, loadModel, loadHDR, addAssetToCollection } from './modules/AssetLoader'
+import { loadTexture, loadModel, loadHDR, addAssetToCollection, getAsset } from './modules/AssetLoader'
 import { Vector2 } from 'three'
 import * as YUKA from 'yuka'
 let world
@@ -21,6 +21,9 @@ let followCam
 const entityManager = new YUKA.EntityManager()
 const yukaTime = new YUKA.Time()
 const yukaVehicle = new YUKA.Vehicle()
+const yukaTruck = new YUKA.Vehicle()
+// const yukaTarget = new YUKA.GameEntity()
+
 let onPathBehavior
 
 const main = () => {
@@ -89,6 +92,25 @@ const main = () => {
 	yukaVehicle.maxSpeed = 10
 	yukaVehicle.mass = 1
 	entityManager.add(yukaVehicle)
+
+
+	// enemy
+	const enemy = new THREE.Group()
+	const enemyModel = getAsset('garbageTruck')
+	enemyModel.scene.position.y = .1
+	enemyModel.scene.position.z = -5
+	enemyModel.scene.rotation.y = Math.PI
+	enemy.add(enemyModel.scene)
+	enemy.castShadow = true
+	enemy.matrixAutoUpdate = false
+	Scene.scene.add(enemy)
+
+	yukaTruck.setRenderComponent(enemy, sync)
+	yukaTruck.maxSpeed = 10
+	yukaTruck.mass = 1
+	const seekBehavior = new YUKA.SeekBehavior(yukaVehicle.position)
+	yukaTruck.steering.add(seekBehavior)
+	entityManager.add(yukaTruck)
 
 	/**
 	 * Pointer
@@ -276,6 +298,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await loadModel('models/garbageTruck.glb').then(model => addAssetToCollection('garbageTruck', model))
 	await loadModel('models/light_curved.glb').then(model => addAssetToCollection('light_curved', model))
 	await loadModel('models/police.glb').then(model => addAssetToCollection('police', model))
+	await loadModel('models/garbageTruck.glb').then(model => addAssetToCollection('garbageTruck', model))
 	await loadModel('models/road_bend.glb').then(model => addAssetToCollection('road_bend', model))
 	await loadModel('models/road_curve.glb').then(model => addAssetToCollection('road_curve', model))
 	await loadModel('models/road_end.glb').then(model => addAssetToCollection('road_end', model))
