@@ -22,8 +22,8 @@ const createDirectionalLight = () => {
 	dirLight.shadow.mapSize.width = 1024
 	dirLight.shadow.mapSize.height = 1024
 	dirLight.position.set(50, 100, 0)
-	const helper = new THREE.CameraHelper(dirLight.shadow.camera)
-	Scene.scene.add(helper)
+	// const helper = new THREE.CameraHelper(dirLight.shadow.camera)
+	// Scene.scene.add(helper)
 	Scene.scene.add(dirLight)
 }
 
@@ -38,8 +38,8 @@ const createFillLight = () => {
 	fillLight.shadow.mapSize.height = 1024
 	fillLight.position.set(30, 100, 0)
 	Scene.scene.add(fillLight)
-	const helper = new THREE.DirectionalLightHelper(fillLight)
-	Scene.scene.add(helper)
+	// const helper = new THREE.DirectionalLightHelper(fillLight)
+	// Scene.scene.add(helper)
 }
 
 const createHemisphereLight = () => {

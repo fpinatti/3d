@@ -26,6 +26,7 @@ const camPositions = [
 	new THREE.Vector3(0, 5, 10),
 	new THREE.Vector3(0, 3, 4.4),
 ]
+let vrCam
 // let smokeHolder
 // let smokeTimer
 
@@ -38,6 +39,13 @@ const init = () => {
 	followCam.position.copy(Camera.camera.position)
 	Scene.scene.add(followCam)
 	followCam.parent = model
+
+	vrCam = new THREE.Object3D()
+	vrCam.position.set(0, .3, -.5)
+	vrCam.rotation.y = Math.PI
+	const axesHelper = new THREE.AxesHelper()
+	vrCam.add(axesHelper)
+	model.add(vrCam)
 
 	addListeners()
 
@@ -108,4 +116,5 @@ export {
 	init,
 	model,
 	tick,
+	vrCam,
 }
