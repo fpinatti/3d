@@ -11,7 +11,7 @@ const init = () => {
 	const geometry = new THREE.PlaneGeometry(20000, 20000, 100, 100)
 	const material = new THREE.MeshStandardMaterial({
 		map: texture,
-		color: 0xffffff,
+		// color: 0xffffff,
 		// displacementMap: texture,
 		// displacementScale: 6,
 		// displacementBias: -4,

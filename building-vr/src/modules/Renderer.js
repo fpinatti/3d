@@ -4,6 +4,7 @@ import * as Camera from './Camera'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { SAOPass } from 'three/examples/jsm/postprocessing/SAOPass.js'
+import { VRButton } from 'three/examples/jsm/webxr/VRButton'
 
 let renderer
 let composer, renderPass, saoPass
@@ -25,9 +26,13 @@ const setRenderer = () => {
 	renderer.shadowMap.autoUpdate = true
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	renderer.toneMapping = THREE.ACESFilmicToneMapping
+	// renderer.toneMapping = THREE.CineonToneMapping
+	renderer.toneMappingExposure = 1
 	renderer.physicallyCorrectLights = true
 	renderer.outputEncoding = THREE.sRGBEncoding
 	renderer.setSize(sizes.width, sizes.height, false)
+	renderer.xr.enabled = true
+	document.body.appendChild(VRButton.createButton(renderer))
 	setComposer()
 	tick()
 	return renderer
@@ -37,14 +42,14 @@ const setComposer = () => {
 	composer = new EffectComposer(renderer)
 	renderPass = new RenderPass(Scene.scene, Camera.camera)
 	composer.addPass(renderPass)
-	saoPass = new SAOPass(Scene.scene, Camera.camera, false, true )
-	saoPass.params.output = SAOPass.OUTPUT.Default
-	saoPass.params.saoIntensity = .001
-	saoPass.params.saoBlur = true
-	saoPass.params.saoBlurRadius = 1
-	saoPass.params.saoBlurDepthCutoff = 1
-	saoPass.params.saoKernelRadius = 2
-	saoPass.params.saoBias = 10
+	// saoPass = new SAOPass(Scene.scene, Camera.camera, false, true )
+	// saoPass.params.output = SAOPass.OUTPUT.Default
+	// saoPass.params.saoIntensity = .001
+	// saoPass.params.saoBlur = true
+	// saoPass.params.saoBlurRadius = 1
+	// saoPass.params.saoBlurDepthCutoff = 1
+	// saoPass.params.saoKernelRadius = 2
+	// saoPass.params.saoBias = 10
 	// gui.add( saoPass.params, 'saoBias', - 1, 1 );
 	// 			gui.add( saoPass.params, 'saoIntensity', 0, 1 );
 	// 			gui.add( saoPass.params, 'saoScale', 0, 10 );
@@ -54,7 +59,7 @@ const setComposer = () => {
 	// 			gui.add( saoPass.params, 'saoBlurRadius', 0, 200 );
 	// 			gui.add( saoPass.params, 'saoBlurStdDev', 0.5, 150 );
 	// 			gui.add( saoPass.params, 'saoBlurDepthCutoff', 0.0, 0.1 );
-	composer.addPass(saoPass)
+	// composer.addPass(saoPass)
 }
 
 const onWindowResize = () => {
@@ -67,7 +72,6 @@ const onWindowResize = () => {
 	Camera.camera.updateProjectionMatrix()
 
 	const pixelRatio = Math.min(window.devicePixelRatio, 2)
-	console.log(pixelRatio)
 	const width  = canvas.clientWidth  * pixelRatio | 0
 	const height = canvas.clientHeight * pixelRatio | 0
 	renderer.setSize(width, height, false)

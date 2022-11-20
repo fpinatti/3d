@@ -6,7 +6,7 @@ import { initLights } from './modules/Light'
 import { setRenderer } from './modules/Renderer'
 import { loadModel } from './modules/Model'
 import * as Building from './modules/Building'
-import { loadTexture } from './modules/Material'
+import { loadHDR, loadTexture, addAssetToCollection } from './modules/AssetLoader'
 import * as Scene from './modules/Scene'
 import * as Camera from './modules/Camera'
 import * as dat from 'dat.gui'
@@ -16,6 +16,7 @@ const bakedVersion = true
 const textures = {}
 let bakedMaterial
 let pictureMaterial
+const isVr = true
 
 const gui = new dat.GUI()
 const debugObject = {}
@@ -64,11 +65,20 @@ const main = () => {
 	// console.log(renderer.xr.isPresenting)
     
 	// lights
-	initLights(gui)
+	initLights()
 	// createAmbientLight()
         
 	// createRectLight()
 	// createDirectionalLight()
+
+	if (isVr) {
+		const dummyCam = new THREE.Object3D()
+		dummyCam.add(Camera.camera)
+		dummyCam.position.set(0, 0, 20)
+		// console.log(Camera.camera)
+		// Camera.camera.lookAt(110, 0, 0)
+		// dummyCam.lookAt(new THREE.Vector3(10, 0, 10))
+	}
 
 	Building.init()
 
@@ -76,7 +86,12 @@ const main = () => {
 
 window.addEventListener('DOMContentLoaded', async () => {
 	// if (bakedVersion) {
-	// 	await loadTexture('textures/bakedTexture.jpg').then(texture => textures['sceneTexture'] = texture)
+	await loadHDR('textures/aristea_wreck_puresky_1k.hdr').then(hdr => addAssetToCollection('sky', hdr))
+	await loadTexture('textures/grass/Grass001_1K_AmbientOcclusion.jpg').then(texture => addAssetToCollection('grass_occlusion', texture))
+	await loadTexture('textures/grass/Grass001_1K_Color.jpg').then(texture => addAssetToCollection('grass_color', texture))
+	await loadTexture('textures/grass/Grass001_1K_Displacement.jpg').then(texture => addAssetToCollection('grass_displacement', texture))
+	await loadTexture('textures/grass/Grass001_1K_Normal.jpg').then(texture => addAssetToCollection('grass_normal', texture))
+	await loadTexture('textures/grass/Grass001_1K_Roughness.jpg').then(texture => addAssetToCollection('grass_roughness', texture))
 	// 	await loadTexture('textures/bear.jpg').then(texture => textures['framePicture'] = texture)
 	// }
 	main()

@@ -34,13 +34,13 @@ const createDirectionalLight = () => {
 	// const helper = new THREE.CameraHelper(light.shadow.camera)
 	// Scene.scene.add(helper)
 
-	const lightParams = gui.addFolder('directional light position')
-	lightParams.add(light.position, 'x', -40, 40, .1).listen().onChange(() => {
-		light.lookAt(new THREE.Vector3(0, 0, 0))
-	})
-	lightParams.add(light.position, 'y', -40, 40, .1).listen()
-	lightParams.add(light.position, 'z', -40, 40, .1).listen()
-	lightParams.add(light, 'intensity', -3, 3, .1).listen()
+	// const lightParams = gui.addFolder('directional light position')
+	// lightParams.add(light.position, 'x', -40, 40, .1).listen().onChange(() => {
+	// 	light.lookAt(new THREE.Vector3(0, 0, 0))
+	// })
+	// lightParams.add(light.position, 'y', -40, 40, .1).listen()
+	// lightParams.add(light.position, 'z', -40, 40, .1).listen()
+	// lightParams.add(light, 'intensity', -3, 3, .1).listen()
 }
 
 const createSpotLight = () => {
