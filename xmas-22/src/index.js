@@ -76,6 +76,10 @@ const modelsLib = [
 		id: 'cabinWindowLarge',
 		file: 'models/cabinWindowLarge.glb',
 	},
+	{
+		id: 'logo-CI&T',
+		file: 'models/logo-cit.glb',
+	},
 ]
 
 const main = () => {
