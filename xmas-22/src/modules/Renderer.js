@@ -15,14 +15,14 @@ const setRenderer = (userCamera, userScene) => {
 	renderer = new THREE.WebGLRenderer({
 		canvas,
 		antialias: true,
-		alpha: true,
+		// alpha: true,
 	})
 	renderer.setClearColor(0x000000)
 	renderer.shadowMap.enabled = true
 	renderer.outputEncoding = THREE.sRGBEncoding
-	renderer.toneMapping = THREE.CineonToneMapping
-	renderer.toneMappingExposure = .8
-	renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.toneMapping = THREE.ACESFilmicToneMapping
+	renderer.toneMappingExposure = 1.2
+	// renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	renderer.setSize(window.innerWidth, window.innerHeight, false)
 	renderer.xr.enabled = true
 	renderer.xr.addEventListener( 'sessionstart', onEnterVR)

@@ -14,7 +14,7 @@ const createScene = () => {
 	
 	// scene.fog = new THREE.FogExp2( 0xFFFFFF, 0.01 )
 	const texture = getAsset('background')
-	scene.background = texture
+	// scene.background = texture
 	scene.environment = texture
 	return scene
 }

@@ -21,9 +21,11 @@ const createCamera = () => {
 
 const setCameraControls = (camera, renderer) => {
 	orbitControls = new OrbitControls(camera, renderer.domElement)
+	// orbitControls.center = new THREE.Vector3(0, 0, 12)
 	// orbitControls.enabled = false
-	// orbitControls.minDistance = 2
-	// orbitControls.maxDistance = 12
+	orbitControls.enableDamping = true
+	// orbitControls.minDistance = -10
+	orbitControls.maxDistance = 12
 }
 
 export {

@@ -80,6 +80,22 @@ const modelsLib = [
 		id: 'logo-CI&T',
 		file: 'models/logo-cit.glb',
 	},
+	{
+		id: 'cabinRoofChimney',
+		file: 'models/cabinRoofChimney.glb',
+	},
+	{
+		id: 'bench',
+		file: 'models/bench.glb',
+	},
+	{
+		id: 'cabinRoofCenter',
+		file: 'models/cabinRoofCenter.glb',
+	},
+	{
+		id: 'snowPatch',
+		file: 'models/snowPatch.glb',
+	},	
 ]
 
 const main = () => {
@@ -114,6 +130,8 @@ const main = () => {
 
 	Builder.init(modelsLib)
 
+	
+
 	tick()
 
 	/**
@@ -132,16 +150,24 @@ const tick = () => {
 
 	Player.tick(delta)
 	Light.tick()
-
+	// Camera.camera.lookAt(0, 0, -12)
 	Renderer.tick()
 	Camera.orbitControls.update()
 
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-	await loadHDR('textures/aristea_wreck_puresky_1k.hdr').then(hdr => addAssetToCollection('background', hdr))
+	// await loadHDR('textures/aristea_wreck_puresky_1k.hdr').then(hdr => addAssetToCollection('background', hdr))
+	await loadHDR('textures/lauter_waterfall_1k.hdr').then(hdr => addAssetToCollection('background', hdr))
 	await loadTexture('textures/grass.jpg').then(texture => addAssetToCollection('grass', texture))
 	await loadTexture('textures/hills.jpg').then(texture => addAssetToCollection('hillsDisplacement', texture))
+	await loadTexture('textures/sky.jpg').then(texture => addAssetToCollection('sky', texture))
+	await loadTexture('textures/14487-diffuse.jpg').then(texture => addAssetToCollection('water', texture))
+	await loadTexture('textures/concrete/concrete_floor_worn_001_nor_gl_1k.jpg').then(texture => addAssetToCollection('concreteNormal', texture))
+	await loadTexture('textures/fabric/fabric_pattern_07_col_1_1k.jpg').then(texture => addAssetToCollection('fabricMap', texture))
+	await loadTexture('textures/fabric/fabric_pattern_07_nor_gl_1k.jpg').then(texture => addAssetToCollection('fabricNormal', texture))
+	await loadTexture('textures/fabric/fabric_pattern_07_rough_1k.jpg').then(texture => addAssetToCollection('fabricRoughness', texture))
+
 	for (let i=0; i<=modelsLib.length - 1; i++) {
 		await loadModel(modelsLib[i].file).then(model => addAssetToCollection(modelsLib[i].id, model))
 	}

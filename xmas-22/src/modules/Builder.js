@@ -306,7 +306,22 @@ const addObject = (item) => {
 	itemsCollection.push(model)
 	wrapper.add(model)
 	updateGuiWorldObjects()
+	if (item === 'logo-CI&T') {
+		customizeLogo(model)
+	}
 	return model
+}
+
+const customizeLogo = (item) => {
+	const materialFabric = new THREE.MeshStandardMaterial({
+		map: getAsset('fabricMap'),
+		normalMap: getAsset('fabricNormal'),
+		roughnessMap: getAsset('fabricRoughness'),
+	})
+	item.traverse((element) => {
+		element.material = materialFabric
+		console.log(element)
+	})
 }
 
 const onControlUpdate = (evt) => {
