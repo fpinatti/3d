@@ -35,6 +35,14 @@ const loadHDR = (file) => {
 	})
 }
 
+const loadJson = (file) => {
+	return new Promise(function(resolve) {
+		fetch(file)
+			.then((response) => response.json())
+			.then((data) => resolve(data))
+	})
+}
+
 const addAssetToCollection = (key, texture) => {
 	assetCollection[key] = texture
 }
@@ -47,6 +55,7 @@ export {
 	loadTexture,
 	loadModel,
 	loadHDR,
+	loadJson,
 	addAssetToCollection,
 	getAsset,
 }

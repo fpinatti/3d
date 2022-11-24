@@ -14,7 +14,7 @@ import * as THREE from 'three'
 import * as Scene from './modules/Scene'
 import * as Joystick from './modules/Joystick'
 import gsap from 'gsap'
-import { loadTexture, loadModel, loadHDR, addAssetToCollection, getAsset } from './modules/AssetLoader'
+import { loadTexture, loadModel, loadHDR, loadJson, addAssetToCollection, getAsset } from './modules/AssetLoader'
 let world
 let clock
 let smokeChimney
@@ -136,7 +136,8 @@ const main = () => {
 	Joystick.init()
 
 	Builder.init(modelsLib, false)
-	Builder.loadScene()
+	const levelInfo = JSON.stringify(getAsset('level'))
+	Builder.loadScene(levelInfo)
 	// Camera.cameraControl.enabled = true
 	buildChimney()
 	doCameraAnimation()
@@ -211,6 +212,7 @@ const tick = () => {
 
 window.addEventListener('DOMContentLoaded', async () => {
 	// await loadHDR('textures/aristea_wreck_puresky_1k.hdr').then(hdr => addAssetToCollection('background', hdr))
+	await loadJson('data/level.json').then(data => addAssetToCollection('level', data))
 	await loadHDR('textures/lauter_waterfall_1k.hdr').then(hdr => addAssetToCollection('background', hdr))
 	await loadTexture('textures/grass.jpg').then(texture => addAssetToCollection('grass', texture))
 	await loadTexture('textures/hills.jpg').then(texture => addAssetToCollection('hillsDisplacement', texture))

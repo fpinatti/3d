@@ -24,6 +24,10 @@ const config = {
 				type: 'asset/resource',
 			},
 			{
+				test: /\.(json)$/i,
+				type: 'asset/resource',
+			},
+			{
 				test: /\.(glsl|vs|fs|vert|frag)$/,
 				type: 'asset/source',
 				generator: {
