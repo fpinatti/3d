@@ -20,7 +20,7 @@ const init = () => {
 	// followCam.parent = model
 
 	vrCam = new THREE.Object3D()
-	vrCam.position.set(0, .3, -.5)
+	vrCam.position.set(0, -1, -4.5)
 	vrCam.rotation.y = Math.PI
 	const axesHelper = new THREE.AxesHelper()
 	vrCam.add(axesHelper)

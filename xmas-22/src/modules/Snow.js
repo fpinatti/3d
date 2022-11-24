@@ -2,9 +2,9 @@ import * as THREE from 'three'
 import * as Scene from './Scene'
 import gsap from 'gsap'
 
-const count = 100
-const radius = 20
-const particleSize = .2
+const count = 500
+const radius = 10
+const particleSize = .05
 const particleVariation = .5
 let mesh
 const gravity = .001
@@ -18,12 +18,10 @@ const windVariationX = .001
 
 const createParticles = (config) => {
 
-	const geometry = new THREE.BoxGeometry(.1, .1, .1)
-	// const geometry = new THREE.IcosahedronGeometry( 0.5, 3 )
-	// const material = new THREE.MeshBasicMaterial({
-	// 	color: 0xff0000,
-	// })
-	const material = new THREE.MeshNormalMaterial()
+	const geometry = new THREE.BoxGeometry(particleSize, particleSize, particleSize)
+	const material = new THREE.MeshBasicMaterial({
+		color: 0xffffff,
+	})
 	// const material = new THREE.MeshPhongMaterial({
 	// 	color: 0xffffff
 	// })
@@ -40,7 +38,7 @@ const createParticles = (config) => {
 		// )
 		matrix.setPosition(
 			(Math.random() * radius) - (radius * .5),
-			initialParticleY,
+			initialParticleY - (Math.random() * 2),
 			(Math.random() * radius) - (radius * .5),
 		)
 		matrix.multiplyScalar(1.2)

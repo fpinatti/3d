@@ -23,8 +23,8 @@ const createDirectionalLight = () => {
 	dirLight.shadow.mapSize.height = 1024
 	dirLight.position.set(5, 15, -20)
 	// dirLight.shadow.camera
-	const helper = new THREE.CameraHelper(dirLight.shadow.camera)
-	Scene.scene.add(helper)
+	// const helper = new THREE.CameraHelper(dirLight.shadow.camera)
+	// Scene.scene.add(helper)
 	Scene.scene.add(dirLight)
 }
 

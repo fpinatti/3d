@@ -12,7 +12,8 @@ const createCamera = () => {
 		0.01,
 		20000
 	)
-	camera.position.set(0, 1, 6)
+	// Scene.scene.add(camera)
+	// camera.position.set(0, 0, 0)
 	// camera.lookAt(0, 0, -10)
 	// camera.position.x = -.1
 	// const helper = new THREE.CameraHelper(camera)

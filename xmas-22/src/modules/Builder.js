@@ -19,13 +19,15 @@ let objectList
 let modelSelected
 let control
 let sceneObjects
+let isEnabled
 // const gui = new GUI({
 // 	name: 'Level Builder',
 // 	useLocalStorage: true,
 // })
 
-const init = (modelsLib) => {
+const init = (modelsLib, enabled) => {
 
+	isEnabled = enabled
 	/**
 	 * World objects
 	 */
@@ -36,12 +38,16 @@ const init = (modelsLib) => {
 		option.text = item.id
 		objectList.appendChild(option)
 	})
-	
-	control = new TransformControls( Camera.camera, Renderer.renderer.domElement )
-	Scene.scene.add(control)
+
+	if (isEnabled) {
+		control = new TransformControls( Camera.camera, Renderer.renderer.domElement )
+		Scene.scene.add(control)
+		addListeners()
+		const ui = document.querySelector('.builder')
+		ui.classList.add('d-flex')
+	}
+
 	Scene.scene.add(wrapper)
-	
-	addListeners()
 
 }
 
@@ -61,8 +67,8 @@ const saveScene = () => {
 	localStorage.setItem('sceneInfo', JSON.stringify(sceneInfo))
 }
 
-const loadScene = () => {
-	const sceneInfo = localStorage.getItem('sceneInfo')
+const loadScene = (jsonData) => {
+	const sceneInfo = jsonData || localStorage.getItem('sceneInfo')
 	const sceneInfoObj = JSON.parse(sceneInfo)
 	sceneInfoObj.objects.forEach((element) => {
 		const model = addObject(element.model)
@@ -86,6 +92,7 @@ const loadScene = () => {
 }
 
 const updateGuiWorldObjects = () => {
+	if (!isEnabled) return
 	/**
 	 * Added objects
 	*/
@@ -97,31 +104,11 @@ const updateGuiWorldObjects = () => {
 	})
 
 	itemsCollection.forEach((element, index) => {
-		// modelCollection[element.userData.modelId+index] = element.name
 		const option = document.createElement('option')
 		option.value = element.name
 		option.text = element.userData.modelId+index
 		sceneObjects.appendChild(option)
 	})
-	// modelsLib.forEach((item) => {
-	// 	const option = document.createElement('option')
-	// 	option.value = item.id
-	// 	option.text = item.id
-	// 	objectList.appendChild(option)
-	// })
-	// const addedObjects = {
-	// 	addedObject: {}
-	// }
-	// const modelCollection = {}
-	// itemsCollection.forEach((element, index) => {
-	// 	modelCollection[element.userData.modelId+index] = element.name
-	// })
-	// gui.add(addedObjects, 'addedObject', modelCollection)
-	// 	.onChange((value) => {
-	// 		modelSelected = wrapper.getObjectByName(value)
-	// 		control.attach(modelSelected)
-	// 	})
-	// wrapper
 }
 
 const addListeners = () => {
@@ -306,10 +293,46 @@ const addObject = (item) => {
 	itemsCollection.push(model)
 	wrapper.add(model)
 	updateGuiWorldObjects()
+	// console.log(item)
+	if (item === 'cabinDoor' || item === 'cabinWindowLarge') {
+		model.traverse((element) => {
+			if (element.isMesh) {
+				// console.log('>>', element.name)
+				if (element.name === 'Mesh_door_2' || element.name === 'Mesh_frame') {
+					blinkLights(element)
+				}
+				// element.material.wireframe = true
+				// element.material.needsUpdate = true
+			}
+		})
+	}
 	if (item === 'logo-CI&T') {
 		customizeLogo(model)
 	}
 	return model
+}
+
+const blinkLights = (element) => {
+
+	element.material.emissive = new THREE.Color(0xffff00)
+	element.material.emissiveIntensity = 1
+
+	const tl = gsap.timeline({
+		repeat: -1
+	})
+	tl.to(element.material, {
+		emissiveIntensity: 3, 
+		duration: 2,
+	})
+	tl.to(element.material, {
+		emissiveIntensity: .2, 
+		duration: .4,
+	})
+	tl.to(element.material, {
+		emissiveIntensity: 2, 
+		duration: 1,
+	})
+
 }
 
 const customizeLogo = (item) => {
@@ -319,8 +342,10 @@ const customizeLogo = (item) => {
 		roughnessMap: getAsset('fabricRoughness'),
 	})
 	item.traverse((element) => {
-		element.material = materialFabric
-		console.log(element)
+		if (element.isMesh && element.name !== 'figure_8') {
+			element.material = materialFabric
+		}
+		// console.log(element)
 	})
 }
 
@@ -377,4 +402,5 @@ const tick = (delta) => {
 export {
 	init,
 	tick,
+	loadScene,
 }

@@ -8,14 +8,19 @@ import * as Sky from './modules/Sky'
 import * as Ground from './modules/Ground'
 import * as Snow from './modules/Snow'
 import * as Builder from './modules/Builder'
+import * as Smoke from './modules/Smoke'
 import * as Pointer from './modules/Pointer'
 import * as THREE from 'three'
 import * as Scene from './modules/Scene'
 import * as Joystick from './modules/Joystick'
+import gsap from 'gsap'
 import { loadTexture, loadModel, loadHDR, addAssetToCollection, getAsset } from './modules/AssetLoader'
 let world
 let clock
+let smokeChimney
 let followCam
+let camLookTarget = new THREE.Object3D()
+
 const modelsLib = [
 	{
 		id: 'treePine',
@@ -108,7 +113,7 @@ const main = () => {
 	
 	// renderer
 	const render = Renderer.setRenderer(Camera.camera, scene)
-	Camera.setCameraControls(Camera.camera, render)
+	// Camera.setCameraControls(Camera.camera, render)
     
 	// lights
 	Light.init()
@@ -130,9 +135,11 @@ const main = () => {
 
 	Joystick.init()
 
-	Builder.init(modelsLib)
-
-	
+	Builder.init(modelsLib, false)
+	Builder.loadScene()
+	// Camera.cameraControl.enabled = true
+	buildChimney()
+	doCameraAnimation()
 
 	tick()
 
@@ -143,19 +150,62 @@ const main = () => {
 
 }
 
+const doCameraAnimation = () => {
+	// const helper = new THREE.AxesHelper()
+	camLookTarget.position.set(0, 5, -8)
+	// camLookTarget.add(helper)
+	Scene.scene.add(camLookTarget)
+	const duration = 20
+
+	const camera = Camera.camera
+	camera.position.set(0, 5, 0)
+	camera.rotation.set(Math.PI * .2, 0, 0)
+	// camera.lookAt(camLookTarget)
+
+	const tl = gsap.timeline()
+	tl.to(camera.position, {
+		y: 1, 
+		duration,
+	})
+	tl.to(camera.position, {
+		x: .5,
+		z: -1.5, 
+		duration,
+	}, '<')
+	tl.to(camera.rotation, {
+		x: 0,
+		duration,
+	}, '<')
+
+}
+
+const buildChimney = () => {
+	const geo = new THREE.BoxGeometry(.2, .2, .2)
+	const mat = new THREE.MeshStandardMaterial({
+		color: 0xffffff,
+	})
+	const mesh = new THREE.Mesh(geo, mat)
+	mesh.position.set(-.2, 1.3, -4.4)
+	Scene.scene.add(mesh)
+	smokeChimney = Smoke.createParticles()
+	smokeChimney.position.set(-.2, 1.3, -4.4)
+	Scene.scene.add(smokeChimney)
+}
+
 const tick = () => {
 	requestAnimationFrame(() => {
 		tick()
 	})
 
 	const delta = clock.getElapsedTime()
-
+	
+	Camera.camera.lookAt(0, 0, -10)
+	Smoke.tick()
 	Player.tick(delta)
 	Light.tick()
-	// Camera.camera.lookAt(0, 0, -12)
 	Snow.tick()
 	Renderer.tick()
-	Camera.cameraControl.update()
+	// Camera.cameraControl.update()
 
 }
 
@@ -174,6 +224,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 	for (let i=0; i<=modelsLib.length - 1; i++) {
 		await loadModel(modelsLib[i].file).then(model => addAssetToCollection(modelsLib[i].id, model))
 	}
+	const htmlBody = document.querySelector('body')
+	htmlBody.classList.add('ready')
 	// await loadModel('models/treePine.glb').then(model => addAssetToCollection('treePine', model))
 	// await loadModel('models/treePineSnow.glb').then(model => addAssetToCollection('treePineSnow', model))
 	// await loadModel('models/treePineSnowed.glb').then(model => addAssetToCollection('treePineSnowed', model))
