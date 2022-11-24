@@ -128,8 +128,8 @@ const addListeners = () => {
 	document.addEventListener( 'click', onClickScreen)
 	control.addEventListener('change', onControlUpdate)
 	control.addEventListener('dragging-changed', (evt) => {
-		Camera.orbitControls.enabled = !evt.value
-		console.log(control.object)
+		Camera.cameraControl.enabled = !evt.value
+		// console.log(control.object)
 		// if (evt.value) {
 		// 	console.log('set history')
 		// 	const currentSel = control.object

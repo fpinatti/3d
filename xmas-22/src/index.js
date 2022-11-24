@@ -6,6 +6,7 @@ import * as Renderer from './modules/Renderer'
 import * as Player from './modules/Player'
 import * as Sky from './modules/Sky'
 import * as Ground from './modules/Ground'
+import * as Snow from './modules/Snow'
 import * as Builder from './modules/Builder'
 import * as Pointer from './modules/Pointer'
 import * as THREE from 'three'
@@ -125,6 +126,7 @@ const main = () => {
 	Ground.init()
 
 	Sky.init()
+	Snow.createParticles()
 
 	Joystick.init()
 
@@ -151,8 +153,9 @@ const tick = () => {
 	Player.tick(delta)
 	Light.tick()
 	// Camera.camera.lookAt(0, 0, -12)
+	Snow.tick()
 	Renderer.tick()
-	Camera.orbitControls.update()
+	Camera.cameraControl.update()
 
 }
 
