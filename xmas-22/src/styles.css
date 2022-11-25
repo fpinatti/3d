@@ -89,6 +89,13 @@ canvas {
 	background-color: black;
     border: 0;
     border-radius: 100px;
+	left: auto !important;
+    right: 0 !important;
+    margin-right: 20px;
+	padding: 10px !important;
+    border-radius: 100px !important;
+	width: auto !important;
+	font-size: 16px !important;
 }
 
 .builder {

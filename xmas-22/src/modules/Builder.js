@@ -45,6 +45,8 @@ const init = (modelsLib, enabled) => {
 		addListeners()
 		const ui = document.querySelector('.builder')
 		ui.classList.add('d-flex')
+	} else {
+		document.addEventListener( 'mousemove', onMouseMove)
 	}
 
 	Scene.scene.add(wrapper)
@@ -294,12 +296,17 @@ const addObject = (item) => {
 	wrapper.add(model)
 	updateGuiWorldObjects()
 	// console.log(item)
-	if (item === 'cabinDoor' || item === 'cabinWindowLarge') {
+	if (item === 'cabinDoor' ||
+		item === 'cabinWindowLarge' ||
+		item === 'lightsRed') {
 		model.traverse((element) => {
 			if (element.isMesh) {
 				// console.log('>>', element.name)
 				if (element.name === 'Mesh_door_2' || element.name === 'Mesh_frame') {
 					blinkLights(element)
+				}
+				if (element.name === 'Mesh_lightsRed_1') {
+					xmasLight(element)
 				}
 				// element.material.wireframe = true
 				// element.material.needsUpdate = true
@@ -310,6 +317,25 @@ const addObject = (item) => {
 		customizeLogo(model)
 	}
 	return model
+}
+
+const xmasLight = (element) => {
+	element.material.emissive = new THREE.Color(0xff0000)
+	element.material.emissiveIntensity = 1
+
+	const tl = gsap.timeline({
+		repeat: -1,
+		repeatDelay: 1,
+	})
+	tl.to(element.material, {
+		emissiveIntensity: 10, 
+		duration: 1,
+	})
+	tl.to(element.material, {
+		emissiveIntensity: 1,
+		duration: 1,
+	})
+
 }
 
 const blinkLights = (element) => {
@@ -360,6 +386,13 @@ const onControlUpdate = (evt) => {
 // 	} while (currentElement.name.indexOf('MODEL__') >= 0)
 // 	return currentElement
 // }
+
+const onMouseMove = (evt) => {
+	mouse.x = ( evt.clientX / window.innerWidth ) * 2 - 1
+	mouse.y = - ( evt.clientY / window.innerHeight ) * 2 + 1
+	Camera.camera.rotation.y = mouse.x * -.2
+	Camera.camera.rotation.x = mouse.y * -.1
+}
 
 const onClickScreen = (evt) => {
 	mouse.x = ( evt.clientX / window.innerWidth ) * 2 - 1

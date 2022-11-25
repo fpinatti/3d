@@ -65,7 +65,10 @@ const tick = () => {
 			pos.x -= particleSpeeds[snowIdx].x
 			pos.y -= particleSpeeds[snowIdx].y
 			if (pos.y < -1) {
+				pos.x = (Math.random() * radius) - (radius * .5)
 				pos.y = initialParticleY
+				pos.z = 	(Math.random() * radius) - (radius * .5)
+
 			}
 			currentParticleMatrix.makeRotationFromEuler(
 				new THREE.Euler(pos.y, pos.y, pos.y)

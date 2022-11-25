@@ -142,6 +142,11 @@ const main = () => {
 	buildChimney()
 	doCameraAnimation()
 
+	const vrButton = document.querySelector('#VRButton')
+	setTimeout(() => {
+		vrButton.textContent = '🎥'
+	}, 200)
+
 	tick()
 
 	/**
@@ -199,8 +204,7 @@ const tick = () => {
 	})
 
 	const delta = clock.getElapsedTime()
-	
-	Camera.camera.lookAt(0, 0, -10)
+	// Camera.camera.lookAt(0, 0, -10)
 	Smoke.tick()
 	Player.tick(delta)
 	Light.tick()
@@ -228,33 +232,5 @@ window.addEventListener('DOMContentLoaded', async () => {
 	}
 	const htmlBody = document.querySelector('body')
 	htmlBody.classList.add('ready')
-	// await loadModel('models/treePine.glb').then(model => addAssetToCollection('treePine', model))
-	// await loadModel('models/treePineSnow.glb').then(model => addAssetToCollection('treePineSnow', model))
-	// await loadModel('models/treePineSnowed.glb').then(model => addAssetToCollection('treePineSnowed', model))
-	// await loadModel('models/treeDecorated.glb').then(model => addAssetToCollection('treeDecorated', model))
-	// await loadModel('models/snowFort.glb').then(model => addAssetToCollection('snowFort', model))
-	// await loadModel('models/snowmanFancy.glb').then(model => addAssetToCollection('snowmanFancy', model))
-	// await loadModel('models/rockFormationLarge.glb').then(model => addAssetToCollection('rockFormationLarge', model))
-	// await loadModel('models/present.glb').then(model => addAssetToCollection('present', model))
-	// await loadModel('models/lightsRed.glb').then(model => addAssetToCollection('lightsRed', model))
-	// await loadModel('models/candyCane.glb').then(model => addAssetToCollection('candyCane', model))
-	// await loadModel('models/cabinFloor.glb').then(model => addAssetToCollection('cabinFloor', model))
-	// await loadModel('models/cabinRoofFlat.glb').then(model => addAssetToCollection('cabinRoofFlat', model))
-	// await loadModel('models/cabinWall.glb').then(model => addAssetToCollection('cabinWall', model))
-	// await loadModel('models/cabinDoor.glb').then(model => addAssetToCollection('cabinDoor', model))
-	// await loadModel('models/cabinWindowLarge.glb').then(model => addAssetToCollection('cabinWindowLarge', model))
-
-	// await loadModel('models/construction_light.glb').then(model => addAssetToCollection('construction_light', model))
-	// await loadModel('models/construction_pylon.glb').then(model => addAssetToCollection('construction_pylon', model))
-	// await loadModel('models/garbageTruck.glb').then(model => addAssetToCollection('garbageTruck', model))
-	// await loadModel('models/light_curved.glb').then(model => addAssetToCollection('light_curved', model))
-	// await loadModel('models/police.glb').then(model => addAssetToCollection('police', model))
-	// await loadModel('models/garbageTruck.glb').then(model => addAssetToCollection('garbageTruck', model))
-	// await loadModel('models/road_bend.glb').then(model => addAssetToCollection('road_bend', model))
-	// await loadModel('models/road_curve.glb').then(model => addAssetToCollection('road_curve', model))
-	// await loadModel('models/road_end.glb').then(model => addAssetToCollection('road_end', model))
-	// await loadModel('models/road_slant.glb').then(model => addAssetToCollection('road_slant', model))
-	// await loadModel('models/road_split.glb').then(model => addAssetToCollection('road_split', model))
-	// await loadModel('models/road_straight.glb').then(model => addAssetToCollection('road_straight', model))
 	main()
 })
