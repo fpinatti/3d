@@ -12,9 +12,18 @@ import * as Smoke from './modules/Smoke'
 import * as Pointer from './modules/Pointer'
 import * as THREE from 'three'
 import * as Scene from './modules/Scene'
+import * as Text from './modules/Text'
 import * as Joystick from './modules/Joystick'
 import gsap from 'gsap'
-import { loadTexture, loadModel, loadHDR, loadJson, addAssetToCollection, getAsset } from './modules/AssetLoader'
+import { 
+	loadTexture,
+	loadModel,
+	loadHDR,
+	loadJson,
+	loadFont,
+	addAssetToCollection,
+	getAsset
+} from './modules/AssetLoader'
 let world
 let clock
 let smokeChimney
@@ -147,6 +156,13 @@ const main = () => {
 		vrButton.textContent = '🎥'
 	}, 200)
 
+	const params = new Proxy(new URLSearchParams(window.location.search), {
+		get: (searchParams, prop) => searchParams.get(prop),
+	})
+	const t = params.n
+
+	Text.init(t)
+
 	tick()
 
 	/**
@@ -215,10 +231,9 @@ const tick = () => {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-	// await loadHDR('textures/aristea_wreck_puresky_1k.hdr').then(hdr => addAssetToCollection('background', hdr))
 	await loadJson('data/level.json').then(data => addAssetToCollection('level', data))
+	await loadFont('fonts/JosefinSans-Bold.ttf').then(font => addAssetToCollection('mainFont', font))
 	await loadHDR('textures/lauter_waterfall_1k.hdr').then(hdr => addAssetToCollection('background', hdr))
-	await loadTexture('textures/grass.jpg').then(texture => addAssetToCollection('grass', texture))
 	await loadTexture('textures/hills.jpg').then(texture => addAssetToCollection('hillsDisplacement', texture))
 	await loadTexture('textures/sky.jpg').then(texture => addAssetToCollection('sky', texture))
 	await loadTexture('textures/14487-diffuse.jpg').then(texture => addAssetToCollection('water', texture))
@@ -226,7 +241,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 	await loadTexture('textures/fabric/fabric_pattern_07_col_1_1k.jpg').then(texture => addAssetToCollection('fabricMap', texture))
 	await loadTexture('textures/fabric/fabric_pattern_07_nor_gl_1k.jpg').then(texture => addAssetToCollection('fabricNormal', texture))
 	await loadTexture('textures/fabric/fabric_pattern_07_rough_1k.jpg').then(texture => addAssetToCollection('fabricRoughness', texture))
-
+	await loadTexture('textures/snow_matcap.png').then(texture => addAssetToCollection('snowMatcap', texture))
+	await loadTexture('textures/red_matcap.png').then(texture => addAssetToCollection('red_matcap', texture))
 	for (let i=0; i<=modelsLib.length - 1; i++) {
 		await loadModel(modelsLib[i].file).then(model => addAssetToCollection(modelsLib[i].id, model))
 	}

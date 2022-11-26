@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { RGBELoader} from 'three/examples/jsm/loaders/RGBELoader'
+import { Font } from 'three/examples/jsm/loaders/FontLoader'
+import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader'
 
 const loader = new THREE.TextureLoader()
 const assetCollection = {}
@@ -21,6 +23,15 @@ const loadModel = (file) => {
 	return new Promise(function(resolve) {
 		loader.load(file, function (gltf) {
 			resolve(gltf)
+		})
+	})
+}
+
+const loadFont = (file) => {
+	const loader = new TTFLoader()
+	return new Promise(function(resolve) {
+		loader.load(file, function (json) {
+			resolve(new Font(json))
 		})
 	})
 }
@@ -56,6 +67,7 @@ export {
 	loadModel,
 	loadHDR,
 	loadJson,
+	loadFont,
 	addAssetToCollection,
 	getAsset,
 }

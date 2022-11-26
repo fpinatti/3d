@@ -22,8 +22,8 @@ const init = () => {
 	vrCam = new THREE.Object3D()
 	vrCam.position.set(0, -1, -4.5)
 	vrCam.rotation.y = Math.PI
-	const axesHelper = new THREE.AxesHelper()
-	vrCam.add(axesHelper)
+	// const axesHelper = new THREE.AxesHelper()
+	// vrCam.add(axesHelper)
 	model.add(vrCam)
 
 	addListeners()

@@ -3,21 +3,16 @@ import * as THREE from 'three'
 import { getAsset } from './AssetLoader'
 
 const init = () => {
-	const texture = getAsset('grass')
+	const texture = getAsset('snowMatcap')
 	texture.repeat = new THREE.Vector2(10, 10)
-	texture.wrapT = THREE.MirroredRepeatWrapping
-	texture.wrapS = THREE.MirroredRepeatWrapping
+	// texture.wrapT = THREE.MirroredRepeatWrapping
+	// texture.wrapS = THREE.MirroredRepeatWrapping
 	const displaceTexture = getAsset('hillsDisplacement')
 	const geometry = new THREE.PlaneGeometry(40, 40, 10, 10)
-	const material = new THREE.MeshStandardMaterial({
-		// map: texture,
-		// wireframe: true,
-		envMapIntensity: .2,
-		// color: 0xffffff,
+	const material = new THREE.MeshMatcapMaterial({
 		displacementMap: displaceTexture,
-		displacementScale: 15,
-		displacementBias: -13,
-		side: THREE.DoubleSide,
+		displacementScale: 1,
+		displacementBias: -1,
 	})
 	const ground = new THREE.Mesh(geometry, material)
 	ground.rotation.set(Math.PI * 1.5, 0, 0)

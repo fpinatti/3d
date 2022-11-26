@@ -26,6 +26,7 @@ const createParticles = (config) => {
 	// 	color: 0xffffff
 	// })
 	mesh = new THREE.InstancedMesh(geometry, material, count)
+	mesh.castShadow = true
 
 
 	const matrix = new THREE.Matrix4()
