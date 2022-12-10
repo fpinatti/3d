@@ -1,4 +1,9 @@
 import * as THREE from 'three'
+import * as Scene from './Scene'
+import * as Camera from './Camera'
+import * as Head from './Head'
+import * as VrController from './VrController'
+import { VRButton } from 'three/examples/jsm/webxr/VRButton'
 
 let camera
 let scene
@@ -15,9 +20,21 @@ const setRenderer = (userCamera, userScene) => {
 	})
 	renderer.setClearColor(0x000000)
 	renderer.shadowMap.enabled = true
-	// renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap
 	renderer.setSize(window.innerWidth, window.innerHeight, false)
+	renderer.xr.enabled = true
+	renderer.xr.addEventListener( 'sessionstart', onEnterVR)
+	document.body.appendChild(VRButton.createButton(renderer))
 	return renderer
+}
+
+const onEnterVR = () => {
+	Head.vrCam.add(Camera.camera)
+	VrController.init()
+}
+
+const renderVr = () => {
+	renderer.render(Scene.scene, Camera.camera)
 }
 
 const onWindowResize = () => {
@@ -34,6 +51,10 @@ const onWindowResize = () => {
 }
 
 const tick = () => {
+	if (renderer.xr.isPresenting) {
+		renderer.setAnimationLoop(renderVr)
+		return
+	}
 	renderer.render(scene, camera)
 }
 
@@ -43,5 +64,6 @@ window.addEventListener('resize', () => {
 
 export {
 	setRenderer,
+	renderer,
 	tick,
 }

@@ -17,7 +17,7 @@ const init = () => {
 		envMapIntensity: .2,
 	})
 	model = new THREE.Mesh(groundGeo, groundMat)
-	Scene.scene.add(model)
+	// Scene.scene.add(model)
 	model.receiveShadow = true
 	model.position.y = -.1
 	model.rotation.set(Math.PI * 1.5, 0, 0)

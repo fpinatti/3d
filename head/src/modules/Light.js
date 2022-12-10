@@ -10,18 +10,18 @@ const createAmbientLight = () => {
 }
 
 const createDirectionalLight = () => {
-	dirLight = new THREE.SpotLight( 0xffffff, 1, 50, 3 )
+	dirLight = new THREE.SpotLight( 0xffffff, 1, 50, 23, 1)
 	dirLight.castShadow = true
-	dirLight.shadow.bias = .012
-	dirLight.shadow.camera.top = 50
-	dirLight.shadow.camera.bottom = -50
-	dirLight.shadow.camera.left = -50
-	dirLight.shadow.camera.right = 50
-	dirLight.shadow.mapSize.width = 512
-	dirLight.shadow.mapSize.height = 512
+	// dirLight.shadow.bias = .012
+	// dirLight.shadow.camera.top = 50
+	// dirLight.shadow.camera.bottom = -50
+	// dirLight.shadow.camera.left = -50
+	// dirLight.shadow.camera.right = 50
+	dirLight.shadow.mapSize.width = 1024
+	dirLight.shadow.mapSize.height = 1024
 	dirLight.position.set(2, 30, 0)
-	const helper = new THREE.SpotLightHelper(dirLight)
-	Scene.scene.add(helper)
+	// const helper = new THREE.SpotLightHelper(dirLight)
+	// Scene.scene.add(helper)
 	Scene.scene.add(dirLight)
 }
 

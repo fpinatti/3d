@@ -11,6 +11,7 @@ import ColorPicker from 'simple-color-picker'
 
 // const raycaster = new THREE.Raycaster()
 // const mouse = new THREE.Vector2()
+const vrCam = new THREE.Object3D()
 const model = new THREE.Group()
 const materialAvatar = new THREE.MeshStandardMaterial({
 	color: 0xd6b685,
@@ -30,6 +31,8 @@ const init = () => {
 	// head.position.y = -8
 	head.traverse((child) => {
 		if (child.isMesh) {
+			child.castShadow = true
+			child.receiveShadow = true
 			if (child.name === 'Hairstyle_001') {
 				child.material = materialHair
 			}
@@ -39,12 +42,11 @@ const init = () => {
 			if (child.name === 'Eyelashes') {
 				child.material = materialEyelashes
 			}
-			console.log(child)
 		}
 	})
 	head.scale.set(8, 8, 8)
-	head.castShadow = true
-	model.castShadow = true
+	// head.castShadow = true
+	// model.castShadow = true
 	model.add(head)
 
 	Scene.scene.add(model)
@@ -70,6 +72,14 @@ const init = () => {
 	colorPickerAvatar.onChange(() => {
 		materialAvatar.color = new THREE.Color(colorPickerAvatar.getHexNumber())
 	})
+
+	vrCam.position.set(0, 10, 15)
+
+	// const box = new THREE.BoxGeometry(3, 3, 3, 3, 3)
+	// const g1 = new THREE.Mesh(box, materialAvatar)
+	// g1.position.set(0, 8, 4)
+	// g1.castShadow = true
+	// Scene.scene.add(g1)
 	// colorPicker.appendTo('.color-picker')
 }
 
@@ -77,5 +87,6 @@ const init = () => {
 export {
 	init,
 	model,
+	vrCam,
 	// tick,
 }

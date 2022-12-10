@@ -5,8 +5,10 @@ import * as Camera from './modules/Camera'
 import * as Light from './modules/Light'
 import * as Renderer from './modules/Renderer'
 import * as Head from './modules/Head'
+import * as VrController from './modules/VrController'
 import * as Ground from './modules/Ground'
 import * as Scene from './modules/Scene'
+import * as THREE from 'three'
 import { loadTexture, loadModel, loadHDR, addAssetToCollection, getAsset } from './modules/AssetLoader'
 
 const main = () => {
@@ -38,6 +40,11 @@ const main = () => {
 	tick()
 
 	/**
+	 * Vr controller
+	 */
+	// VrController.init()
+
+	/**
 	 * Pointer
 	 */
 	// Pointer.init()
@@ -51,9 +58,11 @@ const tick = () => {
 
 	// Car.tick()
 	Light.tick()
-	// const vec = Camera.camera.position.copy(Car.dummy.position)
+	const vec = new THREE.Vector3()
+	Head.model.position.copy(vec)
+	vec.y = 10
 	// const targCam = new THREE.Vector3(vec.x, vec.y, vec.z)
-	Camera.camera.lookAt(Head.model.position)
+	Camera.camera.lookAt(vec)
 	// Camera.camera.position.lerpVectors(Camera.camera.position, targCam, .5)
 
 	// physicsDebugger.update()
