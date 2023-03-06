@@ -26,7 +26,9 @@ function CustomGeometry() {
 
 
 	return (
-		<mesh>
+		<mesh
+			castShadow
+		>
 			<bufferGeometry
 				ref={ geometryRef }
 			>
