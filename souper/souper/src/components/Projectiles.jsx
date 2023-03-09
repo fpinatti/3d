@@ -1,40 +1,40 @@
 import { Center, Clone, PivotControls, TransformControls, useGLTF } from "@react-three/drei"
-import { CuboidCollider, RigidBody } from "@react-three/rapier"
+import { CuboidCollider, BallCollider, RigidBody } from "@react-three/rapier"
 import { useEffect, useRef, useState } from "react"
 
 function Projectile(props) {
-	// <Clone object={ projectileModel.scene } />
 
 	const body = useRef(null)
 
 	useEffect(() => {
-		// console.log(props)
-		body.current.applyImpulse({x: .034, y: .06, z: 0}, false)
-		// body.current.applyTorqueImpulse({ x: 0, y: 0, z: .1 }, true)
+		if (props.direction) {
+			const strength = {x: .306, y: props.direction[0] * .45, z: props.direction[1] * -.31}
+			body.current.applyImpulse(strength, false)
+		}
 	}, [body])
 
 	const onCollision = (collision) => {
-		console.log(collision)
+		// console.log(collision)
 	}
 
 	return (
 		<RigidBody
 			ref={ body }
 			rotation={ [0, Math.PI * -.5, 0] }
-			position={ [-3, .5, 0] }
-			mass={ 1 }
+			position={ [-2.7, .4, 0] }
 			colliders={ false }
 			onIntersectionEnter={ onCollision }
-			userData={ {type: 'carrot'} }
+			angularDamping={ 1 }
+			linearDamping={ .2 }
+			// userData={ {type: 'carrot'} }
 		>
-			<Clone object={ props.model } />
-			{/* <mesh scale={ .2 }>
-				<sphereGeometry />
-				<meshBasicMaterial />
-			</mesh> */}
-			<CuboidCollider
-				args={ [.1, .1, .1]}
-				restitution={ 1 }
+			<Center>
+				<Clone object={ props.model } scale={ 2.5 } />
+			</Center>
+			<BallCollider
+				args={ [.2]}
+				restitution={ 0 }
+				mass={ 1 }
 			/>
 		</RigidBody>
 	)
@@ -43,42 +43,30 @@ function Projectile(props) {
 export default function Projectiles(props) {
 
 	const [projectiles, setProjectiles] = useState([])
-	const projectileModel = useGLTF('./assets/models/carrot.gltf')
+	const projectileModel = useGLTF('./assets/models/cannon-ball.gltf')
 
 	const destroyProjectile = (id) => {
 		const filtered = projectiles.filter((item) => {
 			return item.props.id !== id
 		})
 		setProjectiles(filtered)
-		// console.log(filtered)
-		// console.log('destroy projectile', id)
 	}
 	const createProjectile = () => {
+		if (!props.nextProjectileDirection) return
 		const id = Math.random();
 		setProjectiles([
 			...projectiles,
-			<Projectile key={ id } model={ projectileModel.scene } />,
+			<Projectile key={ id } model={ projectileModel.scene } direction={ props.nextProjectileDirection } />,
 		])
 	}
+
+	useEffect(() => {
+		createProjectile()
+	}, [props.nextProjectileDirection])
 	
 	return (
 		<>
-			<mesh onClick={ createProjectile } position={ [-3, 3, 0] }>
-				<boxGeometry />
-				<meshNormalMaterial />
-			</mesh>
 			{[ ...projectiles ]}
-			{/* {[ ...projectiles ]}
-			<RigidBody
-				rotation={ [0, Math.PI * -.5, 0] }
-				position={ [-3, .5, 0] }
-				ref={ body }
-				mass={ 1 }
-				userData={ {type: 'carrot', onCollision: props.whenCollide, id: props.id } }
-			>
-			
-				<Clone object={ projectileModel.scene } />
-			</RigidBody> */}
 		</>
 	)
 }

@@ -7,10 +7,14 @@ export default function Ground() {
 			type='fixed'
 			restitution={ 0 }
 		>
-			<mesh>
-				<boxGeometry args={ [10, .2, 10] } />
+			<mesh position={ [-5, -.5, 0] }>
+				<boxGeometry args={ [20, .1, 10] } />
 				<meshNormalMaterial />
 			</mesh>
+			{/* <mesh position={ [15, -5, 0] }>
+				<boxGeometry args={ [20, .2, 10] } />
+				<meshNormalMaterial />
+			</mesh> */}
 		</RigidBody>
 	)
 }

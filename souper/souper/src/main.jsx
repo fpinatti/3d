@@ -1,6 +1,6 @@
 import { Environment } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import Camera from './components/Camera'
@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
 	<Canvas
 		camera={{
-			position: [0, 2, 5],
+			position: [4, 12, 3],
 		}}
 	>
 		<Environment preset='forest' />
