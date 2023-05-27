@@ -20,6 +20,6 @@ jobs:
 
     - name: Build
       run: |
-        echo {{ env.CUSTOM_PATH }}
+        echo ${{ vars.CUSTOM_PATH }}
         npm install
         npx webpack
