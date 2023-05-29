@@ -20,7 +20,7 @@ jobs:
 
     - name: Build
       run: |
-        echo ${{ env.bottler }}
+        echo ${{ github.event.inputs.bottler }}
         node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
         echo ${{ vars.CUSTOM_PATH }}
         npm install
