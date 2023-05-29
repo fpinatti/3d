@@ -9,9 +9,29 @@ on:
           default: ''
 
 jobs:
-  build:
+  build-dev:
+    name: 'BUILD DEV'
     runs-on: ubuntu-latest
     environment: qa-test
+    steps:
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.0
+
+    - name: Build
+      run: |
+        echo ${{ github.event.inputs.bottler }}
+        node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
+        echo ${{ vars.CUSTOM_PATH }}
+        npm install
+        npx webpack
+        
+  build-qa:
+    name: 'BUILD QA'
+    needs: build-dev
+    runs-on: ubuntu-latest
+    environment: prod-test
     steps:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
