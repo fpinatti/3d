@@ -8,8 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: qa-test
     steps:
-    - uses: actions/checkout@v3
-
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -17,6 +15,7 @@ jobs:
 
     - name: Build
       run: |
+        node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
         echo ${{ vars.CUSTOM_PATH }}
         npm install
         npx webpack
