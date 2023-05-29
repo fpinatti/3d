@@ -1,4 +1,4 @@
-name: NodeJS with Webpack
+name: Test environments
 
 on:
   workflow_dispatch:
