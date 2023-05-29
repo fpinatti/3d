@@ -2,6 +2,11 @@ name: Test environments
 
 on:
   workflow_dispatch:
+    inputs:
+        bottler:
+          description: 'Bottler id'
+          required: true
+          default: ''
 
 jobs:
   build:
@@ -15,6 +20,7 @@ jobs:
 
     - name: Build
       run: |
+        echo ${{ env.bottler }}
         node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
         echo ${{ vars.CUSTOM_PATH }}
         npm install
