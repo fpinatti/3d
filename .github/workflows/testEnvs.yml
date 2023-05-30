@@ -26,11 +26,11 @@ jobs:
     - name: Build
       run: |
         echo ${{ github.event.inputs.bottler }}
-        node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
+        #node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
         echo ${{ env.CUSTOM_PATH1 }}
         echo ${{ env.IN_BOTTLER }}
-        npm install
-        npx webpack
+        #npm install
+        #npx webpack
         
   build-qa:
     name: 'BUILD QA'
@@ -46,7 +46,7 @@ jobs:
     - name: Build
       run: |
         echo ${{ github.event.inputs.bottler }}
-        node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
+        #node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
         echo ${{ vars.CUSTOM_PATH }}
-        npm install
-        npx webpack
+        #npm install
+        #npx webpack
