@@ -14,6 +14,7 @@ jobs:
     environment: qa-test
     env:
       CUSTOM_PATH1: ${{ vars.CUSTOM_PATH }}
+      IN_BOTTLER: ${{ github.event.inputs.bottler }}
 
     steps:
     - name: Use Node.js ${{ matrix.node-version }}
@@ -26,6 +27,7 @@ jobs:
         echo ${{ github.event.inputs.bottler }}
         node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
         echo $CUSTOM_PATH1
+        echo $IN_BOTTLER
         npm install
         npx webpack
         
