@@ -17,13 +17,8 @@ jobs:
       IN_BOTTLER: ${{ github.event.inputs.bottler }}
 
     steps:
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      if: ${{ contains('123', '456') }}
-      with:
-        node-version: 18.0
-
     - name: Build
+      if: ${{ contains('123', '456') }}
       run: |
         echo ${{ github.event.inputs.bottler }}
         #node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
