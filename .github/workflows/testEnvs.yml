@@ -7,12 +7,14 @@ on:
           description: 'Bottler id'
           required: true
           default: ''
-
 jobs:
   build-dev:
     name: 'BUILD DEV'
     runs-on: ubuntu-latest
     environment: qa-test
+    env:
+      CUSTOM_PATH1: ${{ vars.CUSTOM_PATH }}
+
     steps:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -23,7 +25,7 @@ jobs:
       run: |
         echo ${{ github.event.inputs.bottler }}
         node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
-        echo ${{ vars.CUSTOM_PATH }}
+        echo ${{ vars.CUSTOM_PATH1 }}
         npm install
         npx webpack
         
