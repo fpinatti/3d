@@ -26,8 +26,8 @@ jobs:
       run: |
         echo ${{ github.event.inputs.bottler }}
         node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
-        echo "$CUSTOM_PATH1"
-        echo "$IN_BOTTLER"
+        echo ${{ env.CUSTOM_PATH1 }}
+        echo ${{ env.IN_BOTTLER }}
         npm install
         npx webpack
         
