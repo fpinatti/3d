@@ -23,9 +23,13 @@ jobs:
     - name: Az CLI login
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.CID }}
-        tenant-id: ${{ secrets.TID }}
-        subscription-id: ${{ secrets.SS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    #- name: Az CLI login
+    #  uses: azure/login@v1
+    #  with:
+    #    client-id: ${{ secrets.CID }}
+    #    tenant-id: ${{ secrets.TID }}
+    #    subscription-id: ${{ secrets.SS }}
     - name: Build
       run: |
         echo ${{ github.event.inputs.bottler }}
