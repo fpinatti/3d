@@ -17,8 +17,13 @@ jobs:
       IN_BOTTLER: ${{ github.event.inputs.bottler }}
 
     steps:
+    - name: Az CLI login
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.CID }}
+        tenant-id: ${{ secrets.TID }}
+        subscription-id: ${{ secrets.SS }}
     - name: Build
-      if: ${{ contains('123', '456') }}
       run: |
         echo ${{ github.event.inputs.bottler }}
         #node test param1 ${{ vars.CUSTOM_PATH }} param3 param4-${{ vars.CUSTOM_PATH }}-1111
