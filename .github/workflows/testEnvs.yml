@@ -12,6 +12,7 @@ jobs:
     name: 'BUILD DEV'
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       id-token: read
     environment: qa-test
     env:
