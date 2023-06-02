@@ -11,6 +11,8 @@ jobs:
   build-dev:
     name: 'BUILD DEV'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: read
     environment: qa-test
     env:
       CUSTOM_PATH1: ${{ vars.CUSTOM_PATH }}
