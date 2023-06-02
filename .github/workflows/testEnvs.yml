@@ -23,7 +23,7 @@ jobs:
     - name: Az CLI login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: '{"clientId":"${{ secrets.CID }}","clientSecret":"${{ secrets.AZURE_CREDENTIALS }}","subscriptionId":"${{ secrets.SS }}","tenantId":"${{ secrets.TID }}"}'
     #- name: Az CLI login
     #  uses: azure/login@v1
     #  with:
