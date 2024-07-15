@@ -35,7 +35,7 @@ const Ball = ({ position, size, material, propRef, type, idx }) => {
       })
       setTimeout(() => {
         setIsBallKinematic(false)
-      }, 1000)
+      }, 50)
     }
   }, [isBallKinematic])
 
@@ -52,13 +52,11 @@ const Ball = ({ position, size, material, propRef, type, idx }) => {
           onIntersectionEnter={onCollisionEvent}
           type={isBallKinematic ? 'kinematicPosition' : 'dynamic'}
         >
-          {/* <primitive object={model.scene} /> */}
-          <Clone object={model.scene} castShadow />
-          {/* <mesh receiveShadow castShadow>
-				<sphereGeometry args={size} />
-				<meshStandardMaterial color={material} />
-			</mesh> */}
-          <BallCollider args={[0.2]} mass={0.2} restitution={0.6} friction={1} />
+          <mesh receiveShadow castShadow>
+            <sphereGeometry args={[size, 10]} />
+            <meshToonMaterial color={material} />
+          </mesh>
+          <BallCollider args={[0.2]} mass={0.1} restitution={0.6} friction={1} />
         </RigidBody>
       )}
     </>

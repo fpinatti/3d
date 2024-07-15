@@ -6,12 +6,15 @@ import { Vector3 } from 'three'
 
 const TableWithBalls = ({ position, size }) => {
   const whiteBall = useRef(null)
-  const ballY = 4.5
+  const ballY = 3.8
 
   console.log('render table with balls')
 
   const [ballPositions, setBallPositions] = useState([])
   const [ballInHole, setBallInHole] = useState()
+
+  const ballSize = 0.3
+  const ballSpacing = 0.2
 
   useEffect(() => {
     setBallPositions([
@@ -23,38 +26,92 @@ const TableWithBalls = ({ position, size }) => {
       },
       {
         id: 2,
-        position: [3, ballY, 0],
+        position: [ballSize * 13 - ballSpacing * 1.5, ballY, (ballSize + ballSpacing) * 0.5],
         material: 'red',
         type: BallOwner.CPU,
       },
       {
         id: 3,
-        position: [3.5, ballY, 0.5],
+        position: [ballSize * 14 - ballSpacing * 1.5, ballY, (ballSize + ballSpacing) * 0.5],
         material: 'yellow',
         type: BallOwner.CPU,
       },
       {
         id: 4,
-        position: [3.5, ballY, -0.5],
+        position: [ballSize * 14 - ballSpacing * 1.5, ballY, (ballSize + ballSpacing) * -0.5],
         material: 'blue',
         type: BallOwner.CPU,
       },
       {
         id: 5,
-        position: [4, ballY, 1],
+        position: [ballSize * 15 - ballSpacing * 1.5, ballY, (ballSize + ballSpacing) * -1],
         material: 'orange',
         type: BallOwner.CPU,
       },
       {
         id: 6,
-        position: [4, ballY, -1],
+        position: [ballSize * 15 - ballSpacing * 1.5, ballY, (ballSize + ballSpacing) * 1],
         material: 'purple',
         type: BallOwner.CPU,
       },
       {
         id: 7,
-        position: [4, ballY, 0],
+        position: [ballSize * 15 - ballSpacing * 1.5, ballY, 0],
+        material: 'red',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 8,
+        position: [ballSize * 16 - ballSpacing, ballY, (ballSize + ballSpacing) * -0.5],
+        material: 'black',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 9,
+        position: [ballSize * 16 - ballSpacing, ballY, (ballSize + ballSpacing) * -1.5],
+        material: 'pink',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 10,
+        position: [ballSize * 16 - ballSpacing, ballY, (ballSize + ballSpacing) * 1.5],
         material: 'blue',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 11,
+        position: [ballSize * 16 - ballSpacing, ballY, (ballSize + ballSpacing) * 0.5],
+        material: 'yellow',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 12,
+        position: [ballSize * 17, ballY, (ballSize + ballSpacing) * -2],
+        material: 'blue',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 13,
+        position: [ballSize * 17, ballY, -ballSize - ballSpacing],
+        material: 'darkgreen',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 14,
+        position: [ballSize * 17, ballY, 0],
+        material: 'blue',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 15,
+        position: [ballSize * 17, ballY, ballSize + ballSpacing],
+        material: 'green',
+        type: BallOwner.CPU,
+      },
+      {
+        id: 16,
+        position: [ballSize * 17, ballY, (ballSize + ballSpacing) * 2],
+        material: 'yellow',
         type: BallOwner.CPU,
       },
     ])
@@ -77,7 +134,7 @@ const TableWithBalls = ({ position, size }) => {
           <Ball
             key={element.id}
             propRef={element.type === BallOwner.Player ? whiteBall : null}
-            size={[1]}
+            size={[0.2]}
             position={element.position}
             material={element.material}
             type={element.type}
