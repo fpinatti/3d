@@ -4,13 +4,17 @@ Command: npx gltfjsx@6.1.4 tree_bench.gltf --transform
 */
 
 import React, { useEffect, useRef } from 'react'
-import { Float, MeshWobbleMaterial, useGLTF, useMatcapTexture, useTexture } from '@react-three/drei'
+import { Float, MeshWobbleMaterial, useGLTF, useHelper, useMatcapTexture, useTexture } from '@react-three/drei'
 import { CuboidCollider, RigidBody, useFixedJoint, useSphericalJoint } from '@react-three/rapier'
+import { PointLightHelper } from 'three'
 
 export default function Tree(props) {
 
 	const bodyA = useRef()
 	const bodyB = useRef()
+	const lampLight = useRef()
+
+	// useHelper(lampLight, PointLightHelper, .4, 'pink')
 
 	const joint = useSphericalJoint(bodyA, bodyB, [
 		[0, 0, 0],
@@ -87,6 +91,14 @@ export default function Tree(props) {
 					{/* <mesh position={[0, -5, 0]}>
 						<boxGeometry />
 					</mesh> */}
+					<pointLight
+						ref={ lampLight }
+						position={[-4, 3, 2.1]}
+						color='grey'
+						decay={2}
+						intensity={ 120 }
+						distance={ 3 }
+					/>
 					<mesh geometry={nodes.Cylinder006.geometry} material={materials.rope} position={[-4.11, 3.87, 2.1]} castShadow />	
 					<mesh geometry={nodes.Cube022.geometry} material={materials.metal} position={[-4.1, 2.73, 2.09]} castShadow />
 					<mesh geometry={nodes.Cube023.geometry} material={materials.light} position={[-4.1, 2.73, 2.09]} castShadow />

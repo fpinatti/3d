@@ -1,12 +1,13 @@
 import { PointMaterial, Points } from "@react-three/drei"
 import { useFrame } from "@react-three/fiber"
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import ColorPalettes from 'nice-color-palettes'
 import * as THREE from "three"
 // console.log(ColorPalettes)
 
 const Particles = ({ count = 100, position = [0, 0, 0] }) => {
 	
+	const [particlesVisibility, setParticlesVisibility] = useState(false)
 	const vertexTotal = count * 3
 	const positions = new Float32Array(vertexTotal)
 	const colors = new Float32Array(vertexTotal)
@@ -55,31 +56,32 @@ const Particles = ({ count = 100, position = [0, 0, 0] }) => {
 		particles.current.geometry.attributes.position.needsUpdate = true
 	})
 
+	useEffect(() => {
+		setTimeout(() => {
+			console.log('aaa')
+			setParticlesVisibility(true)
+			particles.current.geometry.attributes.position.needsUpdate = true
+		}, 2000)
+	}, [])
+
 	return (
-		<Points
-			position={ position }
-			positions={ positions }
-			ref={ particles }
-			colors={ colors }
-		>
-			<PointMaterial
-				transparent
-				threshold={.3}
-				vertexColors
-				size={size}
-				sizeAttenuation={true}
-				depthWrite={true}
-			/>
-		</Points>
-		// <points>
-		// 	<bufferGeometry>
-		// 		<bufferAttribute
-		// 			attach={'attributes-position'}
-		// 			itemSize={ 3 }
-		// 			count={ vertexTotal }
-		// 			array={ positions } />
-		// 	</bufferGeometry>
-		// </points>
+		<group visible={ particlesVisibility }>
+			<Points
+				position={ position }
+				positions={ positions }
+				ref={ particles }
+				colors={ colors }
+			>
+				<PointMaterial
+					transparent
+					threshold={.3}
+					vertexColors
+					size={size}
+					sizeAttenuation={true}
+					depthWrite={true}
+				/>
+			</Points>
+		</group>
 	)
 }
 
