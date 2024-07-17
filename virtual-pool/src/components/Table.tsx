@@ -1,6 +1,6 @@
 // import { OrbitControls } from "@react-three/drei";
-import { useAnimations, useGLTF, useMatcapTexture } from '@react-three/drei'
-
+import { MeshReflectorMaterial, useAnimations, useGLTF, useMatcapTexture, useTexture } from '@react-three/drei'
+import tableImage from '../assets/green-table.jpg'
 import { CuboidCollider, CylinderCollider, MeshCollider, RigidBody, vec3 } from '@react-three/rapier'
 
 const Table = ({ position, clickTable, collisionEvent }) => {
@@ -13,9 +13,10 @@ const Table = ({ position, clickTable, collisionEvent }) => {
   const tableTopY = 3.5
   const tableTopColliderHeight = 2
 
-  const wallRestitution = 0.1
+  const wallRestitution = 0.2
   const wallFriction = 0.0002
 
+  const texture = useTexture({ map: tableImage })
   //   const [matcap, url] = useMatcapTexture(
   //     5,
   //     128 // size of the texture ( 64, 128, 256, 512, 1024 )
@@ -28,7 +29,8 @@ const Table = ({ position, clickTable, collisionEvent }) => {
           <primitive object={model.scene} />
           <mesh position={[0, tableTopY, 0]} receiveShadow onClick={clickTable}>
             <boxGeometry args={size} />
-            <meshStandardMaterial color={'green'} />
+            {/* <meshStandardMaterial color={'green'} {...texture} /> */}
+            <MeshReflectorMaterial {...texture} />
             {/* <meshMatcapMaterial matcap={matcap} toneMapped={true} /> */}
           </mesh>
         </group>

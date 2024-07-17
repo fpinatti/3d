@@ -1,5 +1,5 @@
 import { BallCollider, RigidBody } from '@react-three/rapier'
-import { useGLTF, Clone } from '@react-three/drei'
+import { useGLTF, Clone, useTexture } from '@react-three/drei'
 import { useEffect, useState } from 'react'
 
 export enum BallOwner {
@@ -7,21 +7,18 @@ export enum BallOwner {
   CPU = 'cpu',
 }
 
-const Ball = ({ position, size, material, propRef, type, idx }) => {
-  const model = useGLTF('./assets/models/ball.glb')
+const Ball = ({ position, size, propRef, type, idx, texture }) => {
   const [isBallKinematic, setIsBallKinematic] = useState(false)
   const [isActive, setIsActive] = useState(true)
+  const ballTexture = useTexture({ map: texture })
 
   const onCollisionEvent = (evt) => {
-    console.log('col', evt)
     // if ball is player, reset to initial position
     if (type === BallOwner.Player) {
-      console.log('white ball is dead')
       setIsBallKinematic(true)
     }
     // if ball is scorable, make it disappear
     if (type === BallOwner.CPU) {
-      console.log('cpu ball is dead')
       setIsActive(false)
     }
   }
@@ -54,9 +51,9 @@ const Ball = ({ position, size, material, propRef, type, idx }) => {
         >
           <mesh receiveShadow castShadow>
             <sphereGeometry args={[size, 10]} />
-            <meshToonMaterial color={material} />
+            <meshToonMaterial {...ballTexture} />
           </mesh>
-          <BallCollider args={[0.2]} mass={0.1} restitution={0.6} friction={1} />
+          <BallCollider args={[0.2]} mass={0.1} restitution={0.4} friction={1} />
         </RigidBody>
       )}
     </>

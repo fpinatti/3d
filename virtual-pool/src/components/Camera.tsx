@@ -1,7 +1,7 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls } from '@react-three/drei'
 
 const Camera = () => {
-	return <OrbitControls />;
-};
+  return <OrbitControls />
+}
 
-export default Camera;
+export default Camera
