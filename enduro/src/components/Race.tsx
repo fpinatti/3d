@@ -5,14 +5,15 @@ import Ball, { BallOwner } from './Player'
 import Table from './Road'
 import { Vector3 } from 'three'
 import { Cylinder, Stage } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import { useDispatch, useSelector } from 'react-redux'
 import { gameStatus } from '../store/slices/gameSlice.js'
 import Player from './Player'
 import Road from './Road'
 
-let ballDirection: Vector3
+// const roadBlocks = [...Array(30)]
 
-const Race = () => {
+const Race = ({ joystickPos }) => {
   // on reset game
   //   if (gameState === 'reset') {
   //     dispatch(gameStatus('playing'))
@@ -44,7 +45,11 @@ const Race = () => {
           return <Road key={index} position={element.pos} />
         })}
 
-        <Player />
+        <Player joystickPos={joystickPos} />
+        {/* <mesh position={[0, 2, 0]}>
+          <boxGeometry args={[3, 1, 1]} />
+          <meshStandardMaterial color={'yellow'} />
+        </mesh> */}
       </Stage>
     </>
   )
