@@ -1,9 +1,9 @@
 import { useTexture, MeshReflectorMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 
-const Ground = ({ position }) => {
+const Ground = () => {
   return (
-    <mesh position={position} receiveShadow>
+    <mesh position={[0, -1.15, 0]} receiveShadow>
       <cylinderGeometry args={[100, 100, 2]} />
       <meshStandardMaterial color={'red'} />
     </mesh>

@@ -11,7 +11,7 @@ export default function Model(props) {
     'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/race-car/model.gltf'
   )
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null} castShadow>
       <mesh geometry={nodes.Mesh_body014.geometry} material={materials.paintRed} />
       <mesh geometry={nodes.Mesh_body014_1.geometry} material={materials.plastic} />
       <mesh geometry={nodes.Mesh_body014_2.geometry} material={materials.window} />

@@ -39,7 +39,7 @@ function App() {
       <Provider store={store}>
         <Canvas camera={{ position: [-2, 4, -5], fov: 120 }} shadows style={{ background: 'black' }}>
           <Suspense>
-            <Camera />
+            {/* <Camera /> */}
             <Physics allowSleep>
               {/* <Debug scale={1.1} color={'red'}> */}
               {/* <Lights /> */}
@@ -48,6 +48,7 @@ function App() {
               <Race joystickPos={joystickPos} />
               {/* </Debug> */}
             </Physics>
+            <Ground />
           </Suspense>
         </Canvas>
       </Provider>
