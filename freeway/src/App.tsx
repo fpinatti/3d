@@ -12,7 +12,7 @@ import { store } from './store'
 import EndGame from './components/EndGame'
 import { useMouse } from '@uidotdev/usehooks'
 import { Debug, Physics } from '@react-three/cannon'
-import { Center, Environment } from '@react-three/drei'
+import { Center, Environment, Sky } from '@react-three/drei'
 import { useSwipeable } from 'react-swipeable'
 // import AnimatedModel from "./components/AnimatedModel";
 // import TextureModel from "./components/TextureModel";
@@ -28,18 +28,24 @@ function App() {
     <>
       <Leva hidden />
       <Provider store={store}>
-        <Canvas camera={{ position: [0, 10, 13] }} shadows style={{ background: 'black' }}>
+        <Canvas shadows style={{ background: 'black' }}>
           <Suspense>
             {/* <Camera /> */}
             <Physics allowSleep>
               {/* <Debug scale={1} color={'red'}> */}
-              {/* <Lights /> */}
+              <Lights />
               {/* <Opening />
               <EndGame /> */}
-              {/* <Center> */}
+              <Environment
+                background={true}
+                preset="park"
+                environmentIntensity={0}
+                backgroundBlurriness={0.3}
+                // blur={1}
+                // backgroundIntensity={1}
+                // ground
+              />
               <Game />
-              <Environment background={true} preset="city" />
-              {/* </Center> */}
               {/* </Debug> */}
             </Physics>
             {/* <Ground /> */}
