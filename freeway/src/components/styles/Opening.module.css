@@ -1,7 +1,13 @@
-.opening > div {
-	background-color: #faebd796;
+.opening {
+	/* background-color: #faebd796; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+	position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
 }

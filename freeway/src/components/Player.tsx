@@ -11,6 +11,7 @@ import { useSwipeable } from 'react-swipeable'
 import ScoreBoard from './ScoreBoard'
 import { debounce } from 'lodash'
 import playerModel from '../assets/chicken.glb'
+import { useSelector } from 'react-redux'
 
 gsap.registerPlugin(useGSAP)
 const accFactor = 0.5
@@ -24,6 +25,7 @@ const Player = () => {
   const [score, setScore] = useState(0)
   const [playerPos, setPlayerPos] = useState()
 
+  const gameState = useSelector((state) => state.game)
   const model = useGLTF(playerModel)
 
   const userScored = () => {
@@ -99,6 +101,15 @@ const Player = () => {
 
   const position = useRef([0, 0, 0])
   useEffect(() => {
+    camera.current.position.set(0, 2, 0)
+    // camera.current.lookAt(0, 3, -13)
+    // camera.current.rotation.set(0, -Math.PI, 0)
+    // if (gameState === 'playing') {
+    //   camera.current.position.lerp(
+    //     new Vector3(position.current[0], position.current[1] + 1, position.current[2] + 3),
+    //     0.1
+    //   )
+    // }
     const unsubscribe = api.position.subscribe((v) => (position.current = v))
     return unsubscribe
   }, [])
@@ -114,10 +125,12 @@ const Player = () => {
     if (v3.distanceTo(zeroVector) > 30) {
       resetPlayer()
     }
-    camera.current.position.lerp(
-      new Vector3(position.current[0], position.current[1] + 1, position.current[2] + 3),
-      0.1
-    )
+    if (gameState === 'playing') {
+      camera.current.position.lerp(
+        new Vector3(position.current[0], position.current[1] + 1, position.current[2] + 3),
+        0.1
+      )
+    }
     // debounce(() => {
     setPlayerPos(position.current)
     // }, 1000)

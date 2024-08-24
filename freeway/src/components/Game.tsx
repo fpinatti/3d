@@ -50,6 +50,9 @@ const Game = () => {
   //   asphalt.wrapT = RepeatWrapping
   brick.repeat.set(0.3, 0.3)
   asphalt.repeat.set(0.11, 1)
+
+  const gameState = useSelector((state) => state.game)
+
   //   asphalt.offset.x = 0
   //   asphalt.offset.y = 0
   // const [texture1, texture2] = useTexture([texture1, texture2])
@@ -85,9 +88,6 @@ const Game = () => {
   return (
     <>
       <Stage adjustCamera={false} intensity={0.3}>
-        {enemyBlocks.map((element, index) => {
-          return element
-        })}
         <Road tex={brick} position={[0, 0, -10]} color={'gold'} type={'win'} />
         <Road tex={asphalt} position={[0, 0, -9]} color={'blue'} type={'ground'} />
         <Road tex={asphalt} position={[0, 0, -8]} color={'grey'} type={'ground'} />
@@ -100,7 +100,6 @@ const Game = () => {
         <Road tex={asphalt} position={[0, 0, -1]} color={'blue'} type={'ground'} />
         <Road tex={asphalt} position={[0, 0, 0]} color={'pink'} type={'ground'} />
         <Road tex={brick} position={[0, 0, 1]} color={'brown'} type={'ground'} />
-        <Player />
         <Scenery model={building1Model} rotation={[0, Math.PI * 0.25, 0]} position={[-4, 0.2, -20.5]} scale={2} />
         <Scenery model={building2Model} rotation={[0, Math.PI * -0.25, 0]} position={[-1.7, 0.2, -20.9]} scale={2} />
         <Scenery model={building3Model} rotation={[0, Math.PI * 0.25, 0]} position={[0.4, 0.2, -20.6]} scale={3} />
@@ -111,7 +110,15 @@ const Game = () => {
         <Scenery model={building2Model} rotation={[0, Math.PI * -0.25, 0]} position={[-8, 0.2, -20.9]} scale={3} />
         <Scenery model={building2Model} rotation={[0, Math.PI * 0.25, 0]} position={[6.7, 0.2, -20.9]} scale={2.5} />
         <Scenery model={building4Model} rotation={[0, Math.PI * -0.75, 0]} position={[9.5, 0.2, -20.3]} scale={2} />
+        {gameState === 'playing' && (
+          <>
+            {enemyBlocks.map((element, index) => {
+              return element
+            })}
+          </>
+        )}
         {/* clouds */}
+        <Player />
         <Scenery model={cloudModel} rotation={[0, 0, 0]} position={[-3, 8, -20]} scale={2} />
         <Scenery model={cloudModel} rotation={[0, 0, 0]} position={[4, 7, -21]} scale={2} />
         <Scenery model={cloudModel} rotation={[0, 0, 0]} position={[-5, 5.5, -19]} scale={2} />

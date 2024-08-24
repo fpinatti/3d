@@ -15,11 +15,13 @@ const Opening = () => {
   return (
     <>
       {gameState === 'start' && (
-        <Html as="section" wrapperClass={styles.opening} prepend fullscreen sprite>
-          <h1>Virtual Pool</h1>
-          <p>a physics experiment</p>
-          <button onClick={startGame}>start game</button>
-        </Html>
+        <section className={styles.opening}>
+          {/* <Html as="section" wrapperClass={styles.opening} prepend fullscreen> */}
+          <h1>Freeway</h1>
+          <p>why does the chicken cross the road?</p>
+          <button onClick={startGame}>start</button>
+          {/* </Html> */}
+        </section>
       )}
     </>
   )

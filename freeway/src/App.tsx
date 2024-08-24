@@ -26,16 +26,16 @@ function App() {
 
   return (
     <>
-      <Leva hidden />
+      {/* <Leva hidden /> */}
       <Provider store={store}>
+        <Opening />
         <Canvas shadows style={{ background: 'black' }}>
           <Suspense>
             {/* <Camera /> */}
             <Physics allowSleep>
               {/* <Debug scale={1} color={'red'}> */}
               <Lights />
-              {/* <Opening />
-              <EndGame /> */}
+              {/* <EndGame /> */}
               <Environment
                 background={true}
                 preset="park"
