@@ -5,6 +5,7 @@
     "allowJs": true,
     "skipLibCheck": true,
 	"types": ["@types/node", "@types/react", "@types/react-dom", "@react-three/fiber"],
+	"typeRoots": ["./src/@types", "./node_modules/@types"],
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
