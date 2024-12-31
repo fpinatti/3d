@@ -1,28 +1,27 @@
 // import useGlobal from '@/hooks/store/useGlobal'
-import { ThreeElements, useFrame } from '@react-three/fiber'
+import { MeshProps, ThreeElements, useFrame } from '@react-three/fiber'
 import { gsap } from 'gsap'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Euler, Vector3 } from 'three'
 
 const defaultLeverRotation = Math.PI * 0.15
-
-interface LeverProps {
-  props: ThreeElements['mesh']
+interface LeverProps extends MeshProps {
+  lat
+  long
+  radius
   onAction?: () => void
 }
 
-const Lever = (
-  props: ThreeElements['mesh'],
-  { onAction }: ButtonDeviceProps,
-) => {
-  // const { setFx1, isFxEnabled1 } = useGlobal()
+const Lever = ({ onAction, lat, long, radius, ...props }: LeverProps) => {
   const [currentLeverRotation, setCurrentLeverRotation] =
     useState(defaultLeverRotation)
   const [isIdle, setIsIdle] = useState(true)
   const leverRotation = useRef({ value: defaultLeverRotation })
+  const wrapperRef = useRef(null)
 
   const clickButton = () => {
     if (!isIdle) return
-    // if (props.onAction) props.onAction()
+    if (onAction) onAction()
 
     gsap.to(leverRotation.current, {
       duration: 0.3,
@@ -36,12 +35,27 @@ const Lever = (
       yoyo: true,
       repeat: 1,
     })
-    // console.log('click button', buttonHoverY.current)
   }
+
+  useEffect(() => {
+    // Convert spherical coordinates to Cartesian coordinates
+    const x = radius * Math.cos(lat) * Math.sin(long)
+    const y = radius * Math.sin(lat)
+    const z = radius * Math.cos(lat) * Math.cos(long)
+    // Update the position of the object
+    wrapperRef?.current?.position.set(x, y, z)
+
+    // Calculate the normal vector
+    const normal = new Vector3(x, y, z).normalize()
+    // Align the object's rotation with the normal vector
+    const up = new Vector3(0, 1, 0)
+    // Up direction
+    wrapperRef?.current?.quaternion.setFromUnitVectors(up, normal)
+  }, [props.position, wrapperRef?.current])
 
   return (
     <>
-      <group {...props} onClick={clickButton}>
+      <group {...props} onClick={clickButton} ref={wrapperRef}>
         <mesh castShadow>
           <boxGeometry args={[1, 1, 3]}></boxGeometry>
           <meshStandardMaterial color={0xffaaff} />

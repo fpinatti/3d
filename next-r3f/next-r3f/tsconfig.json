@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext", "es2015"],
     "allowJs": true,
     "skipLibCheck": true,
-	"types": ["@types/node", "@types/react", "@types/react-dom", "@react-three/fiber"],
-	"typeRoots": ["./src/@types", "./node_modules/@types"],
+		"types": ["@types/node", "@types/react", "@types/react-dom", "@react-three/fiber"],
+		"typeRoots": ["./src/types", "./node_modules/@types"],
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-	"allowSyntheticDefaultImports": true,
+		"allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -25,6 +25,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.js", "./src/@types"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.js", "src"],
   "exclude": ["node_modules"]
 }
