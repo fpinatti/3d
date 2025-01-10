@@ -3,10 +3,10 @@ import { useEffect } from 'react'
 import gsap from 'gsap'
 
 type TitleProps = {
-  position: number[]
+  position: [number, number, number]
 }
 
-const Title = ({ position = [0, 0, 0] }) => {
+const Title = ({ position = [0, 0, 0] }: TitleProps) => {
   const model = useGLTF('./assets/models/pinland-title.glb')
 
   useEffect(() => {

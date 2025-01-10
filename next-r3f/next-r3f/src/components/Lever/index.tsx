@@ -1,14 +1,14 @@
 // import useGlobal from '@/hooks/store/useGlobal'
-import { MeshProps, ThreeElements, useFrame } from '@react-three/fiber'
+import { useAttachToSphere } from '@/hooks/useAttachToSphere'
+import { GroupProps, MeshProps } from '@react-three/fiber'
 import { gsap } from 'gsap'
-import React, { useEffect, useRef, useState } from 'react'
-import { Euler, Vector3 } from 'three'
+import React, { useRef, useState } from 'react'
 
 const defaultLeverRotation = Math.PI * 0.15
-interface LeverProps extends MeshProps {
-  lat
-  long
-  radius
+interface LeverProps extends GroupProps {
+  lat: number
+  long: number
+  radius: number
   onAction?: () => void
 }
 
@@ -37,21 +37,7 @@ const Lever = ({ onAction, lat, long, radius, ...props }: LeverProps) => {
     })
   }
 
-  useEffect(() => {
-    // Convert spherical coordinates to Cartesian coordinates
-    const x = radius * Math.cos(lat) * Math.sin(long)
-    const y = radius * Math.sin(lat)
-    const z = radius * Math.cos(lat) * Math.cos(long)
-    // Update the position of the object
-    wrapperRef?.current?.position.set(x, y, z)
-
-    // Calculate the normal vector
-    const normal = new Vector3(x, y, z).normalize()
-    // Align the object's rotation with the normal vector
-    const up = new Vector3(0, 1, 0)
-    // Up direction
-    wrapperRef?.current?.quaternion.setFromUnitVectors(up, normal)
-  }, [props.position, wrapperRef?.current])
+  useAttachToSphere(wrapperRef, radius, lat, long)
 
   return (
     <>

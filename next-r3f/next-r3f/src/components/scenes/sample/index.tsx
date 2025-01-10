@@ -10,9 +10,10 @@ import useGlobal from '@/hooks/store/useGlobal'
 import Lever from '@/components/Lever'
 import Ship from '@/components/Ship'
 import { Physics } from '@react-three/rapier'
-import Planet from '@/components/common/Planet'
+import Planet from '@/components/Planet'
 import { Leva } from 'leva'
-import Cloud from '@/components/common/Cloud'
+import Cloud from '@/components/Cloud'
+import PlanetElement from '@/components/PlanetElement'
 
 const HomePage = () => {
   const {
@@ -38,7 +39,7 @@ const HomePage = () => {
           <group>
             <Title position={[0, 3, 0]} />
           </group>
-          <HelicopterModel position={[0, 50, -10]} />
+          <HelicopterModel position={[12, 50, -16]} />
           <Cloud position={[0, 10, -7]} />
           <Planet
             // position={[0, 0, 0]}
@@ -80,6 +81,14 @@ const HomePage = () => {
                 onAction={() => {
                   setFx3(!isFxEnabled3)
                 }}
+              />
+              <PlanetElement
+                src="/assets/models/park-entrance.glb"
+                lat={Math.PI * 0.4}
+                long={Math.PI * 0}
+                radius={17}
+                scale={3}
+                offset={{ x: 0, y: -0.6, z: 0 }}
               />
             </>
           </Planet>

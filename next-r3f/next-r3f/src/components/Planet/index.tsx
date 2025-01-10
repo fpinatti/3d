@@ -3,11 +3,11 @@ import {
   MeshReflectorMaterial,
   useMatcapTexture,
 } from '@react-three/drei'
-import { MeshProps } from '@react-three/fiber'
+import { MeshProps, GroupProps } from '@react-three/fiber'
 import { RigidBody } from '@react-three/rapier'
 import * as THREE from 'three'
 
-interface PlanetProps extends MeshProps {
+interface PlanetProps extends GroupProps {
   size?: number
   children?: React.ReactNode
 }
