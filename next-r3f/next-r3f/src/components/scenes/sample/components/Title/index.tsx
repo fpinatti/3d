@@ -1,44 +1,57 @@
-import { Float, useGLTF } from '@react-three/drei'
-import { useEffect } from 'react'
+import { Float, useGLTF, useTransf } from '@react-three/drei'
+import { useEffect, useLayoutEffect } from 'react'
 import gsap from 'gsap'
+import * as THREE from 'three'
+import { FlakesTexture } from 'three-stdlib'
 
 type TitleProps = {
   position: [number, number, number]
 }
 
 const Title = ({ position = [0, 0, 0] }: TitleProps) => {
-  const model = useGLTF('./assets/models/pinland-title.glb')
+  const { scene, materials } = useGLTF('./assets/models/pinland-title.glb')
+  // const [] =
+  // useEffect(() => {
+  //   const nodes = Object.values(model.nodes)
+  //   nodes.forEach((element) => {
+  //     element.castShadow = true
+  //   })
+  // }, [])
 
-  useEffect(() => {
-    const nodes = Object.values(model.nodes)
-    nodes.forEach((element) => {
-      element.castShadow = true
+  useLayoutEffect(() => {
+    scene.traverse((obj) => {
+      const meshObj = obj as THREE.Mesh
+      if (meshObj.isMesh) {
+        meshObj.receiveShadow = true
+        meshObj.castShadow = true
+        meshObj.material.color.set('orange')
+        meshObj.material.normalMap = new THREE.CanvasTexture(
+          new FlakesTexture(),
+          THREE.UVMapping,
+          THREE.RepeatWrapping,
+          THREE.RepeatWrapping,
+        )
+        meshObj.material.normalMap.repeat.set(40, 40)
+        meshObj.material.normalScale.set(0.1, 0.1)
+      }
     })
-    // gsap.to(model.nodes.HelicopterBackWings.rotation, {
-    //     duration: .2,
-    //     x: Math.PI * .5,
-    //     ease: 'linear',
-    //     repeat: -1,
-    // })
-    // gsap.to(model.nodes.BackMotor.rotation, {
-    //     duration: .2,
-    //     x: Math.PI * .5,
-    //     ease: 'linear',
-    //     repeat: -1,
-    // })
-    // gsap.to(model.nodes.TopFin.rotation, {
-    //     duration: .2,
-    //     y: Math.PI * .5,
-    //     ease: 'linear',
-    //     repeat: -1,
-    // })
-  }, [])
+    // console.log(materials)
+    // materials.default.
+    // materials.color.set('orange')
+    // materials.default.roughness = 0
+    // materials.default.normalMap = new THREE.CanvasTexture(
+    //   new FlakesTexture(),
+    //   THREE.UVMapping,
+    //   THREE.RepeatWrapping,
+    //   THREE.RepeatWrapping,
+    // )
+  })
 
   return (
     <>
-      <group scale={8} position={position}>
+      <group scale={12} position={position}>
         <Float>
-          <primitive object={model.scene} />
+          <primitive object={scene} />
         </Float>
       </group>
     </>

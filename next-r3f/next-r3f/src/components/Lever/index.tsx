@@ -1,10 +1,12 @@
 // import useGlobal from '@/hooks/store/useGlobal'
+import { useLoadModel } from '@/hooks/store/useLoadModel'
 import { useAttachToSphere } from '@/hooks/useAttachToSphere'
-import { GroupProps, MeshProps } from '@react-three/fiber'
+import { Clone } from '@react-three/drei'
+import { GroupProps, MeshProps, ThreeEvent } from '@react-three/fiber'
 import { gsap } from 'gsap'
 import React, { useRef, useState } from 'react'
 
-const defaultLeverRotation = Math.PI * 0.15
+// const defaultLeverRotation = Math.PI * 0.15
 interface LeverProps extends GroupProps {
   lat: number
   long: number
@@ -13,21 +15,30 @@ interface LeverProps extends GroupProps {
 }
 
 const Lever = ({ onAction, lat, long, radius, ...props }: LeverProps) => {
-  const [currentLeverRotation, setCurrentLeverRotation] =
-    useState(defaultLeverRotation)
+  const { lever } = useLoadModel()
+  // const [currentLeverRotation, setCurrentLeverRotation] =
+  //   useState(defaultLeverRotation)
   const [isIdle, setIsIdle] = useState(true)
-  const leverRotation = useRef({ value: defaultLeverRotation })
+  const leverRotation = useRef({ value: 0 })
+  const leverPosition = useRef({ value: 0 })
   const wrapperRef = useRef(null)
+  const leverRef = useRef(null)
 
-  const clickButton = () => {
+  const clickButton = (evt: ThreeEvent<MouseEvent>) => {
+    const element = evt.object
+    leverRotation.current.value = element.position.y
+    leverPosition.current.value = element.position.x
     if (!isIdle) return
+    setIsIdle(false)
     if (onAction) onAction()
-
-    gsap.to(leverRotation.current, {
-      duration: 0.3,
-      value: Math.PI * -0.2,
+    gsap.to(leverPosition.current, {
+      duration: 2,
+      //   value: Math.PI * -0.2,
+      value: 1,
       onUpdate: () => {
-        setCurrentLeverRotation(leverRotation.current.value)
+        console.log(leverPosition.current.value)
+        leverRef.current.position.z = leverPosition.current.value
+        // setCurrentLeverRotation(leverRotation.current.value)
       },
       onComplete: () => {
         setIsIdle(true)
@@ -39,10 +50,20 @@ const Lever = ({ onAction, lat, long, radius, ...props }: LeverProps) => {
 
   useAttachToSphere(wrapperRef, radius, lat, long)
 
+  //   console.log(lever)
+
   return (
     <>
-      <group {...props} onClick={clickButton} ref={wrapperRef}>
-        <mesh castShadow>
+      <group {...props} ref={wrapperRef}>
+        {/* <Clone object={lever.nodes['Sphere']}></Clone> */}
+        {/* <Clone object={lever.nodes['Sphere_1']}></Clone> */}
+        <Clone object={lever.nodes['base']}></Clone>
+        <Clone
+          object={lever.nodes['lever']}
+          onClick={clickButton}
+          ref={leverRef}
+        ></Clone>
+        {/* <mesh castShadow>
           <boxGeometry args={[1, 1, 3]}></boxGeometry>
           <meshStandardMaterial color={0xffaaff} />
         </mesh>
@@ -55,11 +76,7 @@ const Lever = ({ onAction, lat, long, radius, ...props }: LeverProps) => {
             <sphereGeometry args={[0.5, 10.3]} />
             <meshStandardMaterial color={0x5ca1ff} />
           </mesh>
-        </group>
-        {/* <mesh position={[0, currentButtonY, 0]} onClick={clickButton}>
-          <cylinderGeometry />
-          <meshStandardMaterial color={0xff00bb} />
-        </mesh> */}
+        </group> */}
       </group>
     </>
   )

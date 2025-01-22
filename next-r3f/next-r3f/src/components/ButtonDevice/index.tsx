@@ -1,7 +1,10 @@
+import { useLoadModel } from '@/hooks/store/useLoadModel'
 import { useAttachToSphere } from '@/hooks/useAttachToSphere'
+import { Clone } from '@react-three/drei'
 import { GroupProps } from '@react-three/fiber'
 import { gsap } from 'gsap'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Mesh } from 'three'
 
 const defaultButtonY = 0.4
 
@@ -19,20 +22,23 @@ const ButtonDevice = ({
   radius,
   ...props
 }: ButtonDeviceProps) => {
-  const [currentButtonY, setCurrentButtonY] = useState(defaultButtonY)
   const [isIdle, setIsIdle] = useState(true)
   const buttonY = useRef({ value: defaultButtonY })
   const wrapperRef = useRef(null)
 
-  const clickButton = () => {
+  const { button } = useLoadModel()
+
+  const clickButton = (element: Mesh) => {
+    buttonY.current.value = element.position.y
     if (!isIdle) return
+    setIsIdle(false)
     if (onAction) onAction()
 
     gsap.to(buttonY.current, {
       duration: 0.3,
-      value: 0.1,
+      value: -0.1,
       onUpdate: () => {
-        setCurrentButtonY(buttonY.current.value)
+        element.position.y = buttonY.current.value
       },
       onComplete: () => {
         setIsIdle(true)
@@ -46,16 +52,22 @@ const ButtonDevice = ({
 
   return (
     <>
-      <group {...props} ref={wrapperRef}>
-        <mesh castShadow>
-          <boxGeometry args={[3, 1, 3]}></boxGeometry>
-          <meshStandardMaterial color={0x00aaff} />
-        </mesh>
-        <mesh position={[0, currentButtonY, 0]} onClick={clickButton}>
-          <cylinderGeometry />
-          <meshStandardMaterial color={0xff00bb} />
-        </mesh>
-      </group>
+      <mesh castShadow {...props} ref={wrapperRef}>
+        {/* <primitive object={button.nodes['base']}></primitive> */}
+        <Clone object={button.nodes['base']}></Clone>
+        <group
+          onClick={(evt) => {
+            evt.stopPropagation()
+            const object = evt.intersections[0].object as Mesh
+            clickButton(object)
+          }}
+        >
+          <Clone object={button.nodes['button']}></Clone>
+          {/* <primitive
+            object={<Clone object={button.nodes['button']}></Clone>}
+          ></primitive> */}
+        </group>
+      </mesh>
     </>
   )
 }

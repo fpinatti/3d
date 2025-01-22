@@ -53,12 +53,12 @@ const Lights = () => {
 				near={ fogNear }
 				far={ fogFar }
 			/> */}
-      <color attach="background" args={[fogColor]} />
-      <Environment
+      {/* <color attach="background" args={[fogColor]} /> */}
+      {/* <Environment
         files={'./assets/textures/env.hdr'}
         background={showBackground}
         blur={blur}
-      />
+      /> */}
       <directionalLight
         position={[3, 40, -3]}
         castShadow

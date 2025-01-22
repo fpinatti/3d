@@ -14,6 +14,7 @@ import Planet from '@/components/Planet'
 import { Leva } from 'leva'
 import Cloud from '@/components/Cloud'
 import PlanetElement from '@/components/PlanetElement'
+import { Environment, Stars } from '@react-three/drei'
 
 const HomePage = () => {
   const {
@@ -37,7 +38,7 @@ const HomePage = () => {
         <Physics debug>
           <Ship />
           <group>
-            <Title position={[0, 3, 0]} />
+            <Title position={[0, 5, 0]} />
           </group>
           <HelicopterModel position={[12, 50, -16]} />
           <Cloud position={[0, 10, -7]} />
@@ -93,6 +94,12 @@ const HomePage = () => {
             </>
           </Planet>
         </Physics>
+        <Stars count={2000} depth={100} radius={1} saturation={0} />
+        <Environment
+          files={'./assets/textures/env.hdr'}
+          // background={showBackground}
+          // blur={blur}
+        />
       </Canvas>
     </>
   )
