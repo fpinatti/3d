@@ -6,7 +6,8 @@ interface PlatformProps {
   position?: [number, number, number]
   size?: [number, number, number]
   color?: THREE.Color
-  type?: 'explodable' | 'hard'
+  actionData?: any
+  type?: 'explodable' | 'hard' | 'portal'
 }
 
 const Platform = ({
@@ -14,6 +15,7 @@ const Platform = ({
   size = [1, 1, 1],
   color = new THREE.Color(0xaaccff),
   type = 'hard',
+  actionData = {},
 }: PlatformProps) => {
   const [isBombHit, setIsBombHit] = useState(false)
   const onBombHit = () => {
@@ -25,8 +27,12 @@ const Platform = ({
     <RigidBody
       type="fixed"
       name="platform"
-      userData={{ type: type, onBombHit: onBombHit }}
+      userData={{ type: type, onBombHit: onBombHit, ...actionData }}
       colliders={false}
+      sensor={type === 'portal' ? true : false}
+      //   onIntersectionEnter={(collider) => {
+      //     console.log('aaa', collider.colliderObject?.userData)
+      //   }}
     >
       <mesh position={position} receiveShadow>
         <boxGeometry args={size} />

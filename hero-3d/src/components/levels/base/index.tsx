@@ -6,13 +6,20 @@ import { Leva } from 'leva'
 import { Environment } from '@react-three/drei'
 import Platform from '@/components/Platform'
 import Player from '@/components/Player'
-import * as THREE from 'three'
+
 import Controls from '@/components/controls'
 import Bomb from '@/components/Player/components/bomb'
 import usePlayer from '@/hooks/store/usePlayer'
+import useGlobal from '@/hooks/store/useGlobal'
+import { ILevelData } from '@/app/page'
 
-const BaseLevel = () => {
+interface BaseLevelProps {
+  levelData: ILevelData
+}
+
+const BaseLevel = ({ levelData }: BaseLevelProps) => {
   const { bombsPlanted } = usePlayer()
+  const { currentLevel } = useGlobal()
 
   return (
     <>
@@ -24,7 +31,10 @@ const BaseLevel = () => {
         <Camera />
         <Lights />
         <Physics debug>
-          <Player position={[-4, 4, 0]} />
+          <Player
+            position={levelData[currentLevel].player.position}
+            key={levelData[currentLevel].player.id}
+          />
           {bombsPlanted.map((bomb, idx) => {
             return (
               <Bomb
@@ -35,44 +45,18 @@ const BaseLevel = () => {
               />
             )
           })}
-          <Platform size={[7, 3, 3]} position={[-4.5, 1, 0]} />
-          <Platform size={[7, 3, 3]} position={[4.5, 1, 0]} />
-          <Platform
-            size={[1, 3, 3]}
-            position={[-7.5, 4, 0]}
-            color={new THREE.Color(0x0accaa)}
-          />
-          <Platform
-            size={[1, 3, 3]}
-            position={[-1.5, 4, 0]}
-            color={new THREE.Color(0x0accaa)}
-            type="explodable"
-          />
-          <Platform
-            size={[2, 3, 3]}
-            position={[7, 4, 0]}
-            color={new THREE.Color(0x0accaa)}
-          />
-          <Platform
-            size={[2, 3, 3]}
-            position={[-7, 7, 0]}
-            color={new THREE.Color(0x0acc00)}
-          />
-          <Platform
-            size={[1, 3, 3]}
-            position={[-1.5, 7, 0]}
-            color={new THREE.Color(0x0acc00)}
-          />
-          <Platform
-            size={[3, 3, 3]}
-            position={[6.5, 7, 0]}
-            color={new THREE.Color(0x0acc00)}
-          />
-          <Platform
-            position={[0, -1, 0]}
-            size={[16, 1, 3]}
-            color={new THREE.Color(0xaabb23)}
-          />
+          {levelData[currentLevel].platforms.map((platform, idx) => {
+            return (
+              <Platform
+                key={idx}
+                size={platform.size}
+                position={platform.position}
+                color={platform.color}
+                type={platform.type}
+                actionData={platform.actionData}
+              />
+            )
+          })}
         </Physics>
         <Environment files={'./assets/textures/env.hdr'} />
       </Canvas>

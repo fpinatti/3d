@@ -1,3 +1,4 @@
+import useGlobal from '@/hooks/store/useGlobal'
 import usePlayer from '@/hooks/store/usePlayer'
 import { useFrame } from '@react-three/fiber'
 import {
@@ -14,6 +15,7 @@ interface PlayerProps {
 
 const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
   const { axisX, axisY, triggerLaser, setPlayerPosition } = usePlayer()
+  const { setCurrentLevel } = useGlobal()
   const playerRB = useRef<RapierRigidBody>(null)
 
   useFrame(() => {
@@ -41,6 +43,11 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
       enabledRotations={[false, false, false]}
       type="dynamic"
       collisionGroups={interactionGroups(0, [0, 1])}
+      onIntersectionEnter={(collider) => {
+        const nextLevel = collider.rigidBodyObject?.userData.nextLevel
+        setCurrentLevel(nextLevel)
+        // console.log('aaa', collider.rigidBodyObject?.userData.nextLevel)
+      }}
     >
       <group position={position}>
         <mesh receiveShadow>
