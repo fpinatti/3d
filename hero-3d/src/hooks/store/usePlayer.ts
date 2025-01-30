@@ -9,8 +9,8 @@ export interface IBomb {
 export type PlayerState = {
   axisX: number
   axisY: number
+  direction: 'left' | 'right'
   triggerLaser: boolean
-  triggerBomb: boolean
   bombExplode: boolean
   bombsPlanted: IBomb[]
   playerPosition: [number, number, number]
@@ -19,10 +19,11 @@ export type PlayerState = {
 export type PlayerActions = {
   setAxisX: (value: number) => void
   setAxisY: (value: number) => void
+  //   setDirection: (value: string) => void
   setTriggerLaser: (value: boolean) => void
-  setTriggerBomb: (value: boolean) => void
   setBombExplode: (value: boolean) => void
   addBomb: (value: IBomb) => void
+  clearAllBombs: () => void
   explodeBomb: (id: number, value: boolean) => void
   setPlayerPosition: (value: [number, number, number]) => void
 }
@@ -32,7 +33,7 @@ export type PlayerStore = PlayerState & PlayerActions
 export const initState: PlayerState = {
   axisX: 0,
   axisY: 0,
-  triggerBomb: false,
+  direction: 'right',
   triggerLaser: false,
   bombExplode: false,
   bombsPlanted: [],
@@ -41,10 +42,12 @@ export const initState: PlayerState = {
 
 const usePlayer = create<PlayerStore>((set) => ({
   ...initState,
-  setAxisX: (value: number) => set({ axisX: value }),
+  setAxisX: (value: number) => {
+    // const direction = value > 0 ? 'right' : 'left'
+    set({ axisX: value, direction: value > 0 ? 'right' : 'left' })
+  },
   setAxisY: (value: number) => set({ axisY: value }),
   setTriggerLaser: (value: boolean) => set({ triggerLaser: value }),
-  setTriggerBomb: (value: boolean) => set({ triggerBomb: value }),
   setBombExplode: (value: boolean) => set({ bombExplode: value }),
   setPlayerPosition: (value: [number, number, number]) =>
     set({ playerPosition: value }),
@@ -54,6 +57,13 @@ const usePlayer = create<PlayerStore>((set) => ({
         bombsPlanted: [...state.bombsPlanted, value],
       }
     })
+  },
+  clearAllBombs: () => {
+    set({ bombsPlanted: [] })
+    // set((state) => {
+    //   state.bombsPlanted = []
+    //   // bombsPlanted: [],
+    // })
   },
   explodeBomb: (id, value) => {
     set((state) => {
@@ -65,6 +75,9 @@ const usePlayer = create<PlayerStore>((set) => ({
       return { bombsPlanted: updatedBombs }
     })
   },
+  //   setDirection: (direction: string) => {
+  //     set({ direction: direction })
+  //   },
 }))
 
 export default usePlayer

@@ -5,21 +5,30 @@ import { Physics } from '@react-three/rapier'
 import { Leva } from 'leva'
 import { Environment } from '@react-three/drei'
 import Platform from '@/components/Platform'
-import Player from '@/components/Player'
+import Player from '@/components/entities/Player'
 
 import Controls from '@/components/controls'
-import Bomb from '@/components/Player/components/bomb'
+import Bomb from '@/components/entities/Player/components/bomb'
 import usePlayer from '@/hooks/store/usePlayer'
 import useGlobal from '@/hooks/store/useGlobal'
 import { ILevelData } from '@/app/page'
+import Enemy from '@/components/entities/Enemy'
+import RescueGuy from '@/components/entities/RescueGuy'
+import { useState } from 'react'
 
 interface BaseLevelProps {
   levelData: ILevelData
 }
 
 const BaseLevel = ({ levelData }: BaseLevelProps) => {
-  const { bombsPlanted } = usePlayer()
+  const { bombsPlanted, clearAllBombs } = usePlayer()
   const { currentLevel } = useGlobal()
+  const [level, setLevel] = useState(currentLevel)
+
+  if (level !== currentLevel) {
+    setLevel(currentLevel)
+    clearAllBombs()
+  }
 
   return (
     <>
@@ -35,10 +44,25 @@ const BaseLevel = ({ levelData }: BaseLevelProps) => {
             position={levelData[currentLevel].player.position}
             key={levelData[currentLevel].player.id}
           />
+          {/* <Enemy position={[-2, 4, 0]} />
+          <RescueGuy position={[-5.5, 3.3, 0]} /> */}
+          {levelData[currentLevel].enemies?.map((enemy, idx) => {
+            return (
+              <Enemy key={`${currentLevel}-${idx}`} position={enemy.position} />
+            )
+          })}
+          {levelData[currentLevel].rescueGuy?.map((rescueGuy, idx) => {
+            return (
+              <RescueGuy
+                key={`${currentLevel}-${idx}`}
+                position={rescueGuy.position}
+              />
+            )
+          })}
           {bombsPlanted.map((bomb, idx) => {
             return (
               <Bomb
-                key={idx}
+                key={`${currentLevel}-${idx}`}
                 position={bomb.position}
                 id={bomb.id}
                 isExploded={bomb.isExploded}
@@ -48,7 +72,7 @@ const BaseLevel = ({ levelData }: BaseLevelProps) => {
           {levelData[currentLevel].platforms.map((platform, idx) => {
             return (
               <Platform
-                key={idx}
+                key={`${currentLevel}-${idx}`}
                 size={platform.size}
                 position={platform.position}
                 color={platform.color}

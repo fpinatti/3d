@@ -69,7 +69,7 @@ export default function Home() {
         {
           size: [2, 3, 3],
           position: [0, -2, 0],
-          color: new THREE.Color(0x0acc00),
+          color: new THREE.Color(0xff016e),
           type: 'portal',
           actionData: { nextLevel: '1-2' },
           id: uuidv4(),
@@ -81,6 +81,18 @@ export default function Home() {
         position: [0, 7, 0],
         id: uuidv4(),
       },
+      rescueGuy: [
+        {
+          position: [-5.5, 3.3, 0],
+          id: uuidv4(),
+        },
+      ],
+      enemies: [
+        {
+          position: [-2, 4, 0],
+          id: uuidv4(),
+        },
+      ],
       platforms: [
         { size: [7, 3, 3], position: [-4.5, 7, 0], id: uuidv4() },
         { size: [7, 3, 3], position: [4.5, 7, 0], id: uuidv4() },
@@ -100,6 +112,14 @@ export default function Home() {
           size: [16, 3, 3],
           position: [0, 1, 0],
           color: new THREE.Color(0xf1ccaa),
+          id: uuidv4(),
+        },
+        {
+          size: [2, 0.5, 3],
+          position: [0, 8.5, 0],
+          color: new THREE.Color(0xff016e),
+          type: 'portal',
+          actionData: { nextLevel: '1-1' },
           id: uuidv4(),
         },
       ],

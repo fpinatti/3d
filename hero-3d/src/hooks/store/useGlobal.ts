@@ -11,12 +11,14 @@ export type GlobalActions = {
 export type GlobalStore = GlobalState & GlobalActions
 
 export const initState: GlobalState = {
-  currentLevel: '1-2',
+  currentLevel: '1-1',
 }
 
 const useGlobal = create<GlobalStore>((set) => ({
   ...initState,
-  setCurrentLevel: (newState: string) => set({ currentLevel: newState }),
+  setCurrentLevel: (newState: string) => {
+    set({ currentLevel: newState })
+  },
 }))
 
 export default useGlobal

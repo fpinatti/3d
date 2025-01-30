@@ -14,7 +14,8 @@ interface PlayerProps {
 }
 
 const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
-  const { axisX, axisY, triggerLaser, setPlayerPosition } = usePlayer()
+  const { axisX, axisY, triggerLaser, setPlayerPosition, direction } =
+    usePlayer()
   const { setCurrentLevel } = useGlobal()
   const playerRB = useRef<RapierRigidBody>(null)
 
@@ -34,6 +35,8 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
   const laserSize = triggerLaser ? 1 : 0
   const rocketSize = axisY ? 1 : 0
 
+  //   console.log(direction)
+
   return (
     <RigidBody
       mass={1}
@@ -42,17 +45,26 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
       ref={playerRB}
       enabledRotations={[false, false, false]}
       type="dynamic"
+      //   name="player"
       collisionGroups={interactionGroups(0, [0, 1])}
       onIntersectionEnter={(collider) => {
         const nextLevel = collider.rigidBodyObject?.userData.nextLevel
-        setCurrentLevel(nextLevel)
-        // console.log('aaa', collider.rigidBodyObject?.userData.nextLevel)
+        if (nextLevel) {
+          setCurrentLevel(nextLevel)
+        }
       }}
     >
-      <group position={position}>
+      <group
+        position={position}
+        rotation={[0, direction === 'right' ? 0 : Math.PI, 0]}
+      >
         <mesh receiveShadow>
           <boxGeometry args={[1, 1.5, 1]} />
           <meshStandardMaterial color={0x11ccba} />
+        </mesh>
+        <mesh position={[0.5, 0.5, 0]}>
+          <boxGeometry args={[0.5, 0.3, 1]} />
+          <meshStandardMaterial color={0xff00ff} />
         </mesh>
         <mesh position={[1, 0.5, 0]} scale={laserSize}>
           <boxGeometry args={[2, 0.1, 0.1]} />
@@ -62,7 +74,16 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
           <boxGeometry args={[0.5, 0.5, 0.5]} />
           <meshBasicMaterial color={0x0000c1} />
         </mesh>
-        <CuboidCollider args={[0.5, 0.75, 0.5]} />
+        <CuboidCollider args={[0.5, 0.75, 0.5]} name="player" />
+        {laserSize && (
+          <CuboidCollider
+            name="laser"
+            args={[0.75, 0.25, 0.25]}
+            position={[1, 0.5, 0]}
+            scale={laserSize}
+            sensor
+          />
+        )}
       </group>
     </RigidBody>
   )
