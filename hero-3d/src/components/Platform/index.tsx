@@ -19,20 +19,17 @@ const Platform = ({
 }: PlatformProps) => {
   const [isBombHit, setIsBombHit] = useState(false)
   const onBombHit = () => {
-    console.log('bomb hit')
     setIsBombHit(true)
   }
 
   return (
     <RigidBody
       type="fixed"
+      restitution={0}
       name="platform"
       userData={{ type: type, onBombHit: onBombHit, ...actionData }}
       colliders={false}
       sensor={type === 'portal' ? true : false}
-      //   onIntersectionEnter={(collider) => {
-      //     console.log('aaa', collider.colliderObject?.userData)
-      //   }}
     >
       <mesh position={position} receiveShadow>
         <boxGeometry args={size} />

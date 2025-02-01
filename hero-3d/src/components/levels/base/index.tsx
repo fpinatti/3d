@@ -21,7 +21,7 @@ interface BaseLevelProps {
 }
 
 const BaseLevel = ({ levelData }: BaseLevelProps) => {
-  const { bombsPlanted, clearAllBombs } = usePlayer()
+  const { bombsPlanted, clearAllBombs, snapshotPlayerPosition } = usePlayer()
   const { currentLevel } = useGlobal()
   const [level, setLevel] = useState(currentLevel)
 
@@ -36,12 +36,14 @@ const BaseLevel = ({ levelData }: BaseLevelProps) => {
         <Controls />
       </div>
       <Leva hidden />
-      <Canvas camera={{ position: [0, 0, 15], fov: 75 }} shadows>
+      <Canvas camera={{ position: [0, 5, 15], fov: 75 }} shadows>
         <Camera />
         <Lights />
         <Physics debug>
           <Player
-            position={levelData[currentLevel].player.position}
+            position={
+              snapshotPlayerPosition || levelData[currentLevel].player.position
+            }
             key={levelData[currentLevel].player.id}
           />
           {/* <Enemy position={[-2, 4, 0]} />
@@ -56,6 +58,7 @@ const BaseLevel = ({ levelData }: BaseLevelProps) => {
               <RescueGuy
                 key={`${currentLevel}-${idx}`}
                 position={rescueGuy.position}
+                actionData={rescueGuy.actionData}
               />
             )
           })}
@@ -81,6 +84,11 @@ const BaseLevel = ({ levelData }: BaseLevelProps) => {
               />
             )
           })}
+          {/* back wall */}
+          <mesh position={[0, 0, -2]} rotation={[0, 0, 0]}>
+            <boxGeometry args={[18, 12, 1]} />
+            <meshStandardMaterial color={0x444444} />
+          </mesh>
         </Physics>
         <Environment files={'./assets/textures/env.hdr'} />
       </Canvas>

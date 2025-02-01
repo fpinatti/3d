@@ -10,19 +10,25 @@ import {
 import { useRef } from 'react'
 
 interface PlayerProps {
-  position: [number, number, number]
+  position?: [number, number, number]
 }
 
 const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
-  const { axisX, axisY, triggerLaser, setPlayerPosition, direction } =
-    usePlayer()
+  const {
+    axisX,
+    axisY,
+    triggerLaser,
+    setPlayerPosition,
+    setSnapshotPlayerPosition,
+    direction,
+  } = usePlayer()
   const { setCurrentLevel } = useGlobal()
   const playerRB = useRef<RapierRigidBody>(null)
 
   useFrame(() => {
     const impulse = { x: 0, y: 0, z: 0 }
-    impulse.x = axisX * 0.1
-    impulse.y = axisY * 0.1
+    impulse.x = axisX * 0.3
+    impulse.y = axisY * 0.3
     playerRB.current?.applyImpulse(impulse, true)
     const playerTranslation = playerRB.current?.translation()
     setPlayerPosition([
@@ -32,15 +38,19 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
     ])
   })
 
+  if (axisX === 0) {
+    const currentVelocity = playerRB.current?.linvel()
+    playerRB.current?.setLinvel(
+      { x: 0, y: currentVelocity?.y || 0, z: currentVelocity?.z || 0 },
+      true,
+    )
+  }
+
   const laserSize = triggerLaser ? 1 : 0
   const rocketSize = axisY ? 1 : 0
 
-  //   console.log(direction)
-
   return (
     <RigidBody
-      mass={1}
-      restitution={0}
       colliders={false}
       ref={playerRB}
       enabledRotations={[false, false, false]}
@@ -50,6 +60,13 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
       onIntersectionEnter={(collider) => {
         const nextLevel = collider.rigidBodyObject?.userData.nextLevel
         if (nextLevel) {
+          const playerTranslation = playerRB.current?.translation()
+          const newScreenPlayerY = playerTranslation?.y > 0 ? 5 : -4
+          setSnapshotPlayerPosition([
+            position[0] + (playerTranslation?.x ?? 0),
+            position[1] - newScreenPlayerY,
+            position[2] - (playerTranslation?.z ?? 0),
+          ])
           setCurrentLevel(nextLevel)
         }
       }}
@@ -74,7 +91,12 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
           <boxGeometry args={[0.5, 0.5, 0.5]} />
           <meshBasicMaterial color={0x0000c1} />
         </mesh>
-        <CuboidCollider args={[0.5, 0.75, 0.5]} name="player" />
+        <CuboidCollider
+          args={[0.5, 0.75, 0.5]}
+          name="player"
+          mass={1}
+          friction={0}
+        />
         {laserSize && (
           <CuboidCollider
             name="laser"

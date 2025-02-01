@@ -14,6 +14,7 @@ export type PlayerState = {
   bombExplode: boolean
   bombsPlanted: IBomb[]
   playerPosition: [number, number, number]
+  snapshotPlayerPosition: [number, number, number] | null
 }
 
 export type PlayerActions = {
@@ -26,6 +27,7 @@ export type PlayerActions = {
   clearAllBombs: () => void
   explodeBomb: (id: number, value: boolean) => void
   setPlayerPosition: (value: [number, number, number]) => void
+  setSnapshotPlayerPosition: (value: [number, number, number] | null) => void
 }
 
 export type PlayerStore = PlayerState & PlayerActions
@@ -38,19 +40,24 @@ export const initState: PlayerState = {
   bombExplode: false,
   bombsPlanted: [],
   playerPosition: [0, 0, 0],
+  snapshotPlayerPosition: null,
 }
 
 const usePlayer = create<PlayerStore>((set) => ({
   ...initState,
   setAxisX: (value: number) => {
+    if (value > 0) set({ direction: 'right' })
+    if (value < 0) set({ direction: 'left' })
     // const direction = value > 0 ? 'right' : 'left'
-    set({ axisX: value, direction: value > 0 ? 'right' : 'left' })
+    set({ axisX: value })
   },
   setAxisY: (value: number) => set({ axisY: value }),
   setTriggerLaser: (value: boolean) => set({ triggerLaser: value }),
   setBombExplode: (value: boolean) => set({ bombExplode: value }),
   setPlayerPosition: (value: [number, number, number]) =>
     set({ playerPosition: value }),
+  setSnapshotPlayerPosition: (value: [number, number, number]) =>
+    set({ snapshotPlayerPosition: value }),
   addBomb: (value: IBomb) => {
     set((state) => {
       return {
@@ -60,10 +67,6 @@ const usePlayer = create<PlayerStore>((set) => ({
   },
   clearAllBombs: () => {
     set({ bombsPlanted: [] })
-    // set((state) => {
-    //   state.bombsPlanted = []
-    //   // bombsPlanted: [],
-    // })
   },
   explodeBomb: (id, value) => {
     set((state) => {
@@ -75,9 +78,6 @@ const usePlayer = create<PlayerStore>((set) => ({
       return { bombsPlanted: updatedBombs }
     })
   },
-  //   setDirection: (direction: string) => {
-  //     set({ direction: direction })
-  //   },
 }))
 
 export default usePlayer
