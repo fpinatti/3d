@@ -1,42 +1,80 @@
-import { CuboidCollider, RigidBody } from '@react-three/rapier'
+import {
+  CollisionEnterHandler,
+  CuboidCollider,
+  RapierCollider,
+  RigidBody,
+} from '@react-three/rapier'
 import { useState } from 'react'
+import EnemySpider from './types/spider'
+import EnemySnake from './types/snake'
+import EnemyBat from './types/bat'
+import EnemyMovingBat from './types/movingbat'
 
-interface EnemyProps {
+export enum EnemyType {
+  Spider = 'spider',
+  Bat = 'bat',
+  MovingBat = 'moving_bat',
+  Snake = 'snake',
+}
+export interface EnemyProps {
   position: [number, number, number]
+  rotation?: [number, number, number]
+  scale?: [number, number, number]
+  type?: EnemyType
+  isAlive?: boolean
+  onPlayerCollide?: (collider: CollisionEnterHandler) => void
+  onLaserCollide?: (collider: CollisionEnterHandler) => void
 }
 
-const Enemy = ({ position = [0, 0, 0] }: EnemyProps) => {
+const Enemy = ({ position, type = EnemyType.Spider }: EnemyProps) => {
   const [isAlive, setIsAlive] = useState(true)
+  const onPlayerCollide = (collider) => {
+    if (collider.colliderObject?.name === 'player') {
+      // remove player life
+      console.log('remove player life')
+    }
+  }
+
+  const onLaserCollide = (collider) => {
+    if (collider.colliderObject?.name === 'laser') {
+      setIsAlive(false)
+    }
+  }
   return (
-    <RigidBody
-      mass={1}
-      restitution={0}
-      colliders={false}
-      enabledRotations={[false, false, false]}
-      type="kinematicPosition"
-      onCollisionEnter={(collider) => {
-        if (collider.colliderObject?.name === 'player') {
-          // remove player life
-        }
-      }}
-      onIntersectionEnter={(collider) => {
-        if (collider.colliderObject?.name === 'laser') {
-          setIsAlive(false)
-        }
-      }}
-    >
-      <group position={position}>
-        <mesh receiveShadow>
-          <boxGeometry args={[0.5, 0.5, 0.5]} />
-          <meshStandardMaterial
-            color={0xc1ab33}
-            transparent
-            opacity={isAlive ? 1 : 0}
-          />
-        </mesh>
-        {isAlive && <CuboidCollider args={[0.25, 0.25, 0.25]} />}
-      </group>
-    </RigidBody>
+    <>
+      {type === EnemyType.Spider && (
+        <EnemySpider
+          position={position}
+          onPlayerCollide={onPlayerCollide}
+          onLaserCollide={onLaserCollide}
+          isAlive={isAlive}
+        />
+      )}
+      {type === EnemyType.Snake && (
+        <EnemySnake
+          position={position}
+          onPlayerCollide={onPlayerCollide}
+          onLaserCollide={onLaserCollide}
+          isAlive={isAlive}
+        />
+      )}
+      {type === EnemyType.Bat && (
+        <EnemyBat
+          position={position}
+          onPlayerCollide={onPlayerCollide}
+          onLaserCollide={onLaserCollide}
+          isAlive={isAlive}
+        />
+      )}
+      {type === EnemyType.MovingBat && (
+        <EnemyMovingBat
+          position={position}
+          onPlayerCollide={onPlayerCollide}
+          onLaserCollide={onLaserCollide}
+          isAlive={isAlive}
+        />
+      )}
+    </>
   )
 }
 

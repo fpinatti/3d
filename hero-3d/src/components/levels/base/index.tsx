@@ -15,6 +15,7 @@ import { ILevelData } from '@/app/page'
 import Enemy from '@/components/entities/Enemy'
 import RescueGuy from '@/components/entities/RescueGuy'
 import { useState } from 'react'
+import Lamp from '@/components/Lamp'
 
 interface BaseLevelProps {
   levelData: ILevelData
@@ -48,9 +49,25 @@ const BaseLevel = ({ levelData }: BaseLevelProps) => {
           />
           {/* <Enemy position={[-2, 4, 0]} />
           <RescueGuy position={[-5.5, 3.3, 0]} /> */}
+
+          {levelData[currentLevel].objects?.map((object, idx) => {
+            if (object.type === 'lamp') {
+              return (
+                <Lamp
+                  key={`${currentLevel}-${idx}`}
+                  position={object.position}
+                />
+              )
+            }
+          })}
           {levelData[currentLevel].enemies?.map((enemy, idx) => {
             return (
-              <Enemy key={`${currentLevel}-${idx}`} position={enemy.position} />
+              <Enemy
+                key={`${currentLevel}-${idx}`}
+                position={enemy.position}
+                rotation={enemy.rotation}
+                type={enemy.type}
+              />
             )
           })}
           {levelData[currentLevel].rescueGuy?.map((rescueGuy, idx) => {
@@ -90,7 +107,7 @@ const BaseLevel = ({ levelData }: BaseLevelProps) => {
             <meshStandardMaterial color={0x444444} />
           </mesh>
         </Physics>
-        <Environment files={'./assets/textures/env.hdr'} />
+        {/* <Environment files={'./assets/textures/env.hdr'} /> */}
       </Canvas>
     </>
   )

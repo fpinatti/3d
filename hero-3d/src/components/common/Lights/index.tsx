@@ -1,6 +1,9 @@
 // import { folder, useControls } from 'leva'
 
+import useGlobal from '@/hooks/store/useGlobal'
+
 const Lights = () => {
+  const { isLamp } = useGlobal()
   //   const { mainLightIntensity } = useControls('Environment', {
   //     blur: {
   //       value: 0.8,
@@ -41,7 +44,7 @@ const Lights = () => {
       <directionalLight
         position={[3, 40, -3]}
         castShadow
-        intensity={1}
+        intensity={isLamp ? 3 : 0}
         shadow-mapSize={[1024, 1024]}
         shadow-camera-near={1}
         shadow-camera-far={50}
@@ -50,7 +53,7 @@ const Lights = () => {
         shadow-camera-bottom={-50}
         shadow-camera-left={-50}
       />
-      <ambientLight intensity={0.04} />
+      <ambientLight intensity={isLamp ? 3 : 0} />
     </>
   )
 }

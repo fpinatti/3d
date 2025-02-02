@@ -7,7 +7,8 @@ import {
   RapierRigidBody,
   RigidBody,
 } from '@react-three/rapier'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
+import { Group } from 'three'
 
 interface PlayerProps {
   position?: [number, number, number]
@@ -22,19 +23,36 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
     setSnapshotPlayerPosition,
     direction,
   } = usePlayer()
-  const { setCurrentLevel } = useGlobal()
+  const { setCurrentLevel, isLamp } = useGlobal()
   const playerRB = useRef<RapierRigidBody>(null)
+  const ref = useRef<Group>(null)
+
+  //   useEffect(() => {
+  //     if (playerRB.current) {
+  //       // Enable specific layers for the kinematic body
+  //       playerRB.current?.layers.set(1) // Layer 1
+  //     }
+  //   }, [])
+
+  useEffect(() => {
+    ref.current?.layers?.set(1)
+  }, [ref.current])
 
   useFrame(() => {
     const impulse = { x: 0, y: 0, z: 0 }
     impulse.x = axisX * 0.3
-    impulse.y = axisY * 0.3
+    impulse.y = axisY * 0.1
     playerRB.current?.applyImpulse(impulse, true)
     const playerTranslation = playerRB.current?.translation()
+    // setPlayerPosition([
+    //   position[0] + (playerTranslation?.x ?? 0),
+    //   position[1] - (playerTranslation?.y ?? 0),
+    //   position[2] - (playerTranslation?.z ?? 0),
+    // ])
     setPlayerPosition([
-      position[0] + (playerTranslation?.x ?? 0),
-      position[1] - (playerTranslation?.y ?? 0),
-      position[2] - (playerTranslation?.z ?? 0),
+      playerTranslation?.x ?? 0,
+      playerTranslation?.y ?? 0,
+      playerTranslation?.z ?? 0,
     ])
   })
 
@@ -51,30 +69,32 @@ const Player = ({ position = [0, 0, 0] }: PlayerProps) => {
 
   return (
     <RigidBody
+      position={position}
       colliders={false}
       ref={playerRB}
       enabledRotations={[false, false, false]}
       type="dynamic"
-      //   name="player"
       collisionGroups={interactionGroups(0, [0, 1])}
       onIntersectionEnter={(collider) => {
         const nextLevel = collider.rigidBodyObject?.userData.nextLevel
         if (nextLevel) {
           const playerTranslation = playerRB.current?.translation()
-          const newScreenPlayerY = playerTranslation?.y > 0 ? 5 : -4
+          const newScreenPlayerY = playerTranslation?.y > 0 ? -5 : 5
           setSnapshotPlayerPosition([
-            position[0] + (playerTranslation?.x ?? 0),
-            position[1] - newScreenPlayerY,
-            position[2] - (playerTranslation?.z ?? 0),
+            playerTranslation?.x ?? 0,
+            newScreenPlayerY,
+            playerTranslation?.z ?? 0,
           ])
           setCurrentLevel(nextLevel)
         }
       }}
     >
       <group
-        position={position}
+        ref={ref}
+        // position={position}
         rotation={[0, direction === 'right' ? 0 : Math.PI, 0]}
       >
+        <pointLight position={[0, 0, 1]} intensity={isLamp ? 0 : 3.5} />
         <mesh receiveShadow>
           <boxGeometry args={[1, 1.5, 1]} />
           <meshStandardMaterial color={0x11ccba} />
