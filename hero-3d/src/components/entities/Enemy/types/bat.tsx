@@ -12,9 +12,10 @@ const EnemyBat = ({
 }: EnemyProps) => {
   const enemyPos = useRef({ y: 0 })
   const ref = useRef<RapierRigidBody>(null)
+  const tweenRef = useRef<gsap.core.Tween | null>(null)
 
   useEffect(() => {
-    gsap.to(enemyPos?.current, {
+    tweenRef.current = gsap.to(enemyPos?.current, {
       y: 0.75,
       duration: 1.5,
       repeat: -1,
@@ -29,6 +30,12 @@ const EnemyBat = ({
         ref.current?.nextTranslation()
       },
     })
+    // unmount
+    return () => {
+      if (tweenRef.current) {
+        tweenRef.current.kill()
+      }
+    }
   }, [])
   return (
     <>

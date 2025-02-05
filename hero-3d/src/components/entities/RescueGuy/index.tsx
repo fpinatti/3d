@@ -10,7 +10,7 @@ interface RescueGuyProps {
 
 const RescueGuy = ({ position = [0, 0, 0], actionData }: RescueGuyProps) => {
   const [isAlive, setIsAlive] = useState(true)
-  const { setCurrentLevel } = useGlobal()
+  const { setCurrentLevel, setLamp } = useGlobal()
   const { setSnapshotPlayerPosition } = usePlayer()
 
   return (
@@ -27,6 +27,7 @@ const RescueGuy = ({ position = [0, 0, 0], actionData }: RescueGuyProps) => {
         if (collider.colliderObject?.name === 'player') {
           // goto next level
           setSnapshotPlayerPosition(null)
+          setLamp(true)
           setCurrentLevel(actionData.nextLevel)
         }
       }}
