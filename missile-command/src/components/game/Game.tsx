@@ -12,6 +12,7 @@ export default function Game() {
   const [score, setScore] = useState(0)
   const [level, setLevel] = useState(1)
   const [gameOver, setGameOver] = useState(false)
+  const [showCollisionTest, setShowCollisionTest] = useState(true)
 
   const handleScoreUpdate = (points: number) => {
     setScore((prev) => prev + points)
@@ -42,7 +43,7 @@ export default function Game() {
       {/* 3D Canvas */}
       <Canvas shadows camera={{ position: [0, 15, 20], fov: 50 }}>
         <Suspense fallback={null}>
-          <Physics>
+          <Physics debug>
             <GameScene
               level={level}
               onScoreUpdate={handleScoreUpdate}

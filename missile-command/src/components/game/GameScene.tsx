@@ -4,9 +4,8 @@ import { useFrame } from '@react-three/fiber'
 import { RigidBody } from '@react-three/rapier'
 import { City } from '../city'
 import { Missile } from '../missile'
-import { Explosion } from '../explosion'
-import { Defense } from '../defense'
 import { useGameLogic } from './hooks/useGameLogic'
+import { Defense } from '../defense'
 
 interface GameSceneProps {
   level: number
@@ -16,7 +15,7 @@ interface GameSceneProps {
 }
 
 export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: GameSceneProps) {
-  const { cities, missiles, explosions, setDefenses, defenses, handleClick, updateGame } =
+  const { cities, setMissiles, missiles, setDefenses, defenses, handleClick, updateGame } =
     useGameLogic({
       level,
       onScoreUpdate,
@@ -36,7 +35,7 @@ export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: Gam
       <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
 
       {/* Ground */}
-      <RigidBody type="fixed">
+      <RigidBody type="fixed" name="ground">
         <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow position={[0, -0.5, 0]}>
           <planeGeometry args={[50, 30]} />
           <meshStandardMaterial color="#3a7e4c" />
@@ -45,7 +44,7 @@ export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: Gam
 
       {/* Cities */}
       {cities.map((city) => (
-        <City key={city.id} position={city.position} destroyed={city.destroyed} />
+        <City key={city.id} position={city.position} />
       ))}
 
       {/* Missile Base */}
@@ -58,9 +57,14 @@ export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: Gam
       {missiles.map((missile) => (
         <Missile
           key={missile.id}
+          id={missile.id}
           position={missile.position}
           target={missile.target}
           isEnemy={true}
+          onCompleteProjectile={() => {
+            // Remove the enemy missile
+            setMissiles((prev) => prev.filter((m) => m.id !== missile.id))
+          }}
         />
       ))}
 
@@ -74,12 +78,13 @@ export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: Gam
             // Remove the defense missile
             setDefenses((prev) => prev.filter((d) => d.id !== defense.id))
           }}
+          onCollideWithEnemy={(missileId) => {
+            // Remove the defense missile
+            setMissiles((prev) => prev.filter((m) => m.id !== missileId))
+            // setMissiles((prev) => prev.filter((d) => d.id !== defense.id))
+            // setDefenses((prev) => prev.filter((d) => d.id !== defense.id))
+          }}
         />
-      ))}
-
-      {/* Explosions */}
-      {explosions.map((explosion) => (
-        <Explosion key={explosion.id} position={explosion.position} />
       ))}
 
       {/* Click handler for firing defense missiles */}
@@ -87,10 +92,10 @@ export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: Gam
         position={[0, 0, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
         onClick={handleClick}
-        visible={false}
+        // visible={false}
       >
-        <boxGeometry args={[50, 50, 30]} />
-        <meshBasicMaterial transparent opacity={0} />
+        <boxGeometry args={[50, 1, 40]} />
+        <meshBasicMaterial transparent opacity={0.1} />
       </mesh>
     </>
   )

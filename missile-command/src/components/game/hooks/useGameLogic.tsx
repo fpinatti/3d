@@ -80,17 +80,23 @@ export function useGameLogic({
       setCities(cities.map((city) => ({ ...city, destroyed: false })))
     }
 
+    const spanMissileInterval = setInterval(spawnEnemyMissiles, 3000)
+    // const setInterval(spawnEnemyMissiles, 3000)
+
     // Cleanup function
     return () => {
+      clearInterval(spanMissileInterval)
       gameRef.current.active = false
     }
   }, [level])
 
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
-    if (!gameRef.current.active || defensesLeft <= 0) return
+    // spawnEnemyMissiles()
+    // if (!gameRef.current.active || defensesLeft <= 0) return
 
     // Get the clicked point in 3D space
-    const clickPoint: Position3D = [event.point.x, event.point.y, event.point.z]
+    // const clickPoint: Position3D = [event.point.x, event.point.y, event.point.z]
+    const clickPoint: Position3D = [event.point.x, event.point.y, 0]
 
     // Create a new defense missile
     const newDefense = {
@@ -99,11 +105,12 @@ export function useGameLogic({
       target: clickPoint,
     }
 
+    console.log('newDefense', newDefense)
+
     // Start GSAP animation for the new defense missile
     // animateDefenseMissile(newDefense)
-
     setDefenses((prev) => [...prev, newDefense])
-    setDefensesLeft((prev) => prev - 1)
+    // setDefensesLeft((prev) => prev - 1)
   }
 
   const updateGame = (delta: number) => {
@@ -125,82 +132,82 @@ export function useGameLogic({
     checkGameState()
   }
 
-  const spawnEnemyMissiles = (delta: number) => {
-    gameRef.current.timeToNextMissile -= delta
-    if (gameRef.current.timeToNextMissile <= 0 && missiles.length < enemyMissilesTotal) {
-      // Random position at the top of the screen
-      const startX = (Math.random() - 0.5) * 30
-      const startPosition: Position3D = [startX, 20, 0]
+  const spawnEnemyMissiles = () => {
+    // console.log('spawnEnemyMissiles')
+    // Random position at the top of the screen
+    const startX = (Math.random() - 0.5) * 30
+    const startPosition: Position3D = [startX, 20, 0]
 
-      // Target a random city or a point on the ground
-      const targetIndex = Math.floor(Math.random() * cities.length)
-      const targetPosition = cities[targetIndex].destroyed
+    // Target a random city or a point on the ground
+    const targetIndex = Math.floor(Math.random() * cities.length)
+
+    let targetPosition = [0, 10, 0]
+    if (cities.length) {
+      targetPosition = cities[targetIndex].destroyed
         ? ([startX + (Math.random() - 0.5) * 5, 0, 0] as Position3D)
         : cities[targetIndex].position
-
-      const newMissile = {
-        id: Date.now(),
-        position: startPosition,
-        target: targetPosition,
-      }
-
-      setMissiles((prev) => [...prev, newMissile])
-
-      // Set time until next missile based on level (faster at higher levels)
-      gameRef.current.timeToNextMissile = Math.max(0.5, 3 - level * 0.2)
     }
+
+    const newMissile = {
+      id: Date.now(),
+      position: startPosition,
+      target: targetPosition,
+      setExplosions,
+    }
+
+    setMissiles((prev) => [...prev, newMissile])
   }
 
-  const updateMissiles = (delta: number) => {
-    setMissiles((prev) => {
-      return prev.filter((missile) => {
-        const targetVector = new Vector3(...missile.target)
-        const missileVector = new Vector3(...missile.position)
-        const direction = targetVector.clone().sub(missileVector).normalize()
+  // const updateMissiles = (delta: number) => {
+  //   setMissiles((prev) => {
+  //     return prev.filter((missile) => {
+  //       const targetVector = new Vector3(...missile.target)
+  //       const missileVector = new Vector3(...missile.position)
+  //       const direction = targetVector.clone().sub(missileVector).normalize()
 
-        // Move missile toward target
-        const speed = 5 * delta
-        const newPosition: Position3D = [
-          missile.position[0] + direction.x * speed,
-          missile.position[1] + direction.y * speed,
-          missile.position[2] + direction.z * speed,
-        ]
+  //       // Move missile toward target
+  //       const speed = 5 * delta
+  //       const newPosition: Position3D = [
+  //         missile.position[0] + direction.x * speed,
+  //         missile.position[1] + direction.y * speed,
+  //         missile.position[2] + direction.z * speed,
+  //       ]
 
-        // Check if missile has reached target
-        const distance = missileVector.distanceTo(targetVector)
-        if (distance < 0.5) {
-          // Create explosion
-          setExplosions((prev) => [
-            ...prev,
-            {
-              id: Date.now(),
-              position: missile.position,
-              time: 0,
-            },
-          ])
+  //       // Check if missile has reached target
+  //       const distance = missileVector.distanceTo(targetVector)
+  //       if (distance < 0.5) {
+  //         // Create explosion
+  //         setExplosions((prev) => [
+  //           ...prev,
+  //           {
+  //             id: Date.now(),
+  //             position: missile.position,
+  //             time: 0,
+  //           },
+  //         ])
 
-          // Check if missile hit a city
-          const hitCity = cities.find(
-            (city) =>
-              !city.destroyed &&
-              Math.abs(city.position[0] - missile.position[0]) < 1.5 &&
-              Math.abs(city.position[1] - missile.position[1]) < 1.5
-          )
+  //         // Check if missile hit a city
+  //         const hitCity = cities.find(
+  //           (city) =>
+  //             !city.destroyed &&
+  //             Math.abs(city.position[0] - missile.position[0]) < 1.5 &&
+  //             Math.abs(city.position[1] - missile.position[1]) < 1.5
+  //         )
 
-          if (hitCity) {
-            setCities((prev) =>
-              prev.map((city) => (city.id === hitCity.id ? { ...city, destroyed: true } : city))
-            )
-          }
+  //         if (hitCity) {
+  //           setCities((prev) =>
+  //             prev.map((city) => (city.id === hitCity.id ? { ...city, destroyed: true } : city))
+  //           )
+  //         }
 
-          return false
-        }
+  //         return false
+  //       }
 
-        missile.position = newPosition
-        return true
-      })
-    })
-  }
+  //       missile.position = newPosition
+  //       return true
+  //     })
+  //   })
+  // }
 
   // Add this new function to handle GSAP animations
   // const animateDefenseMissile = (defense: Missile) => {
@@ -248,35 +255,35 @@ export function useGameLogic({
     }
   }
 
-  const updateExplosions = (delta: number) => {
-    setExplosions((prev) => {
-      const updatedExplosions = prev.map((explosion) => {
-        // Increment explosion time
-        explosion.time += delta
+  // const updateExplosions = (delta: number) => {
+  //   setExplosions((prev) => {
+  //     const updatedExplosions = prev.map((explosion) => {
+  //       // Increment explosion time
+  //       explosion.time += delta
 
-        // Check if explosion hit any missiles
-        missiles.forEach((missile) => {
-          const missileVector = new Vector3(...missile.position)
-          const explosionVector = new Vector3(...explosion.position)
-          const distance = missileVector.distanceTo(explosionVector)
+  //       // Check if explosion hit any missiles
+  //       missiles.forEach((missile) => {
+  //         const missileVector = new Vector3(...missile.position)
+  //         const explosionVector = new Vector3(...explosion.position)
+  //         const distance = missileVector.distanceTo(explosionVector)
 
-          // If missile is within explosion radius
-          if (distance < 2) {
-            // Remove missile
-            setMissiles((prev) => prev.filter((m) => m.id !== missile.id))
-            // Increment score
-            onScoreUpdate(100)
-            setEnemyMissilesDestroyed((prev) => prev + 1)
-          }
-        })
+  //         // If missile is within explosion radius
+  //         if (distance < 2) {
+  //           // Remove missile
+  //           setMissiles((prev) => prev.filter((m) => m.id !== missile.id))
+  //           // Increment score
+  //           onScoreUpdate(100)
+  //           setEnemyMissilesDestroyed((prev) => prev + 1)
+  //         }
+  //       })
 
-        return explosion
-      })
+  //       return explosion
+  //     })
 
-      // Remove old explosions
-      return updatedExplosions.filter((explosion) => explosion.time < 1)
-    })
-  }
+  //     // Remove old explosions
+  //     return updatedExplosions.filter((explosion) => explosion.time < 1)
+  //   })
+  // }
 
   const checkGameState = () => {
     // Check if all cities are destroyed
@@ -303,6 +310,7 @@ export function useGameLogic({
 
   return {
     cities,
+    setMissiles,
     missiles,
     explosions,
     setDefenses,

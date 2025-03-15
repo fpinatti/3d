@@ -23,7 +23,7 @@ const Bomb = ({ position = [0, 0, 0], isExploded, id }: BombProps) => {
   }, [])
 
   const color = isExploded ? 0x3f00aa : 0xf1ff00
-  const bombSize = 0.5
+  const bombSize = 0.1
 
   return (
     <RigidBody
@@ -36,11 +36,15 @@ const Bomb = ({ position = [0, 0, 0], isExploded, id }: BombProps) => {
     >
       {/* <PerspectiveCamera makeDefault position={[0, 2, 15]} /> */}
       <group position={position}>
-        <mesh receiveShadow>
-          <sphereGeometry args={[bombSize, 10, 10]} />
-          <meshStandardMaterial color={color} />
-        </mesh>
-        <CuboidCollider args={[bombSize, bombSize, bombSize]} />
+        {!isExploded && (
+          <>
+            <mesh receiveShadow>
+              <cylinderGeometry args={[bombSize, bombSize, 0.5]} />
+              <meshStandardMaterial color={color} />
+            </mesh>
+          </>
+        )}
+        <CuboidCollider args={[bombSize, bombSize * 2, bombSize]} />
         {isExploded && (
           <BallCollider
             args={[1]}

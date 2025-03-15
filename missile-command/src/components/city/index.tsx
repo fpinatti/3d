@@ -1,31 +1,48 @@
-"use client";
+'use client'
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { Mesh } from "three";
+import { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { Mesh } from 'three'
+import { RigidBody } from '@react-three/rapier'
 
 interface CityProps {
-  position: [number, number, number];
-  destroyed: boolean;
+  position: [number, number, number]
+  // destroyed: boolean
 }
 
-export function City({ position, destroyed }: CityProps) {
-  const meshRef = useRef<Mesh>(null);
+export function City({ position }: CityProps) {
+  const meshRef = useRef<Mesh>(null)
+  const [isDestroyed, setIsDestroyed] = useState(false)
 
   useEffect(() => {
-    if (destroyed && meshRef.current) {
+    if (isDestroyed && meshRef.current) {
       gsap.to(meshRef.current.scale, {
         y: 0.2,
         duration: 0.5,
-        ease: "power2.out",
-      });
+        ease: 'power2.out',
+      })
     }
-  }, [destroyed]);
+  }, [isDestroyed])
 
+  // Handle collision events
+  const handleCollision = (event: any) => {
+    if (event?.rigidBodyObject?.name === 'missile') {
+      setIsDestroyed(true)
+    }
+  }
   return (
-    <mesh ref={meshRef} position={position} castShadow>
-      <boxGeometry args={[2, 1.5, 2]} />
-      <meshStandardMaterial color={destroyed ? "#444444" : "#2196f3"} />
-    </mesh>
-  );
+    <RigidBody
+      position={position}
+      gravityScale={0}
+      type="dynamic"
+      name="city"
+      sensor
+      onIntersectionEnter={handleCollision}
+    >
+      <mesh ref={meshRef} castShadow>
+        <boxGeometry args={[2, 1.5, 2]} />
+        <meshStandardMaterial color={isDestroyed ? '#444444' : '#2196f3'} />
+      </mesh>
+    </RigidBody>
+  )
 }

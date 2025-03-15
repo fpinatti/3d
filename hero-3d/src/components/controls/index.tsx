@@ -55,7 +55,11 @@ const Controls = () => {
       <button
         onMouseDown={() => {
           addBomb({
-            position: playerPosition,
+            position: [
+              playerPosition[0],
+              playerPosition[1],
+              playerPosition[2] + 1,
+            ],
             isExploded: false,
             id: getUniqueRandomNumber(),
           })

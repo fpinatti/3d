@@ -22,27 +22,31 @@ const Platform = ({
     setIsBombHit(true)
   }
 
+  const particles = 20
+
+  const getParticles = () => {}
+
   return (
-    <RigidBody
-      type="fixed"
-      restitution={0}
-      name="platform"
-      userData={{ type: type, onBombHit: onBombHit, ...actionData }}
-      colliders={false}
-      sensor={type === 'portal' ? true : false}
-    >
-      <mesh position={position} receiveShadow>
-        <boxGeometry args={size} />
-        <meshStandardMaterial
-          color={color}
-          opacity={isBombHit ? 0 : 1}
-          transparent
-        />
-        {!isBombHit && (
-          <CuboidCollider args={[size[0] / 2, size[1] / 2, size[2] / 2]} />
-        )}
-      </mesh>
-    </RigidBody>
+    <>
+      {!isBombHit && (
+        <>
+          <RigidBody
+            type="fixed"
+            restitution={0}
+            name="platform"
+            userData={{ type: type, onBombHit: onBombHit, ...actionData }}
+            colliders={false}
+            sensor={type === 'portal' ? true : false}
+          >
+            <mesh position={position} receiveShadow>
+              <boxGeometry args={size} />
+              <meshStandardMaterial color={color} transparent opacity={0.5} />
+              <CuboidCollider args={[size[0] / 2, size[1] / 2, size[2] / 2]} />
+            </mesh>
+          </RigidBody>
+        </>
+      )}
+    </>
   )
 }
 

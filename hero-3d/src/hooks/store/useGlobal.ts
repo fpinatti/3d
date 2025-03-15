@@ -13,7 +13,7 @@ export type GlobalActions = {
 export type GlobalStore = GlobalState & GlobalActions
 
 export const initState: GlobalState = {
-  currentLevel: '4-7',
+  currentLevel: '2-1',
   isLamp: true,
 }
 

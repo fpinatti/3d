@@ -8,7 +8,7 @@ import Platform from '@/components/Platform'
 import Player from '@/components/entities/Player'
 
 import Controls from '@/components/controls'
-import Bomb from '@/components/entities/Player/components/bomb'
+import Bomb from '@/components/entities/Bomb'
 import usePlayer from '@/hooks/store/usePlayer'
 import useGlobal from '@/hooks/store/useGlobal'
 import { ILevelData } from '@/app/page'
