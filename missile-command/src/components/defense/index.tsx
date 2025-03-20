@@ -5,7 +5,7 @@ import gsap from 'gsap'
 import { BallCollider, RapierRigidBody, RigidBody } from '@react-three/rapier'
 import { Explosion } from '../explosion'
 
-interface DefenseProps {
+export interface DefenseProps {
   position: [number, number, number]
   target: [number, number, number]
   onCompleteProjectile: () => void

@@ -1,10 +1,11 @@
 import { gsap } from 'gsap'
-import { RigidBody, CuboidCollider, RapierRigidBody } from '@react-three/rapier'
+import { RigidBody, RapierRigidBody } from '@react-three/rapier'
 import { useRef, useState, useEffect } from 'react'
 import { Explosion } from '../explosion'
-import { useFrame } from '@react-three/fiber'
+import { Trail } from '@react-three/drei'
+import { Vector3 } from 'three'
 
-interface MissileProps {
+export interface MissileProps {
   id: number
   position: [number, number, number]
   target: [number, number, number]
@@ -15,10 +16,26 @@ interface MissileProps {
 export function Missile({ id, position, target, isEnemy, onCompleteProjectile }: MissileProps) {
   const posRef = useRef(position)
   const [isExploding, setIsExploding] = useState(false)
-  const [currentPosition, setCurrentPosition] = useState(position)
+  const [isAnimating, setIsAnimating] = useState(false)
   const rigidBodyRef = useRef<RapierRigidBody>(null)
   const animationRef = useRef(null)
   const animationCompleteRef = useRef(false)
+  const meshRef = useRef(null)
+
+  // Calculate initial rotation to face target
+  const initialDirection = new Vector3(
+    target[0] - position[0],
+    target[1] - position[1],
+    target[2] - position[2]
+  ).normalize()
+
+  // Calculate rotation angle (in radians) around Y axis
+  const angleY = Math.atan2(initialDirection.x, initialDirection.z)
+  // Calculate rotation angle around X axis (pitch)
+  const angleX = Math.atan2(
+    initialDirection.y,
+    Math.sqrt(initialDirection.x * initialDirection.x + initialDirection.z * initialDirection.z)
+  )
 
   useEffect(() => {
     // Store the animation timeline in a ref so we can control it
@@ -27,6 +44,9 @@ export function Missile({ id, position, target, isEnemy, onCompleteProjectile }:
       1: target[1],
       2: target[2],
       duration: 10,
+      onStart: () => {
+        setIsAnimating(true)
+      },
       onUpdate: () => {
         rigidBodyRef.current?.setTranslation(
           { x: posRef.current[0], y: posRef.current[1], z: posRef.current[2] },
@@ -65,19 +85,49 @@ export function Missile({ id, position, target, isEnemy, onCompleteProjectile }:
       {!isExploding && (
         <RigidBody
           ref={rigidBodyRef}
-          // position={position} // Initial position
+          position={posRef.current}
           type="dynamic"
           gravityScale={0}
           sensor
           name="missile"
           userData={{ id: id }}
-          // colliders="cuboid"
           onIntersectionEnter={handleCollision}
         >
-          <mesh castShadow>
-            <cylinderGeometry args={[0.3, 0.3, 1.2]} />
-            <meshStandardMaterial color={isEnemy ? '#ff4444' : '#44ff44'} />
-          </mesh>
+          {/* Simple missile model with rotation */}
+          <group ref={meshRef} rotation={[angleX, angleY, 0]}>
+            {/* Missile body */}
+            <mesh castShadow>
+              <cylinderGeometry args={[0.15, 0.15, 1.2]} />
+              <meshStandardMaterial color={isEnemy ? '#ff4444' : '#44ff44'} />
+            </mesh>
+
+            {/* Missile nose cone */}
+            <mesh position={[0, 0.7, 0]} castShadow>
+              <coneGeometry args={[0.15, 0.4, 8]} />
+              <meshStandardMaterial color={isEnemy ? '#ff0000' : '#00ff00'} />
+            </mesh>
+
+            {/* Fins (4 of them) */}
+            <mesh position={[0, -0.4, 0]} rotation={[0, 0, 0]} castShadow>
+              <boxGeometry args={[0.05, 0.3, 0.4]} />
+              <meshStandardMaterial color={isEnemy ? '#cc3333' : '#33cc33'} />
+            </mesh>
+
+            <mesh position={[0, -0.4, 0]} rotation={[0, Math.PI / 2, 0]} castShadow>
+              <boxGeometry args={[0.05, 0.3, 0.4]} />
+              <meshStandardMaterial color={isEnemy ? '#cc3333' : '#33cc33'} />
+            </mesh>
+          </group>
+
+          {/* Trail effect */}
+          <Trail
+            decay={0.95}
+            width={isAnimating ? 3 : 0}
+            length={10}
+            color={isEnemy ? '#ff4444' : '#44ff44'}
+            attenuation={(width) => width}
+            target={meshRef}
+          />
         </RigidBody>
       )}
       {isExploding && (

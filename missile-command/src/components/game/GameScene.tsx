@@ -15,7 +15,7 @@ interface GameSceneProps {
 }
 
 export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: GameSceneProps) {
-  const { cities, setMissiles, missiles, setDefenses, defenses, handleClick, updateGame } =
+  const { setMissiles, missiles, setDefenses, defenses, handleClick, updateGame, currentCities } =
     useGameLogic({
       level,
       onScoreUpdate,
@@ -24,8 +24,8 @@ export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: Gam
     })
 
   // Game loop
-  useFrame((_, delta) => {
-    updateGame(delta)
+  useFrame(() => {
+    updateGame()
   })
 
   return (
@@ -43,8 +43,8 @@ export function GameScene({ level, onScoreUpdate, onGameOver, onNextLevel }: Gam
       </RigidBody>
 
       {/* Cities */}
-      {cities.map((city) => (
-        <City key={city.id} position={city.position} />
+      {currentCities.map((city) => (
+        <City key={city.id} position={city.position} id={city.id} />
       ))}
 
       {/* Missile Base */}

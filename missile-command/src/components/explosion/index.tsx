@@ -3,9 +3,11 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 
-interface ExplosionProps {
+export interface ExplosionProps {
+  id?: number
   position: [number, number, number]
   explosionComplete: () => void
+  time?: number
 }
 
 export function Explosion({ position, explosionComplete }: ExplosionProps) {

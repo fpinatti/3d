@@ -2,55 +2,56 @@
 
 import { Canvas } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect } from 'react'
 import { GameScene } from './GameScene'
-import { OrbitControls } from '@react-three/drei'
-import GameOver from './components/gameover'
+import GameOver from '../screens/gameover'
 import GameUi from './components/ui'
+import { GameCamera } from './components/GameCamera'
+import useGameStore from '../../store/useGameStore'
+import StartScreen from '../screens/start'
 
 export default function Game() {
-  const [score, setScore] = useState(0)
-  const [level, setLevel] = useState(1)
-  const [gameOver, setGameOver] = useState(false)
-  const [showCollisionTest, setShowCollisionTest] = useState(true)
+  // Get state and actions from the store
+  const { status, level, updateScore, endGame, nextLevel } = useGameStore()
 
+  // Initialize the game when component mounts
+  useEffect(() => {
+    // startGame()
+  }, [])
+
+  // Handle score updates
   const handleScoreUpdate = (points: number) => {
-    setScore((prev) => prev + points)
+    updateScore(points)
   }
 
+  // Handle game over
   const handleGameOver = () => {
-    setGameOver(true)
-  }
-
-  const handleNextLevel = () => {
-    setLevel((prev) => prev + 1)
-  }
-
-  const restartGame = () => {
-    setScore(0)
-    setLevel(1)
-    setGameOver(false)
+    endGame()
   }
 
   return (
     <div className="w-full h-screen relative">
       {/* Game UI */}
-      <GameUi score={score} level={level} />
-
-      {/* Game Over Screen */}
-      {gameOver && <GameOver restartGame={restartGame} score={score} />}
-
       {/* 3D Canvas */}
-      <Canvas shadows camera={{ position: [0, 15, 20], fov: 50 }}>
+      <Canvas shadows>
         <Suspense fallback={null}>
+          <GameUi />
+          {/* Game Over Screen */}
+          {status === 'game_over' && <GameOver />}
+          {/* Init Screen */}
+          {status === 'not_initialized' && <StartScreen />}
           <Physics debug>
-            <GameScene
-              level={level}
-              onScoreUpdate={handleScoreUpdate}
-              onGameOver={handleGameOver}
-              onNextLevel={handleNextLevel}
-            />
-            <OrbitControls />
+            {status === 'playing' && (
+              <>
+                <GameCamera initialPosition={[0, 1, 7]} />
+                <GameScene
+                  level={level}
+                  onScoreUpdate={handleScoreUpdate}
+                  onGameOver={handleGameOver}
+                  onNextLevel={nextLevel}
+                />
+              </>
+            )}
           </Physics>
         </Suspense>
       </Canvas>
