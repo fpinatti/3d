@@ -10,7 +10,7 @@ export function useGameLogic({
   level,
 }: {
   level: number
-  onScoreUpdate: (points: number) => void
+  // onScoreUpdate: (points: number) => void
   onGameOver: () => void
   onNextLevel: () => void
 }) {
@@ -49,15 +49,14 @@ export function useGameLogic({
 
     const spanMissileInterval = setInterval(() => {
       spawnEnemyMissiles()
-      spawnEnemyMissiles()
-      spawnEnemyMissiles()
-    }, 3000)
-    // const setInterval(spanMissileInterval, 3000)
+      // spawnEnemyMissiles()
+      // spawnEnemyMissiles()
+    }, 500)
+    // spawnEnemyMissiles()
 
     // Cleanup function
     return () => {
       clearInterval(spanMissileInterval)
-      // gameRef.current.active = false
     }
   }, [level])
 
@@ -111,6 +110,7 @@ export function useGameLogic({
     // Random position at the top of the screen
     const startX = (Math.random() - 0.5) * 30
     const startPosition: Position3D = [startX, 30 + (Math.random() * 10 - 5), 0]
+    // const startPosition: Position3D = [0, 2, 0]
 
     // Target a random city or a point on the ground
     const targetIndex = Math.floor(Math.random() * currentCities.length)

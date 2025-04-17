@@ -9,6 +9,8 @@ import GameUi from './components/ui'
 import { GameCamera } from './components/GameCamera'
 import useGameStore from '../../store/useGameStore'
 import StartScreen from '../screens/start'
+import { ModelManager } from '../utils/modelManager'
+import { Environment } from '@react-three/drei'
 
 export default function Game() {
   // Get state and actions from the store
@@ -33,28 +35,31 @@ export default function Game() {
     <div className="w-full h-screen relative">
       {/* Game UI */}
       {/* 3D Canvas */}
-      <Canvas shadows>
-        <Suspense fallback={null}>
-          <GameUi />
-          {/* Game Over Screen */}
-          {status === 'game_over' && <GameOver />}
-          {/* Init Screen */}
-          {status === 'not_initialized' && <StartScreen />}
-          <Physics debug>
-            {status === 'playing' && (
-              <>
-                <GameCamera initialPosition={[0, 1, 7]} />
-                <GameScene
-                  level={level}
-                  onScoreUpdate={handleScoreUpdate}
-                  onGameOver={handleGameOver}
-                  onNextLevel={nextLevel}
-                />
-              </>
-            )}
-          </Physics>
-        </Suspense>
-      </Canvas>
+      <ModelManager>
+        <Canvas shadows>
+          <Suspense fallback={null}>
+            <Environment preset="park" />
+            <GameUi />
+            {/* Game Over Screen */}
+            {status === 'game_over' && <GameOver />}
+            {/* Init Screen */}
+            {status === 'not_initialized' && <StartScreen />}
+            <Physics debug>
+              {status === 'playing' && (
+                <>
+                  <GameCamera initialPosition={[0, 1, 7]} />
+                  <GameScene
+                    level={level}
+                    onScoreUpdate={handleScoreUpdate}
+                    onGameOver={handleGameOver}
+                    onNextLevel={nextLevel}
+                  />
+                </>
+              )}
+            </Physics>
+          </Suspense>
+        </Canvas>
+      </ModelManager>
     </div>
   )
 }

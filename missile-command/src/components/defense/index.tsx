@@ -6,6 +6,7 @@ import { BallCollider, RapierRigidBody, RigidBody } from '@react-three/rapier'
 import { Explosion } from '../explosion'
 
 export interface DefenseProps {
+  id: number
   position: [number, number, number]
   target: [number, number, number]
   onCompleteProjectile: () => void
@@ -23,6 +24,8 @@ export function Defense({
   const rigidBodyRef = useRef<RapierRigidBody>(null)
   const animationRef = useRef(null)
   const [isExploding, setIsExploding] = useState(false)
+
+  const processedMissilesRef = useRef(new Set<number>())
 
   useEffect(() => {
     animationRef.current = gsap.to(posRef.current, {
@@ -60,14 +63,23 @@ export function Defense({
     // }
   }
 
+  // const debounced = (missileId) => {
+  //   console.log('missileId', missileId)
+  //   onCollideWithEnemy(missileId)
+  // }
+
   const handleCollision2 = (event: any) => {
     // const otherColliderObject = event.colliderObject
     if (event?.colliderObject?.name === 'missile') {
-      // console.log('defense defense explosion with missile', event.rigidBodyObject.userData.id)
-      //   console.log('cooliision')
       const missileId = event.rigidBodyObject.userData.id
-      onCollideWithEnemy(missileId)
-      //   // onCollision?.('missile');
+
+      // Check if we've already processed this missile
+      if (!processedMissilesRef.current.has(missileId)) {
+        // Add to set FIRST to prevent multiple calls
+        processedMissilesRef.current.add(missileId)
+        // Then call the handler
+        onCollideWithEnemy(missileId)
+      }
     }
   }
 

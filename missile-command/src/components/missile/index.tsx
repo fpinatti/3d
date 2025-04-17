@@ -1,9 +1,11 @@
 import { gsap } from 'gsap'
-import { RigidBody, RapierRigidBody } from '@react-three/rapier'
+import { RigidBody, RapierRigidBody, CuboidCollider } from '@react-three/rapier'
 import { useRef, useState, useEffect } from 'react'
 import { Explosion } from '../explosion'
 import { Trail } from '@react-three/drei'
 import { Vector3 } from 'three'
+import { useModelLoader } from '@/store/useModelLoader'
+import { Model } from '../utils/model'
 
 export interface MissileProps {
   id: number
@@ -21,21 +23,6 @@ export function Missile({ id, position, target, isEnemy, onCompleteProjectile }:
   const animationRef = useRef(null)
   const animationCompleteRef = useRef(false)
   const meshRef = useRef(null)
-
-  // Calculate initial rotation to face target
-  const initialDirection = new Vector3(
-    target[0] - position[0],
-    target[1] - position[1],
-    target[2] - position[2]
-  ).normalize()
-
-  // Calculate rotation angle (in radians) around Y axis
-  const angleY = Math.atan2(initialDirection.x, initialDirection.z)
-  // Calculate rotation angle around X axis (pitch)
-  const angleX = Math.atan2(
-    initialDirection.y,
-    Math.sqrt(initialDirection.x * initialDirection.x + initialDirection.z * initialDirection.z)
-  )
 
   useEffect(() => {
     // Store the animation timeline in a ref so we can control it
@@ -93,41 +80,28 @@ export function Missile({ id, position, target, isEnemy, onCompleteProjectile }:
           userData={{ id: id }}
           onIntersectionEnter={handleCollision}
         >
+          {/* meteor */}
+
           {/* Simple missile model with rotation */}
-          <group ref={meshRef} rotation={[angleX, angleY, 0]}>
-            {/* Missile body */}
-            <mesh castShadow>
-              <cylinderGeometry args={[0.15, 0.15, 1.2]} />
+          <group ref={meshRef}>
+            {/* <Model path="/assets/meteor.glb" position={[-2, -0.2, -2]}></Model> */}
+            <Model path="/assets/meteor.glb" position={[0, 0, 0]} scale={0.45} center />
+            {/* <CuboidCollider args={[0.3, 0.3, 0.3]} /> */}
+            {/* <mesh castShadow position={[0, 0, 0]}>
+              <sphereGeometry args={[0.2, 10, 10]} />
               <meshStandardMaterial color={isEnemy ? '#ff4444' : '#44ff44'} />
-            </mesh>
-
-            {/* Missile nose cone */}
-            <mesh position={[0, 0.7, 0]} castShadow>
-              <coneGeometry args={[0.15, 0.4, 8]} />
-              <meshStandardMaterial color={isEnemy ? '#ff0000' : '#00ff00'} />
-            </mesh>
-
-            {/* Fins (4 of them) */}
-            <mesh position={[0, -0.4, 0]} rotation={[0, 0, 0]} castShadow>
-              <boxGeometry args={[0.05, 0.3, 0.4]} />
-              <meshStandardMaterial color={isEnemy ? '#cc3333' : '#33cc33'} />
-            </mesh>
-
-            <mesh position={[0, -0.4, 0]} rotation={[0, Math.PI / 2, 0]} castShadow>
-              <boxGeometry args={[0.05, 0.3, 0.4]} />
-              <meshStandardMaterial color={isEnemy ? '#cc3333' : '#33cc33'} />
-            </mesh>
+            </mesh> */}
           </group>
 
           {/* Trail effect */}
-          <Trail
+          {/* <Trail
             decay={0.95}
             width={isAnimating ? 3 : 0}
             length={10}
             color={isEnemy ? '#ff4444' : '#44ff44'}
             attenuation={(width) => width}
             target={meshRef}
-          />
+          /> */}
         </RigidBody>
       )}
       {isExploding && (

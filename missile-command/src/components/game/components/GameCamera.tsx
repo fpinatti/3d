@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { PerspectiveCamera } from '@react-three/drei'
+import { PerspectiveCamera, OrbitControls } from '@react-three/drei'
 import { gsap } from 'gsap'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Vector3 } from 'three'
@@ -81,5 +81,6 @@ export function GameCamera({
     return () => clearTimeout(timer)
   }, [])
 
-  return <PerspectiveCamera ref={cameraRef} makeDefault fov={50} />
+  return <OrbitControls />
+  // return <PerspectiveCamera ref={cameraRef} makeDefault fov={50} />
 }
